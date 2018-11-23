@@ -1,0 +1,12 @@
+1) Integrate GPIO user-friendly control
+    -> integrate into hbridge.c, utils.c and stepper.c - DONE
+    -> implement debug messages everywhere
+    -> test if pins behave as they should have and if debug on uart0 works
+2) Integrate standalone encoder (functions to be able to setup/read them)
+3) Add switches support on the PORTA pins
+4) Integrate the standard CAN protocol with basic functions (blink, switches, hbridge, stepper, encoder)
+5) Combine the encoder with the stepper and hbridge (+ PID)
+    -> add this function to CAN
+6) Add ADC functionality on PORTA 
+    -> add this function to CAN
+
