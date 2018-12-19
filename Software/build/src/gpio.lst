@@ -1,0 +1,746 @@
+   1               		.file	"gpio.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               	.global	gpio_register_pin
+  13               	gpio_register_pin:
+  14               	.LFB11:
+  15               		.file 1 "src/gpio.c"
+   1:src/gpio.c    **** #include "gpio.h"
+   2:src/gpio.c    **** 
+   3:src/gpio.c    **** struct gpio_input {
+   4:src/gpio.c    ****     uint8_t          pin;
+   5:src/gpio.c    ****     bool             pulled_up;
+   6:src/gpio.c    ****     uint8_t          values[GPIO_DEBOUNCE_COUNT];
+   7:src/gpio.c    ****     uint8_t          previous_state;
+   8:src/gpio.c    **** 
+   9:src/gpio.c    ****     struct list_head list;
+  10:src/gpio.c    **** };
+  11:src/gpio.c    **** 
+  12:src/gpio.c    **** LIST_HEAD(gpio_inputs);
+  13:src/gpio.c    **** 
+  14:src/gpio.c    **** /*
+  15:src/gpio.c    ****  * 	Function:    uint8_t gpio_register_pin(uint8_t pin, uint8_t direction, bool pulled_up)
+  16:src/gpio.c    ****  * 	Description: register the pin
+  17:src/gpio.c    ****  */
+  18:src/gpio.c    **** uint8_t gpio_register_pin(uint8_t pin, uint8_t direction, bool pulled_up) {
+  16               		.loc 1 18 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19 0000 0F93      		push r16
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 3
+  22               		.cfi_offset 16, -2
+  23 0002 1F93      		push r17
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 4
+  26               		.cfi_offset 17, -3
+  27 0004 CF93      		push r28
+  28               	.LCFI2:
+  29               		.cfi_def_cfa_offset 5
+  30               		.cfi_offset 28, -4
+  31 0006 DF93      		push r29
+  32               	.LCFI3:
+  33               		.cfi_def_cfa_offset 6
+  34               		.cfi_offset 29, -5
+  35               	/* prologue: function */
+  36               	/* frame size = 0 */
+  37               	/* stack size = 4 */
+  38               	.L__stack_usage = 4
+  39               	.LVL1:
+  40               	.LBB10:
+  19:src/gpio.c    ****     struct gpio_input* input;
+  20:src/gpio.c    ****     list_for_each_entry(input, &gpio_inputs, list)
+  41               		.loc 1 20 0
+  42 0008 E091 0000 		lds r30,gpio_inputs+2
+  43 000c F091 0000 		lds r31,gpio_inputs+2+1
+  44               	.L11:
+  45               	.LVL2:
+  46               	.LBE10:
+  47               	.LBB11:
+  48               		.loc 1 20 0 is_stmt 0 discriminator 2
+  49 0010 3D97      		sbiw r30,13
+  50               	.LVL3:
+  51               	.LBE11:
+  52 0012 EF01      		movw r28,r30
+  53 0014 2D96      		adiw r28,13
+  54 0016 90E0      		ldi r25,hi8(gpio_inputs)
+  55 0018 C030      		cpi r28,lo8(gpio_inputs)
+  56 001a D907      		cpc r29,r25
+  57 001c 01F0      		breq .L14
+  21:src/gpio.c    ****     {
+  22:src/gpio.c    ****         if(input->pin == pin)
+  58               		.loc 1 22 0 is_stmt 1
+  59 001e 9081      		ld r25,Z
+  60 0020 9813      		cpse r25,r24
+  61 0022 00C0      		rjmp .L3
+  62               	.LVL4:
+  63               	.L7:
+  23:src/gpio.c    ****             return 1;
+  64               		.loc 1 23 0
+  65 0024 81E0      		ldi r24,lo8(1)
+  66 0026 00C0      		rjmp .L4
+  67               	.LVL5:
+  68               	.L3:
+  69               	.LBB12:
+  20:src/gpio.c    ****     {
+  70               		.loc 1 20 0 discriminator 2
+  71 0028 0784      		ldd __tmp_reg__,Z+15
+  72 002a F089      		ldd r31,Z+16
+  73 002c E02D      		mov r30,__tmp_reg__
+  74               	.LVL6:
+  75 002e 00C0      		rjmp .L11
+  76               	.LVL7:
+  77               	.L14:
+  78               	.LBE12:
+  24:src/gpio.c    ****     }
+  25:src/gpio.c    **** 
+  26:src/gpio.c    **** 	uint8_t port	= 1 + pin / 8;
+  79               		.loc 1 26 0
+  80 0030 E82F      		mov r30,r24
+  81               	.LVL8:
+  82 0032 E695      		lsr r30
+  83 0034 E695      		lsr r30
+  84 0036 E695      		lsr r30
+  85 0038 EF5F      		subi r30,lo8(-(1))
+  86               	.LVL9:
+  27:src/gpio.c    **** 	uint8_t pin_reg = pin % 8;
+  87               		.loc 1 27 0
+  88 003a 582F      		mov r21,r24
+  89 003c 5770      		andi r21,lo8(7)
+  90               	.LVL10:
+  91 003e F0E0      		ldi r31,0
+  28:src/gpio.c    **** 	if(direction == GPIO_DIRECTION_OUTPUT)
+  92               		.loc 1 28 0
+  93 0040 6130      		cpi r22,lo8(1)
+  94 0042 01F4      		brne .L6
+  29:src/gpio.c    **** 	{
+  30:src/gpio.c    **** 		*(volatile uint8_t*)(0x21 + 3 *  (port - 1)) |= (1 << pin_reg);
+  95               		.loc 1 30 0
+  96 0044 3197      		sbiw r30,1
+  97               	.LVL11:
+  98 0046 CF01      		movw r24,r30
+  99               	.LVL12:
+ 100 0048 880F      		lsl r24
+ 101 004a 991F      		rol r25
+ 102 004c E80F      		add r30,r24
+ 103 004e F91F      		adc r31,r25
+ 104 0050 21A1      		ldd r18,Z+33
+ 105 0052 81E0      		ldi r24,lo8(1)
+ 106 0054 90E0      		ldi r25,0
+ 107 0056 00C0      		rjmp 2f
+ 108               		1:
+ 109 0058 880F      		lsl r24
+ 110               		2:
+ 111 005a 5A95      		dec r21
+ 112 005c 02F4      		brpl 1b
+ 113 005e 922F      		mov r25,r18
+ 114 0060 982B      		or r25,r24
+ 115 0062 91A3      		std Z+33,r25
+ 116               	.LVL13:
+  31:src/gpio.c    **** 		*(volatile uint8_t*)(0x22 + 3 *  (port - 1)) &= ~(1 << pin_reg);
+ 117               		.loc 1 31 0
+ 118 0064 92A1      		ldd r25,Z+34
+ 119 0066 8095      		com r24
+ 120 0068 8923      		and r24,r25
+ 121 006a 82A3      		std Z+34,r24
+ 122 006c 00C0      		rjmp .L12
+ 123               	.LVL14:
+ 124               	.L6:
+ 125 006e 042F      		mov r16,r20
+ 126 0070 182F      		mov r17,r24
+  32:src/gpio.c    ****         return 0;
+  33:src/gpio.c    **** 	}
+  34:src/gpio.c    **** 	else
+  35:src/gpio.c    **** 		*(volatile uint8_t*)(0x21 + 3 *  (port - 1)) &= ~(1 << pin_reg);
+ 127               		.loc 1 35 0
+ 128 0072 3197      		sbiw r30,1
+ 129               	.LVL15:
+ 130 0074 CF01      		movw r24,r30
+ 131               	.LVL16:
+ 132 0076 880F      		lsl r24
+ 133 0078 991F      		rol r25
+ 134 007a E80F      		add r30,r24
+ 135 007c F91F      		adc r31,r25
+ 136 007e 81A1      		ldd r24,Z+33
+ 137 0080 21E0      		ldi r18,lo8(1)
+ 138 0082 30E0      		ldi r19,0
+ 139 0084 00C0      		rjmp 2f
+ 140               		1:
+ 141 0086 220F      		lsl r18
+ 142               		2:
+ 143 0088 5A95      		dec r21
+ 144 008a 02F4      		brpl 1b
+ 145 008c 2095      		com r18
+ 146 008e 2823      		and r18,r24
+ 147 0090 21A3      		std Z+33,r18
+ 148               	.LVL17:
+  36:src/gpio.c    **** 
+  37:src/gpio.c    ****     input = (struct gpio_input*)malloc(sizeof(struct gpio_input));
+ 149               		.loc 1 37 0
+ 150 0092 81E1      		ldi r24,lo8(17)
+ 151 0094 90E0      		ldi r25,0
+ 152 0096 0E94 0000 		call malloc
+ 153               	.LVL18:
+ 154 009a FC01      		movw r30,r24
+ 155               	.LVL19:
+  38:src/gpio.c    ****     if(input == NULL)
+ 156               		.loc 1 38 0
+ 157 009c 0097      		sbiw r24,0
+ 158 009e 01F0      		breq .L7
+  39:src/gpio.c    ****         return 1;
+  40:src/gpio.c    **** 
+  41:src/gpio.c    ****     input->pin       = pin;
+ 159               		.loc 1 41 0
+ 160 00a0 1083      		st Z,r17
+  42:src/gpio.c    ****     input->pulled_up = pulled_up;
+ 161               		.loc 1 42 0
+ 162 00a2 0183      		std Z+1,r16
+  43:src/gpio.c    ****     list_add(&input->list, &gpio_inputs);
+ 163               		.loc 1 43 0
+ 164 00a4 0D96      		adiw r24,13
+ 165               	.LVL20:
+ 166               	.LBB13:
+ 167               	.LBB14:
+ 168               		.file 2 "src/gpio.h"
+   1:src/gpio.h    **** 
+   2:src/gpio.h    **** #ifndef GPIO_H_
+   3:src/gpio.h    **** #define GPIO_H_
+   4:src/gpio.h    **** 
+   5:src/gpio.h    **** #include <avr/io.h>
+   6:src/gpio.h    **** #include <stdint.h>
+   7:src/gpio.h    **** #include <stdbool.h>
+   8:src/gpio.h    **** #include <stddef.h>
+   9:src/gpio.h    **** #include <stdio.h>
+  10:src/gpio.h    **** #include <stdlib.h>
+  11:src/gpio.h    **** 
+  12:src/gpio.h    **** #define GPIO_DEBOUNCE_COUNT         10
+  13:src/gpio.h    **** #define GPIO_DIRECTION_INPUT        0
+  14:src/gpio.h    **** #define GPIO_DIRECTION_OUTPUT       1
+  15:src/gpio.h    **** 
+  16:src/gpio.h    **** uint8_t gpio_register_pin(uint8_t pin, uint8_t direction, bool pulled_up);
+  17:src/gpio.h    **** uint8_t gpio_read_pin(uint8_t pin);
+  18:src/gpio.h    **** uint8_t gpio_write_pin(uint8_t pin, bool value);
+  19:src/gpio.h    **** 
+  20:src/gpio.h    **** void    gpio_debouncer(void);
+  21:src/gpio.h    **** 
+  22:src/gpio.h    **** struct list_head
+  23:src/gpio.h    **** {
+  24:src/gpio.h    ****     struct list_head* prev;
+  25:src/gpio.h    ****     struct list_head* next;
+  26:src/gpio.h    **** };
+  27:src/gpio.h    **** 
+  28:src/gpio.h    **** /*
+  29:src/gpio.h    ****  *  Macro for getting address of a container which contains
+  30:src/gpio.h    ****  *  a member with type 'type'
+  31:src/gpio.h    ****  *  ptr: pointer to a member in a list
+  32:src/gpio.h    ****  *  type: type of a structure containing the member
+  33:src/gpio.h    ****  *  member: name of a member in a structure
+  34:src/gpio.h    ****  *
+  35:src/gpio.h    ****  *  Example:
+  36:src/gpio.h    ****  *
+  37:src/gpio.h    ****  *  struct gpio_chip
+  38:src/gpio.h    ****  *  {
+  39:src/gpio.h    ****  *      int a;
+  40:src/gpio.h    ****  *      int b;
+  41:src/gpio.h    ****  *      struct list_head list;
+  42:src/gpio.h    ****  *  };
+  43:src/gpio.h    ****  *  ...
+  44:src/gpio.h    ****  *  struct list_head* gpio_element =  a structure contained inside gpio_chip
+  45:src/gpio.h    ****  *  How to get an address of a container?
+  46:src/gpio.h    ****  *  ->
+  47:src/gpio.h    ****  *  container_of(gpio_element, struct gpio_chip, list)
+  48:src/gpio.h    ****  * */
+  49:src/gpio.h    **** 
+  50:src/gpio.h    **** #define container_of(ptr, type, member) ({                \
+  51:src/gpio.h    ****         const typeof( ((type*)0)->member)* __mptr = (ptr);  \
+  52:src/gpio.h    ****         (type*)( (char*)__mptr - offsetof(type, member));   })
+  53:src/gpio.h    **** 
+  54:src/gpio.h    **** 
+  55:src/gpio.h    **** #define LIST_HEAD(name)                                     \
+  56:src/gpio.h    ****         struct list_head name = {&(name), &(name)}
+  57:src/gpio.h    **** 
+  58:src/gpio.h    **** #define list_empty(name)                                    \
+  59:src/gpio.h    ****         name->next == name                                  \
+  60:src/gpio.h    **** /*
+  61:src/gpio.h    ****  * Macro to get the struct for this entry
+  62:src/gpio.h    ****  * @ptr:    the struct list_head pointer
+  63:src/gpio.h    ****  * @type:   type of a structure list is embedded with
+  64:src/gpio.h    ****  * @member: name of struct list_head inside a structure
+  65:src/gpio.h    ****  * */
+  66:src/gpio.h    **** #define list_entry(ptr, type, member)                       \
+  67:src/gpio.h    ****         container_of(ptr, type, member)
+  68:src/gpio.h    **** 
+  69:src/gpio.h    **** /*
+  70:src/gpio.h    ****  * Macro to get the first element from a list.
+  71:src/gpio.h    ****  * Keep in mind that lists are circular, and list is
+  72:src/gpio.h    ****  * represented by a struct list_head element.
+  73:src/gpio.h    ****  * For example, the way to initialize an empty list is:
+  74:src/gpio.h    ****  * LIST_HEAD(list_name);
+  75:src/gpio.h    ****  * Now list_name is, in fact, head of the list!
+  76:src/gpio.h    ****  * It is an entry point to a list, simply a struct
+  77:src/gpio.h    ****  * containing a pointer to a first and last linked-list
+  78:src/gpio.h    ****  * elements.
+  79:src/gpio.h    ****  * So to get the first entry, simply go to the next pointer
+  80:src/gpio.h    ****  * of head.
+  81:src/gpio.h    ****  */
+  82:src/gpio.h    **** #define list_first_entry(ptr, type, member)                 \
+  83:src/gpio.h    ****         list_entry((ptr)->next, type, member)
+  84:src/gpio.h    **** 
+  85:src/gpio.h    **** #define list_last_entry(ptr, type, member)                  \
+  86:src/gpio.h    ****         list_entry((ptr)->prev, type, member)
+  87:src/gpio.h    **** 
+  88:src/gpio.h    **** /*
+  89:src/gpio.h    ****  * Macro for getting the next list entry.
+  90:src/gpio.h    ****  * @pos:    structure holding a struct list_head
+  91:src/gpio.h    ****  * @member: name of a struct list_head inside struct 'pos'
+  92:src/gpio.h    ****  */
+  93:src/gpio.h    **** #define list_next_entry(pos, member)                        \
+  94:src/gpio.h    ****         list_entry((pos)->member.next, typeof(*(pos)), member)
+  95:src/gpio.h    **** 
+  96:src/gpio.h    **** /*
+  97:src/gpio.h    ****  * Macro for getting the previous list entry.
+  98:src/gpio.h    ****  * @pos:    structure holding a struct list_head
+  99:src/gpio.h    ****  * @member: name of a struct list_head inside struct 'pos'
+ 100:src/gpio.h    ****  */
+ 101:src/gpio.h    **** #define list_previous_entry(pos, member)                    \
+ 102:src/gpio.h    ****         list_entry((pos)->member.prev, typeof(*(pos)), member)
+ 103:src/gpio.h    **** 
+ 104:src/gpio.h    **** #define list_for_each(pos, head)                            \
+ 105:src/gpio.h    ****        for(pos = (head)->next; pos != (head); pos = pos->next)
+ 106:src/gpio.h    **** 
+ 107:src/gpio.h    **** #define list_for_each_entry(pos, head, member)              \
+ 108:src/gpio.h    ****     for(pos = list_first_entry(head, typeof(*pos), member); \
+ 109:src/gpio.h    ****         &pos->member != (head);                               \
+ 110:src/gpio.h    ****         pos = list_next_entry(pos, member))
+ 111:src/gpio.h    **** 
+ 112:src/gpio.h    **** static inline void __list_add(struct list_head* new,
+ 113:src/gpio.h    ****                               struct list_head* prev,
+ 114:src/gpio.h    ****                               struct list_head* next)
+ 115:src/gpio.h    **** {
+ 116:src/gpio.h    ****     next->prev = new;
+ 117:src/gpio.h    ****     new->next = next;
+ 118:src/gpio.h    ****     new->prev = prev;
+ 119:src/gpio.h    ****     prev->next = new;
+ 120:src/gpio.h    **** }
+ 121:src/gpio.h    **** 
+ 122:src/gpio.h    **** static inline void list_add(struct list_head* new, struct list_head* head)
+ 123:src/gpio.h    **** {
+ 124:src/gpio.h    ****     __list_add(new, head, head->next);
+ 169               		.loc 2 124 0
+ 170 00a6 A091 0000 		lds r26,gpio_inputs+2
+ 171 00aa B091 0000 		lds r27,gpio_inputs+2+1
+ 172               	.LVL21:
+ 173               	.LBB15:
+ 174               	.LBB16:
+ 116:src/gpio.h    ****     new->next = next;
+ 175               		.loc 2 116 0
+ 176 00ae 1196      		adiw r26,1
+ 177 00b0 9C93      		st X,r25
+ 178 00b2 8E93      		st -X,r24
+ 117:src/gpio.h    ****     new->prev = prev;
+ 179               		.loc 2 117 0
+ 180 00b4 B08B      		std Z+16,r27
+ 181 00b6 A787      		std Z+15,r26
+ 118:src/gpio.h    ****     prev->next = new;
+ 182               		.loc 2 118 0
+ 183 00b8 D687      		std Z+14,r29
+ 184 00ba C587      		std Z+13,r28
+ 119:src/gpio.h    **** }
+ 185               		.loc 2 119 0
+ 186 00bc 9093 0000 		sts gpio_inputs+2+1,r25
+ 187 00c0 8093 0000 		sts gpio_inputs+2,r24
+ 188               	.LVL22:
+ 189               	.L12:
+ 190               	.LBE16:
+ 191               	.LBE15:
+ 192               	.LBE14:
+ 193               	.LBE13:
+  44:src/gpio.c    **** 
+  45:src/gpio.c    ****     return 0;
+ 194               		.loc 1 45 0
+ 195 00c4 80E0      		ldi r24,0
+ 196               	.LVL23:
+ 197               	.L4:
+ 198               	/* epilogue start */
+  46:src/gpio.c    **** }
+ 199               		.loc 1 46 0
+ 200 00c6 DF91      		pop r29
+ 201 00c8 CF91      		pop r28
+ 202               	.LVL24:
+ 203 00ca 1F91      		pop r17
+ 204 00cc 0F91      		pop r16
+ 205 00ce 0895      		ret
+ 206               		.cfi_endproc
+ 207               	.LFE11:
+ 209               	.global	gpio_write_pin
+ 211               	gpio_write_pin:
+ 212               	.LFB12:
+  47:src/gpio.c    **** 
+  48:src/gpio.c    **** /*
+  49:src/gpio.c    ****  * 	Function:    uint8_t gpio_write_pin(uint8_t pin, bool value)
+  50:src/gpio.c    ****  * 	Description: Write to a specific pin and the value of it
+  51:src/gpio.c    ****  */
+  52:src/gpio.c    **** uint8_t gpio_write_pin(uint8_t pin, bool value) {
+ 213               		.loc 1 52 0
+ 214               		.cfi_startproc
+ 215               	.LVL25:
+ 216               	/* prologue: function */
+ 217               	/* frame size = 0 */
+ 218               	/* stack size = 0 */
+ 219               	.L__stack_usage = 0
+  53:src/gpio.c    **** 	uint8_t port = 1 + pin / 8;
+  54:src/gpio.c    **** 	pin = pin % 8;
+ 220               		.loc 1 54 0
+ 221 00d0 482F      		mov r20,r24
+ 222 00d2 4770      		andi r20,lo8(7)
+ 223               	.LVL26:
+  55:src/gpio.c    **** 
+  56:src/gpio.c    **** 	uint8_t temp = *(volatile uint32_t*)(0x22 + 3 * (port - 1));
+ 224               		.loc 1 56 0
+ 225 00d4 8695      		lsr r24
+ 226 00d6 8695      		lsr r24
+ 227 00d8 8695      		lsr r24
+ 228               	.LVL27:
+ 229 00da 8F5F      		subi r24,lo8(-(1))
+ 230               	.LVL28:
+ 231 00dc E82F      		mov r30,r24
+ 232 00de F0E0      		ldi r31,0
+ 233 00e0 3197      		sbiw r30,1
+ 234 00e2 CF01      		movw r24,r30
+ 235               	.LVL29:
+ 236 00e4 880F      		lsl r24
+ 237 00e6 991F      		rol r25
+ 238 00e8 E80F      		add r30,r24
+ 239 00ea F91F      		adc r31,r25
+ 240 00ec 82A1      		ldd r24,Z+34
+ 241 00ee 93A1      		ldd r25,Z+35
+ 242 00f0 A4A1      		ldd r26,Z+36
+ 243 00f2 B5A1      		ldd r27,Z+37
+ 244               	.LVL30:
+ 245 00f4 90E0      		ldi r25,0
+  57:src/gpio.c    **** 	if(value != 0)
+  58:src/gpio.c    **** 		*(volatile uint32_t*)(0x22 + 3 * (port - 1)) = temp | (1 << pin);
+ 246               		.loc 1 58 0
+ 247 00f6 21E0      		ldi r18,lo8(1)
+ 248 00f8 30E0      		ldi r19,0
+ 249 00fa 00C0      		rjmp 2f
+ 250               		1:
+ 251 00fc 220F      		lsl r18
+ 252 00fe 331F      		rol r19
+ 253               		2:
+ 254 0100 4A95      		dec r20
+ 255 0102 02F4      		brpl 1b
+  57:src/gpio.c    **** 	if(value != 0)
+ 256               		.loc 1 57 0
+ 257 0104 6623      		tst r22
+ 258 0106 01F0      		breq .L16
+ 259               		.loc 1 58 0
+ 260 0108 822B      		or r24,r18
+ 261 010a 932B      		or r25,r19
+ 262               	.LVL31:
+ 263 010c 00C0      		rjmp .L18
+ 264               	.LVL32:
+ 265               	.L16:
+  59:src/gpio.c    **** 	else
+  60:src/gpio.c    **** 		*(volatile uint32_t*)(0x22 + 3 * (port - 1)) = temp & ~(1 << pin);
+ 266               		.loc 1 60 0
+ 267 010e 2095      		com r18
+ 268 0110 3095      		com r19
+ 269 0112 8223      		and r24,r18
+ 270 0114 9323      		and r25,r19
+ 271               	.LVL33:
+ 272               	.L18:
+ 273 0116 092E      		mov __tmp_reg__,r25
+ 274 0118 000C      		lsl r0
+ 275 011a AA0B      		sbc r26,r26
+ 276 011c BB0B      		sbc r27,r27
+ 277 011e 82A3      		std Z+34,r24
+ 278 0120 93A3      		std Z+35,r25
+ 279 0122 A4A3      		std Z+36,r26
+ 280 0124 B5A3      		std Z+37,r27
+  61:src/gpio.c    **** 	return 0;
+  62:src/gpio.c    **** }
+ 281               		.loc 1 62 0
+ 282 0126 80E0      		ldi r24,0
+ 283 0128 0895      		ret
+ 284               		.cfi_endproc
+ 285               	.LFE12:
+ 287               	.global	gpio_read_pin
+ 289               	gpio_read_pin:
+ 290               	.LFB14:
+  63:src/gpio.c    **** 
+  64:src/gpio.c    **** /*
+  65:src/gpio.c    ****  * 	Function: static uint8_t __gpio_read_pin(uint8_t pin)
+  66:src/gpio.c    ****  */
+  67:src/gpio.c    **** static uint8_t __gpio_read_pin(uint8_t pin) {
+  68:src/gpio.c    ****     uint8_t port = 1 + pin / 8;
+  69:src/gpio.c    ****     pin = pin % 8;
+  70:src/gpio.c    **** 
+  71:src/gpio.c    **** 	uint8_t temp = (*((volatile uint8_t*)(0x20 + 3 * (port - 1))));
+  72:src/gpio.c    **** 
+  73:src/gpio.c    ****     return ((temp >> pin) & 0x01);
+  74:src/gpio.c    **** }
+  75:src/gpio.c    **** 
+  76:src/gpio.c    **** /*
+  77:src/gpio.c    ****  * 	Function:    uint8_t gpio_read_pin(uint8_t pin)
+  78:src/gpio.c    ****  * 	Description: reading the state of a pin
+  79:src/gpio.c    ****  */
+  80:src/gpio.c    **** uint8_t gpio_read_pin(uint8_t pin) {
+ 291               		.loc 1 80 0
+ 292               		.cfi_startproc
+ 293               	.LVL34:
+ 294               	/* prologue: function */
+ 295               	/* frame size = 0 */
+ 296               	/* stack size = 0 */
+ 297               	.L__stack_usage = 0
+ 298               	.LBB17:
+  81:src/gpio.c    ****     struct gpio_input* input;
+  82:src/gpio.c    ****     list_for_each_entry(input, &gpio_inputs, list)
+ 299               		.loc 1 82 0
+ 300 012a E091 0000 		lds r30,gpio_inputs+2
+ 301 012e F091 0000 		lds r31,gpio_inputs+2+1
+ 302               	.L33:
+ 303               	.LVL35:
+ 304               	.LBE17:
+ 305               	.LBB18:
+ 306               		.loc 1 82 0 is_stmt 0 discriminator 2
+ 307 0132 3D97      		sbiw r30,13
+ 308               	.LVL36:
+ 309               	.LBE18:
+ 310 0134 90E0      		ldi r25,hi8(gpio_inputs-13)
+ 311 0136 E030      		cpi r30,lo8(gpio_inputs-13)
+ 312 0138 F907      		cpc r31,r25
+ 313 013a 01F0      		breq .L34
+  83:src/gpio.c    ****     {
+  84:src/gpio.c    ****         if(pin == input->pin)
+ 314               		.loc 1 84 0 is_stmt 1
+ 315 013c 9081      		ld r25,Z
+ 316 013e 9813      		cpse r25,r24
+ 317 0140 00C0      		rjmp .L21
+ 318 0142 DF01      		movw r26,r30
+ 319 0144 1296      		adiw r26,2
+ 320 0146 CF01      		movw r24,r30
+ 321               	.LVL37:
+ 322 0148 0B96      		adiw r24,11
+ 323               	.L24:
+ 324               	.LVL38:
+ 325               	.LBB19:
+  85:src/gpio.c    ****         {
+  86:src/gpio.c    ****             uint8_t i = 0;
+  87:src/gpio.c    ****             while(i < GPIO_DEBOUNCE_COUNT - 1)
+  88:src/gpio.c    ****             {
+  89:src/gpio.c    ****                 if(input->values[i] != input->values[i + 1])
+ 326               		.loc 1 89 0
+ 327 014a 3D91      		ld r19,X+
+ 328               	.LVL39:
+ 329 014c 2C91      		ld r18,X
+ 330 014e 3217      		cp r19,r18
+ 331 0150 01F0      		breq .L22
+  90:src/gpio.c    ****                     return input->previous_state;
+ 332               		.loc 1 90 0
+ 333 0152 8485      		ldd r24,Z+12
+ 334 0154 0895      		ret
+ 335               	.L22:
+ 336               	.LVL40:
+  87:src/gpio.c    ****             {
+ 337               		.loc 1 87 0
+ 338 0156 A817      		cp r26,r24
+ 339 0158 B907      		cpc r27,r25
+ 340 015a 01F4      		brne .L24
+  91:src/gpio.c    ****                 i++;
+  92:src/gpio.c    ****             }
+  93:src/gpio.c    **** 
+  94:src/gpio.c    ****             uint8_t state = input->pulled_up == false ? (input->values[0]) : !(input->values[0]);
+ 341               		.loc 1 94 0
+ 342 015c 8181      		ldd r24,Z+1
+ 343 015e 9281      		ldd r25,Z+2
+ 344 0160 8111      		cpse r24,__zero_reg__
+ 345 0162 00C0      		rjmp .L25
+ 346               		.loc 1 94 0 is_stmt 0 discriminator 1
+ 347 0164 892F      		mov r24,r25
+ 348 0166 00C0      		rjmp .L26
+ 349               	.L25:
+ 350               		.loc 1 94 0 discriminator 2
+ 351 0168 81E0      		ldi r24,lo8(1)
+ 352 016a 9111      		cpse r25,__zero_reg__
+ 353 016c 80E0      		ldi r24,0
+ 354               	.L26:
+ 355               	.LVL41:
+  95:src/gpio.c    ****             input->previous_state = state;
+ 356               		.loc 1 95 0 is_stmt 1 discriminator 4
+ 357 016e 8487      		std Z+12,r24
+  96:src/gpio.c    **** 
+  97:src/gpio.c    ****             return state;
+ 358               		.loc 1 97 0 discriminator 4
+ 359 0170 0895      		ret
+ 360               	.LVL42:
+ 361               	.L21:
+ 362               	.LBE19:
+ 363               	.LBB20:
+  82:src/gpio.c    ****     {
+ 364               		.loc 1 82 0 discriminator 2
+ 365 0172 0784      		ldd __tmp_reg__,Z+15
+ 366 0174 F089      		ldd r31,Z+16
+ 367 0176 E02D      		mov r30,__tmp_reg__
+ 368               	.LVL43:
+ 369 0178 00C0      		rjmp .L33
+ 370               	.LVL44:
+ 371               	.L34:
+ 372               	.LBE20:
+  98:src/gpio.c    ****         }
+  99:src/gpio.c    ****     }
+ 100:src/gpio.c    **** 
+ 101:src/gpio.c    ****     return 1;
+ 373               		.loc 1 101 0
+ 374 017a 81E0      		ldi r24,lo8(1)
+ 375               	.LVL45:
+ 102:src/gpio.c    **** }
+ 376               		.loc 1 102 0
+ 377 017c 0895      		ret
+ 378               		.cfi_endproc
+ 379               	.LFE14:
+ 381               	.global	gpio_debouncer
+ 383               	gpio_debouncer:
+ 384               	.LFB15:
+ 103:src/gpio.c    **** 
+ 104:src/gpio.c    **** /*
+ 105:src/gpio.c    ****  * 	Function:    void gpio_debouncer(void)
+ 106:src/gpio.c    ****  * 	Description: debouncer function, used for triggering inputs smoothly
+ 107:src/gpio.c    ****  */
+ 108:src/gpio.c    **** void gpio_debouncer(void) {
+ 385               		.loc 1 108 0
+ 386               		.cfi_startproc
+ 387               	/* prologue: function */
+ 388               	/* frame size = 0 */
+ 389               	/* stack size = 0 */
+ 390               	.L__stack_usage = 0
+ 391               	.LVL46:
+ 392               	.LBB25:
+ 109:src/gpio.c    ****     static volatile uint8_t count = 0;
+ 110:src/gpio.c    ****     struct gpio_input* input;
+ 111:src/gpio.c    ****     list_for_each_entry(input, &gpio_inputs, list)
+ 393               		.loc 1 111 0
+ 394 017e E091 0000 		lds r30,gpio_inputs+2
+ 395 0182 F091 0000 		lds r31,gpio_inputs+2+1
+ 396               	.LVL47:
+ 397               	.L39:
+ 398               	.LBE25:
+ 399               	.LBB26:
+ 400               		.loc 1 111 0 is_stmt 0 discriminator 3
+ 401 0186 3D97      		sbiw r30,13
+ 402               	.LVL48:
+ 403               	.LBE26:
+ 404 0188 80E0      		ldi r24,hi8(gpio_inputs-13)
+ 405 018a E030      		cpi r30,lo8(gpio_inputs-13)
+ 406 018c F807      		cpc r31,r24
+ 407 018e 01F0      		breq .L40
+ 112:src/gpio.c    ****     {
+ 113:src/gpio.c    ****         input->values[count] = __gpio_read_pin(input->pin);
+ 408               		.loc 1 113 0 is_stmt 1 discriminator 3
+ 409 0190 3091 0000 		lds r19,count.2052
+ 410 0194 2081      		ld r18,Z
+ 411               	.LVL49:
+ 412               	.LBB27:
+ 413               	.LBB28:
+  71:src/gpio.c    **** 
+ 414               		.loc 1 71 0 discriminator 3
+ 415 0196 822F      		mov r24,r18
+ 416 0198 8695      		lsr r24
+ 417 019a 8695      		lsr r24
+ 418 019c 8695      		lsr r24
+ 419 019e 8F5F      		subi r24,lo8(-(1))
+ 420               	.LVL50:
+ 421 01a0 90E0      		ldi r25,0
+ 422 01a2 0197      		sbiw r24,1
+ 423               	.LVL51:
+ 424 01a4 AC01      		movw r20,r24
+ 425 01a6 440F      		lsl r20
+ 426 01a8 551F      		rol r21
+ 427 01aa DA01      		movw r26,r20
+ 428 01ac A80F      		add r26,r24
+ 429 01ae B91F      		adc r27,r25
+ 430 01b0 9096      		adiw r26,32
+ 431 01b2 8C91      		ld r24,X
+ 432               	.LVL52:
+ 433               	.LBE28:
+ 434               	.LBE27:
+ 435               		.loc 1 113 0 discriminator 3
+ 436 01b4 DF01      		movw r26,r30
+ 437 01b6 A30F      		add r26,r19
+ 438 01b8 B11D      		adc r27,__zero_reg__
+ 439 01ba 90E0      		ldi r25,0
+ 440 01bc 2770      		andi r18,lo8(7)
+ 441 01be 00C0      		rjmp 2f
+ 442               		1:
+ 443 01c0 9595      		asr r25
+ 444 01c2 8795      		ror r24
+ 445               		2:
+ 446 01c4 2A95      		dec r18
+ 447 01c6 02F4      		brpl 1b
+ 448 01c8 8170      		andi r24,lo8(1)
+ 449 01ca 1296      		adiw r26,2
+ 450 01cc 8C93      		st X,r24
+ 451               	.LBB29:
+ 111:src/gpio.c    ****     {
+ 452               		.loc 1 111 0 discriminator 3
+ 453 01ce 0784      		ldd __tmp_reg__,Z+15
+ 454 01d0 F089      		ldd r31,Z+16
+ 455 01d2 E02D      		mov r30,__tmp_reg__
+ 456               	.LVL53:
+ 457 01d4 00C0      		rjmp .L39
+ 458               	.LVL54:
+ 459               	.L40:
+ 460               	.LBE29:
+ 114:src/gpio.c    ****     }
+ 115:src/gpio.c    **** 
+ 116:src/gpio.c    ****     if(++count == GPIO_DEBOUNCE_COUNT)
+ 461               		.loc 1 116 0
+ 462 01d6 8091 0000 		lds r24,count.2052
+ 463 01da 8F5F      		subi r24,lo8(-(1))
+ 464 01dc 8093 0000 		sts count.2052,r24
+ 465 01e0 8A30      		cpi r24,lo8(10)
+ 466 01e2 01F4      		brne .L35
+ 117:src/gpio.c    ****         count = 0;
+ 467               		.loc 1 117 0
+ 468 01e4 1092 0000 		sts count.2052,__zero_reg__
+ 469               	.L35:
+ 470 01e8 0895      		ret
+ 471               		.cfi_endproc
+ 472               	.LFE15:
+ 474               		.local	count.2052
+ 475               		.comm	count.2052,1,1
+ 476               	.global	gpio_inputs
+ 477               		.data
+ 480               	gpio_inputs:
+ 481 0000 0000      		.word	gpio_inputs
+ 482 0002 0000      		.word	gpio_inputs
+ 483               		.text
+ 484               	.Letext0:
+ 485               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 486               		.file 4 "/usr/lib/avr/include/stdlib.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 gpio.c
+     /tmp/ccah6gX3.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccah6gX3.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccah6gX3.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccah6gX3.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/ccah6gX3.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccah6gX3.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccah6gX3.s:13     .text:0000000000000000 gpio_register_pin
+     /tmp/ccah6gX3.s:480    .data:0000000000000000 gpio_inputs
+     /tmp/ccah6gX3.s:211    .text:00000000000000d0 gpio_write_pin
+     /tmp/ccah6gX3.s:289    .text:000000000000012a gpio_read_pin
+     /tmp/ccah6gX3.s:383    .text:000000000000017e gpio_debouncer
+                             .bss:0000000000000000 count.2052
+
+UNDEFINED SYMBOLS
+malloc
+__do_copy_data
+__do_clear_bss

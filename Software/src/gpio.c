@@ -106,7 +106,7 @@ uint8_t gpio_read_pin(uint8_t pin) {
  * 	Description: debouncer function, used for triggering inputs smoothly
  */
 void gpio_debouncer(void) {
-    static volatile count = 0;
+    static volatile uint8_t count = 0;
     struct gpio_input* input;
     list_for_each_entry(input, &gpio_inputs, list)
     {

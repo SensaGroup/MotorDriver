@@ -57,8 +57,8 @@ void set_rpm_stepper(unsigned int rpm, uint8_t num) {
 } // end of set_rpm_stepper()
 
 /*
- * Function: void move_stepper(unsigned int steps, unsigned char dir, uint8_t num)
- * Description: move the stepper for steps at a certain direction 
+ * Function:        void move_stepper(unsigned int steps, unsigned char dir, uint8_t num)
+ * Description:     move the stepper for steps at a certain direction 
  */
 void move_stepper(unsigned int steps, unsigned char dir, uint8_t num) {
     /*

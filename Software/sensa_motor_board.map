@@ -1,0 +1,901 @@
+Archive member included to satisfy reference by file (symbol)
+
+/usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+                              build/./src/hbridge.o (__divmodhi4)
+/usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+                              build/./src/Uart.o (__udivmodsi4)
+/usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+                              build/./src/stepper.o (__divmodsi4)
+/usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+                              /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o) (__negsi2)
+/usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o (exit)
+/usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+                              build/./src/system.o (__do_copy_data)
+/usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+                              build/./src/system.o (__do_clear_bss)
+/usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+                              build/./src/hbridge.o (__usmulhisi3)
+/usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+                              /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o) (__udivmodhi4)
+/usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+                              /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o) (__umulhisi3)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+                              build/./src/gpio.o (malloc)
+
+Allocating common symbols
+Common symbol       size              file
+
+current_A_1         0x2               build/./src/hbridge.o
+current_B_2         0x2               build/./src/hbridge.o
+__brkval            0x2               /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+current_A_2         0x2               build/./src/hbridge.o
+current_B_1         0x2               build/./src/hbridge.o
+__flp               0x2               /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x0000000000000000 0x0000000000020000 xr
+data             0x0000000000800100 0x000000000000ff00 rw !x
+eeprom           0x0000000000810000 0x0000000000010000 rw !x
+fuse             0x0000000000820000 0x0000000000000003 rw !x
+lock             0x0000000000830000 0x0000000000000400 rw !x
+signature        0x0000000000840000 0x0000000000000400 rw !x
+user_signatures  0x0000000000850000 0x0000000000000400 rw !x
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+LOAD build/./src/system.o
+LOAD build/./src/main.o
+LOAD build/./src/stepper.o
+LOAD build/./src/Uart.o
+LOAD build/./src/can.o
+LOAD build/./src/gpio.o
+LOAD build/./src/hbridge.o
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libm.a
+START GROUP
+LOAD /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libm.a
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libat90can128.a
+END GROUP
+                0x0000000000020000                __TEXT_REGION_LENGTH__ = DEFINED (__TEXT_REGION_LENGTH__)?__TEXT_REGION_LENGTH__:0x20000
+                0x000000000000ff00                __DATA_REGION_LENGTH__ = DEFINED (__DATA_REGION_LENGTH__)?__DATA_REGION_LENGTH__:0xff00
+                0x0000000000010000                __EEPROM_REGION_LENGTH__ = DEFINED (__EEPROM_REGION_LENGTH__)?__EEPROM_REGION_LENGTH__:0x10000
+                [0x0000000000000003]                __FUSE_REGION_LENGTH__ = DEFINED (__FUSE_REGION_LENGTH__)?__FUSE_REGION_LENGTH__:0x400
+                0x0000000000000400                __LOCK_REGION_LENGTH__ = DEFINED (__LOCK_REGION_LENGTH__)?__LOCK_REGION_LENGTH__:0x400
+                0x0000000000000400                __SIGNATURE_REGION_LENGTH__ = DEFINED (__SIGNATURE_REGION_LENGTH__)?__SIGNATURE_REGION_LENGTH__:0x400
+                0x0000000000000400                __USER_SIGNATURE_REGION_LENGTH__ = DEFINED (__USER_SIGNATURE_REGION_LENGTH__)?__USER_SIGNATURE_REGION_LENGTH__:0x400
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x0000000000000000     0x1064
+ *(.vectors)
+ .vectors       0x0000000000000000       0x94 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+                0x0000000000000000                __vectors
+                0x0000000000000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+                0x0000000000000094                . = ALIGN (0x2)
+                0x0000000000000094                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x0000000000000094        0x0 linker stubs
+ *(.trampolines*)
+                0x0000000000000094                __trampolines_end = .
+ *libprintf_flt.a:*(.progmem.data)
+ *libc.a:*(.progmem.data)
+ *(.progmem*)
+                0x0000000000000094                . = ALIGN (0x2)
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x0000000000000094                __ctors_start = .
+ *(.ctors)
+                0x0000000000000094                __ctors_end = .
+                0x0000000000000094                __dtors_start = .
+ *(.dtors)
+                0x0000000000000094                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x0000000000000094        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+                0x0000000000000094                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x0000000000000094        0xc /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x00000000000000a0       0x1a /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+                0x00000000000000a0                __do_copy_data
+ .init4         0x00000000000000ba       0x10 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+                0x00000000000000ba                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x00000000000000ca        0x8 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+ *(.init9)
+ *(.text)
+ .text          0x00000000000000d2        0x4 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+                0x00000000000000d2                __vector_22
+                0x00000000000000d2                __vector_28
+                0x00000000000000d2                __vector_1
+                0x00000000000000d2                __vector_32
+                0x00000000000000d2                __vector_34
+                0x00000000000000d2                __vector_24
+                0x00000000000000d2                __bad_interrupt
+                0x00000000000000d2                __vector_6
+                0x00000000000000d2                __vector_31
+                0x00000000000000d2                __vector_35
+                0x00000000000000d2                __vector_3
+                0x00000000000000d2                __vector_23
+                0x00000000000000d2                __vector_30
+                0x00000000000000d2                __vector_25
+                0x00000000000000d2                __vector_11
+                0x00000000000000d2                __vector_13
+                0x00000000000000d2                __vector_17
+                0x00000000000000d2                __vector_19
+                0x00000000000000d2                __vector_7
+                0x00000000000000d2                __vector_27
+                0x00000000000000d2                __vector_5
+                0x00000000000000d2                __vector_33
+                0x00000000000000d2                __vector_4
+                0x00000000000000d2                __vector_9
+                0x00000000000000d2                __vector_2
+                0x00000000000000d2                __vector_21
+                0x00000000000000d2                __vector_15
+                0x00000000000000d2                __vector_36
+                0x00000000000000d2                __vector_29
+                0x00000000000000d2                __vector_8
+                0x00000000000000d2                __vector_26
+                0x00000000000000d2                __vector_14
+                0x00000000000000d2                __vector_10
+                0x00000000000000d2                __vector_16
+                0x00000000000000d2                __vector_20
+ .text          0x00000000000000d6      0x180 build/./src/system.o
+                0x00000000000000d6                timer_register_callback
+                0x00000000000000e0                __vector_12
+                0x0000000000000160                delay
+                0x0000000000000178                system_init
+                0x0000000000000246                read_switch
+ .text          0x0000000000000256        0x0 build/./src/main.o
+ .text          0x0000000000000256      0x12e build/./src/stepper.o
+                0x0000000000000256                init_stepper
+                0x0000000000000296                enable_stepper
+                0x00000000000002ae                set_rpm_stepper
+                0x00000000000002c0                move_stepper
+ .text          0x0000000000000384       0xcc build/./src/Uart.o
+                0x0000000000000384                USART0_init
+                0x0000000000000418                USART0_transmit
+                0x0000000000000426                USART0_receive
+                0x0000000000000434                USART0_string
+                0x000000000000044c                debug_printf
+                0x000000000000044e                debug_printf_num
+ .text          0x0000000000000450      0x32c build/./src/can.o
+                0x0000000000000450                __vector_18
+                0x0000000000000548                CAN_Init
+                0x00000000000005c2                CAN_InitRxMob
+                0x0000000000000640                CAN_checkRX
+                0x000000000000064e                CAN_read
+                0x00000000000006ba                CAN_write
+ .text          0x000000000000077c      0x1ea build/./src/gpio.o
+                0x000000000000077c                gpio_register_pin
+                0x000000000000084c                gpio_write_pin
+                0x00000000000008a6                gpio_read_pin
+                0x00000000000008fa                gpio_debouncer
+ .text          0x0000000000000966      0x398 build/./src/hbridge.o
+                0x0000000000000966                hbridge_move
+                0x0000000000000a98                init_hbridge
+                0x0000000000000b20                hbridge_break
+                0x0000000000000b2e                hbridge_time
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+ .text          0x0000000000000cfe        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+                0x0000000000000cfe                . = ALIGN (0x2)
+ *(.text.*)
+ .text.startup  0x0000000000000cfe       0x22 build/./src/main.o
+                0x0000000000000cfe                main
+ .text.libgcc.mul
+                0x0000000000000d20        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+ .text.libgcc.div
+                0x0000000000000d20       0x28 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+                0x0000000000000d20                __divmodhi4
+                0x0000000000000d20                _div
+ .text.libgcc   0x0000000000000d48        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+ .text.libgcc.prologue
+                0x0000000000000d48        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+ .text.libgcc.builtins
+                0x0000000000000d48        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+ .text.libgcc.fmul
+                0x0000000000000d48        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+ .text.libgcc.fixed
+                0x0000000000000d48        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+ .text.libgcc.mul
+                0x0000000000000d48        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.div
+                0x0000000000000d48       0x44 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+                0x0000000000000d48                __udivmodsi4
+ .text.libgcc   0x0000000000000d8c        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.prologue
+                0x0000000000000d8c        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.builtins
+                0x0000000000000d8c        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.fmul
+                0x0000000000000d8c        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.fixed
+                0x0000000000000d8c        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.mul
+                0x0000000000000d8c        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+ .text.libgcc.div
+                0x0000000000000d8c       0x2e /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+                0x0000000000000d8c                __divmodsi4
+ .text.libgcc   0x0000000000000dba        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+ .text.libgcc.prologue
+                0x0000000000000dba        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+ .text.libgcc.builtins
+                0x0000000000000dba        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+ .text.libgcc.fmul
+                0x0000000000000dba        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+ .text.libgcc.fixed
+                0x0000000000000dba        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+ .text.libgcc.mul
+                0x0000000000000dba        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+ .text.libgcc.div
+                0x0000000000000dba       0x10 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+                0x0000000000000dba                __negsi2
+ .text.libgcc   0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+ .text.libgcc.prologue
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+ .text.libgcc.builtins
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+ .text.libgcc.fmul
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+ .text.libgcc.fixed
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+ .text.libgcc.mul
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ .text.libgcc.div
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ .text.libgcc   0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ .text.libgcc.prologue
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ .text.libgcc.builtins
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ .text.libgcc.fmul
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ .text.libgcc.fixed
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ .text.libgcc.mul
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+ .text.libgcc.div
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+ .text.libgcc.prologue
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+ .text.libgcc.builtins
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+ .text.libgcc.fmul
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+ .text.libgcc.fixed
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+ .text.libgcc.mul
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+ .text.libgcc.div
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+ .text.libgcc.prologue
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+ .text.libgcc.builtins
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+ .text.libgcc.fmul
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+ .text.libgcc.fixed
+                0x0000000000000dca        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+ .text.libgcc.mul
+                0x0000000000000dca        0xe /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+                0x0000000000000dca                __usmulhisi3
+                0x0000000000000dce                __usmulhisi3_tail
+ .text.libgcc.div
+                0x0000000000000dd8        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+ .text.libgcc   0x0000000000000dd8        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+ .text.libgcc.prologue
+                0x0000000000000dd8        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+ .text.libgcc.builtins
+                0x0000000000000dd8        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+ .text.libgcc.fmul
+                0x0000000000000dd8        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+ .text.libgcc.fixed
+                0x0000000000000dd8        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+ .text.libgcc.mul
+                0x0000000000000dd8        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+ .text.libgcc.div
+                0x0000000000000dd8       0x28 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+                0x0000000000000dd8                __udivmodhi4
+ .text.libgcc   0x0000000000000e00        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+ .text.libgcc.prologue
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+ .text.libgcc.builtins
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+ .text.libgcc.fmul
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+ .text.libgcc.fixed
+                0x0000000000000e00        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+ .text.libgcc.mul
+                0x0000000000000e00       0x1e /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+                0x0000000000000e00                __umulhisi3
+ .text.libgcc.div
+                0x0000000000000e1e        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+ .text.libgcc   0x0000000000000e1e        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+ .text.libgcc.prologue
+                0x0000000000000e1e        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+ .text.libgcc.builtins
+                0x0000000000000e1e        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+ .text.libgcc.fmul
+                0x0000000000000e1e        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+ .text.libgcc.fixed
+                0x0000000000000e1e        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+ .text.avr-libc
+                0x0000000000000e1e      0x242 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+                0x0000000000000e1e                malloc
+                0x0000000000000f4e                free
+                0x0000000000001060                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x0000000000001060        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+                0x0000000000001060                exit
+                0x0000000000001060                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x0000000000001060        0x4 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ *(.fini0)
+                0x0000000000001064                _etext = .
+
+.data           0x0000000000800100       0xd8 load address 0x0000000000001064
+                0x0000000000800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x0000000000800100        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+ .data          0x0000000000800100        0x8 build/./src/system.o
+                0x0000000000800100                switches_pin
+ .data          0x0000000000800108        0x0 build/./src/main.o
+ .data          0x0000000000800108        0x4 build/./src/stepper.o
+ .data          0x000000000080010c        0x0 build/./src/Uart.o
+ .data          0x000000000080010c        0x0 build/./src/can.o
+ .data          0x000000000080010c        0x4 build/./src/gpio.o
+                0x000000000080010c                gpio_inputs
+ .data          0x0000000000800110        0x0 build/./src/hbridge.o
+ .data          0x0000000000800110        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+ .data          0x0000000000800110        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+ .data          0x0000000000800110        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+ .data          0x0000000000800110        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+ .data          0x0000000000800110        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ .data          0x0000000000800110        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+ .data          0x0000000000800110        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+ .data          0x0000000000800110        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+ .data          0x0000000000800110        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+ .data          0x0000000000800110        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+ .data          0x0000000000800110        0x6 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+                0x0000000000800110                __malloc_heap_end
+                0x0000000000800112                __malloc_heap_start
+                0x0000000000800114                __malloc_margin
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ .rodata.str1.1
+                0x0000000000800116       0x90 build/./src/system.o
+ .rodata.str1.1
+                0x00000000008001a6       0x32 build/./src/hbridge.o
+                                         0x34 (size before relaxing)
+ *(.gnu.linkonce.d*)
+                0x00000000008001d8                . = ALIGN (0x2)
+                0x00000000008001d8                _edata = .
+                0x00000000008001d8                PROVIDE (__data_end, .)
+
+.bss            0x00000000008001d8      0x20a
+                0x00000000008001d8                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x00000000008001d8        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+ .bss           0x00000000008001d8        0x6 build/./src/system.o
+ .bss           0x00000000008001de        0x0 build/./src/main.o
+ .bss           0x00000000008001de        0x0 build/./src/stepper.o
+ .bss           0x00000000008001de        0x0 build/./src/Uart.o
+ .bss           0x00000000008001de      0x1f7 build/./src/can.o
+ .bss           0x00000000008003d5        0x1 build/./src/gpio.o
+ .bss           0x00000000008003d6        0x0 build/./src/hbridge.o
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+ .bss           0x00000000008003d6        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x00000000008003d6        0x8 build/./src/hbridge.o
+                0x00000000008003d6                current_A_1
+                0x00000000008003d8                current_B_2
+                0x00000000008003da                current_A_2
+                0x00000000008003dc                current_B_1
+ COMMON         0x00000000008003de        0x4 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+                0x00000000008003de                __brkval
+                0x00000000008003e0                __flp
+                0x00000000008003e2                PROVIDE (__bss_end, .)
+                0x0000000000001064                __data_load_start = LOADADDR (.data)
+                0x000000000000113c                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00000000008003e2        0x0
+                [!provide]                        PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                [!provide]                        PROVIDE (__noinit_end, .)
+                0x00000000008003e2                _end = .
+                0x00000000008003e2                PROVIDE (__heap_start, .)
+
+.eeprom         0x0000000000810000        0x0
+ *(.eeprom*)
+                0x0000000000810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.user_signatures
+ *(.user_signatures*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000       0x11
+ *(.comment)
+ .comment       0x0000000000000000       0x11 build/./src/system.o
+                                         0x12 (size before relaxing)
+ .comment       0x0000000000000011       0x12 build/./src/main.o
+ .comment       0x0000000000000011       0x12 build/./src/stepper.o
+ .comment       0x0000000000000011       0x12 build/./src/Uart.o
+ .comment       0x0000000000000011       0x12 build/./src/can.o
+ .comment       0x0000000000000011       0x12 build/./src/gpio.o
+ .comment       0x0000000000000011       0x12 build/./src/hbridge.o
+ .comment       0x0000000000000011       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+
+.note.gnu.avr.deviceinfo
+                0x0000000000000000       0x40
+ .note.gnu.avr.deviceinfo
+                0x0000000000000000       0x40 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+
+.note.gnu.build-id
+ *(.note.gnu.build-id)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x0000000000000000       0xe0
+ *(.debug_aranges)
+ .debug_aranges
+                0x0000000000000000       0x20 build/./src/system.o
+ .debug_aranges
+                0x0000000000000020       0x20 build/./src/main.o
+ .debug_aranges
+                0x0000000000000040       0x20 build/./src/stepper.o
+ .debug_aranges
+                0x0000000000000060       0x20 build/./src/Uart.o
+ .debug_aranges
+                0x0000000000000080       0x20 build/./src/can.o
+ .debug_aranges
+                0x00000000000000a0       0x20 build/./src/gpio.o
+ .debug_aranges
+                0x00000000000000c0       0x20 build/./src/hbridge.o
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info     0x0000000000000000     0x208b
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x0000000000000000      0xa2d /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+ .debug_info    0x0000000000000a2d      0x4cd build/./src/system.o
+ .debug_info    0x0000000000000efa      0x108 build/./src/main.o
+ .debug_info    0x0000000000001002      0x2e0 build/./src/stepper.o
+ .debug_info    0x00000000000012e2      0x181 build/./src/Uart.o
+ .debug_info    0x0000000000001463      0x2b0 build/./src/can.o
+ .debug_info    0x0000000000001713      0x47b build/./src/gpio.o
+ .debug_info    0x0000000000001b8e      0x4fd build/./src/hbridge.o
+
+.debug_abbrev   0x0000000000000000     0x133b
+ *(.debug_abbrev)
+ .debug_abbrev  0x0000000000000000      0x9a0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+ .debug_abbrev  0x00000000000009a0      0x221 build/./src/system.o
+ .debug_abbrev  0x0000000000000bc1       0x8c build/./src/main.o
+ .debug_abbrev  0x0000000000000c4d      0x14d build/./src/stepper.o
+ .debug_abbrev  0x0000000000000d9a       0xfc build/./src/Uart.o
+ .debug_abbrev  0x0000000000000e96      0x160 build/./src/can.o
+ .debug_abbrev  0x0000000000000ff6      0x21d build/./src/gpio.o
+ .debug_abbrev  0x0000000000001213      0x128 build/./src/hbridge.o
+
+.debug_line     0x0000000000000000      0xc34
+ *(.debug_line .debug_line.* .debug_line_end)
+ .debug_line    0x0000000000000000       0x1a /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+ .debug_line    0x000000000000001a      0x1b2 build/./src/system.o
+ .debug_line    0x00000000000001cc       0x66 build/./src/main.o
+ .debug_line    0x0000000000000232      0x136 build/./src/stepper.o
+ .debug_line    0x0000000000000368      0x115 build/./src/Uart.o
+ .debug_line    0x000000000000047d      0x2ef build/./src/can.o
+ .debug_line    0x000000000000076c      0x1fb build/./src/gpio.o
+ .debug_line    0x0000000000000967      0x2cd build/./src/hbridge.o
+
+.debug_frame    0x0000000000000000      0x3e4
+ *(.debug_frame)
+ .debug_frame   0x0000000000000000       0xc4 build/./src/system.o
+ .debug_frame   0x00000000000000c4       0x24 build/./src/main.o
+ .debug_frame   0x00000000000000e8       0x98 build/./src/stepper.o
+ .debug_frame   0x0000000000000180       0x80 build/./src/Uart.o
+ .debug_frame   0x0000000000000200       0xd0 build/./src/can.o
+ .debug_frame   0x00000000000002d0       0x6c build/./src/gpio.o
+ .debug_frame   0x000000000000033c       0xa8 build/./src/hbridge.o
+
+.debug_str      0x0000000000000000      0x8c1
+ *(.debug_str)
+ .debug_str     0x0000000000000000      0x39f /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+ .debug_str     0x000000000000039f      0x264 build/./src/system.o
+                                        0x2b4 (size before relaxing)
+ .debug_str     0x0000000000000603       0x10 build/./src/main.o
+                                        0x178 (size before relaxing)
+ .debug_str     0x0000000000000613       0x5b build/./src/stepper.o
+                                        0x1d8 (size before relaxing)
+ .debug_str     0x000000000000066e       0x99 build/./src/Uart.o
+                                        0x1c2 (size before relaxing)
+ .debug_str     0x0000000000000707       0x81 build/./src/can.o
+                                        0x1e9 (size before relaxing)
+ .debug_str     0x0000000000000788       0xbb build/./src/gpio.o
+                                        0x256 (size before relaxing)
+ .debug_str     0x0000000000000843       0x7e build/./src/hbridge.o
+                                        0x221 (size before relaxing)
+
+.debug_loc      0x0000000000000000     0x1188
+ *(.debug_loc)
+ .debug_loc     0x0000000000000000      0x1ed build/./src/system.o
+ .debug_loc     0x00000000000001ed      0x1c9 build/./src/stepper.o
+ .debug_loc     0x00000000000003b6       0xd7 build/./src/Uart.o
+ .debug_loc     0x000000000000048d      0x2f8 build/./src/can.o
+ .debug_loc     0x0000000000000785      0x507 build/./src/gpio.o
+ .debug_loc     0x0000000000000c8c      0x4fc build/./src/hbridge.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+
+.debug_ranges   0x0000000000000000       0x58
+ *(.debug_ranges)
+ .debug_ranges  0x0000000000000000       0x10 build/./src/main.o
+ .debug_ranges  0x0000000000000010       0x48 build/./src/gpio.o
+
+.debug_macro
+ *(.debug_macro)
+OUTPUT(sensa_motor_board.elf elf32-avr)
+LOAD linker stubs
+
+Cross Reference Table
+
+Symbol                                            File
+CAN_Init                                          build/./src/can.o
+                                                  build/./src/system.o
+CAN_InitRxMob                                     build/./src/can.o
+                                                  build/./src/system.o
+CAN_checkRX                                       build/./src/can.o
+CAN_read                                          build/./src/can.o
+CAN_write                                         build/./src/can.o
+USART0_init                                       build/./src/Uart.o
+                                                  build/./src/system.o
+USART0_receive                                    build/./src/Uart.o
+USART0_string                                     build/./src/Uart.o
+USART0_transmit                                   build/./src/Uart.o
+__FUSE_REGION_LENGTH__                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__bad_interrupt                                   /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__brkval                                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+__bss_end                                         /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+__bss_start                                       /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+__data_end                                        /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+__data_load_start                                 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+__data_start                                      /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+__divmodhi4                                       /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+                                                  build/./src/hbridge.o
+__divmodsi4                                       /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+                                                  build/./src/hbridge.o
+                                                  build/./src/stepper.o
+__do_clear_bss                                    /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_clear_bss.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+                                                  build/./src/hbridge.o
+                                                  build/./src/gpio.o
+                                                  build/./src/can.o
+                                                  build/./src/system.o
+__do_copy_data                                    /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_copy_data.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+                                                  build/./src/hbridge.o
+                                                  build/./src/gpio.o
+                                                  build/./src/stepper.o
+                                                  build/./src/system.o
+__flp                                             /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+__heap_end                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+__heap_start                                      /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+__init                                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__malloc_heap_end                                 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+__malloc_heap_start                               /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+__malloc_margin                                   /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+__negsi2                                          /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_negsi2.o)
+                                                  /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+__stack                                           /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__udivmodhi4                                      /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodhi4.o)
+                                                  /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+__udivmodsi4                                      /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_udivmodsi4.o)
+                                                  /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodsi4.o)
+                                                  build/./src/Uart.o
+__umulhisi3                                       /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_umulhisi3.o)
+                                                  /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+__usmulhisi3                                      /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+                                                  build/./src/hbridge.o
+__usmulhisi3_tail                                 /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_usmulhisi3.o)
+__vector_1                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_10                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_11                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_12                                       build/./src/system.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_13                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_14                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_15                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_16                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_17                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_18                                       build/./src/can.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_19                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_2                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_20                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_21                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_22                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_23                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_24                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_25                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_26                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_27                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_28                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_29                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_3                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_30                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_31                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_32                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_33                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_34                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_35                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_36                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_4                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_5                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_6                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_7                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_8                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_9                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vector_default                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+__vectors                                         /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+_div                                              /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_divmodhi4.o)
+_exit                                             /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+current_A_1                                       build/./src/hbridge.o
+current_A_2                                       build/./src/hbridge.o
+current_B_1                                       build/./src/hbridge.o
+current_B_2                                       build/./src/hbridge.o
+debug_printf                                      build/./src/Uart.o
+                                                  build/./src/hbridge.o
+                                                  build/./src/system.o
+debug_printf_num                                  build/./src/Uart.o
+                                                  build/./src/hbridge.o
+delay                                             build/./src/system.o
+                                                  build/./src/hbridge.o
+                                                  build/./src/stepper.o
+                                                  build/./src/main.o
+enable_stepper                                    build/./src/stepper.o
+exit                                              /usr/lib/gcc/avr/5.4.0/avr51/libgcc.a(_exit.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+free                                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+gpio_debouncer                                    build/./src/gpio.o
+                                                  build/./src/system.o
+gpio_inputs                                       build/./src/gpio.o
+gpio_read_pin                                     build/./src/gpio.o
+                                                  build/./src/system.o
+gpio_register_pin                                 build/./src/gpio.o
+                                                  build/./src/hbridge.o
+                                                  build/./src/stepper.o
+                                                  build/./src/system.o
+gpio_write_pin                                    build/./src/gpio.o
+                                                  build/./src/hbridge.o
+                                                  build/./src/stepper.o
+                                                  build/./src/main.o
+                                                  build/./src/system.o
+hbridge_break                                     build/./src/hbridge.o
+hbridge_move                                      build/./src/hbridge.o
+hbridge_time                                      build/./src/hbridge.o
+init_hbridge                                      build/./src/hbridge.o
+                                                  build/./src/system.o
+init_stepper                                      build/./src/stepper.o
+                                                  build/./src/system.o
+main                                              build/./src/main.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/crtat90can128.o
+malloc                                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr51/libc.a(malloc.o)
+                                                  build/./src/gpio.o
+move_stepper                                      build/./src/stepper.o
+read_switch                                       build/./src/system.o
+                                                  build/./src/main.o
+set_rpm_stepper                                   build/./src/stepper.o
+switches_pin                                      build/./src/system.o
+system_init                                       build/./src/system.o
+                                                  build/./src/main.o
+timer_register_callback                           build/./src/system.o

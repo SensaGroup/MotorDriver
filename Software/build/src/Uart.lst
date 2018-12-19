@@ -1,0 +1,333 @@
+   1               		.file	"Uart.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               	.global	USART0_init
+  13               	USART0_init:
+  14               	.LFB7:
+  15               		.file 1 "src/Uart.c"
+   1:src/Uart.c    **** #include <avr/io.h>
+   2:src/Uart.c    **** #include <avr/interrupt.h>
+   3:src/Uart.c    **** #include <stdint.h>
+   4:src/Uart.c    **** #include <util/delay.h>
+   5:src/Uart.c    **** 
+   6:src/Uart.c    **** #include "Uart.h"
+   7:src/Uart.c    **** 
+   8:src/Uart.c    **** /*
+   9:src/Uart.c    ****  *	Function: 		void USART0_init(uint32_t baud)
+  10:src/Uart.c    ****  *  Description: 	init USART0 with a specific baudrate
+  11:src/Uart.c    ****  */
+  12:src/Uart.c    **** void USART0_init(uint32_t baud)
+  13:src/Uart.c    **** {
+  16               		.loc 1 13 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  14:src/Uart.c    **** 	uint32_t temp_baud = 0;
+  15:src/Uart.c    **** 
+  16:src/Uart.c    **** 	temp_baud = (F_CPU / (8 * baud)) - 1;
+  23               		.loc 1 16 0
+  24 0000 9B01      		movw r18,r22
+  25 0002 AC01      		movw r20,r24
+  26 0004 83E0      		ldi r24,3
+  27               		1:
+  28 0006 220F      		lsl r18
+  29 0008 331F      		rol r19
+  30 000a 441F      		rol r20
+  31 000c 551F      		rol r21
+  32 000e 8A95      		dec r24
+  33 0010 01F4      		brne 1b
+  34 0012 60E8      		ldi r22,lo8(-128)
+  35 0014 76E9      		ldi r23,lo8(-106)
+  36 0016 88E9      		ldi r24,lo8(-104)
+  37 0018 90E0      		ldi r25,0
+  38               	.LVL1:
+  39 001a 0E94 0000 		call __udivmodsi4
+  40 001e BA01      		movw r22,r20
+  41 0020 A901      		movw r20,r18
+  42 0022 4150      		subi r20,1
+  43 0024 5109      		sbc r21,__zero_reg__
+  44 0026 6109      		sbc r22,__zero_reg__
+  45 0028 7109      		sbc r23,__zero_reg__
+  46               	.LVL2:
+  17:src/Uart.c    **** 
+  18:src/Uart.c    **** 	//Set baud rate
+  19:src/Uart.c    **** 	UBRR0H = (unsigned char) (temp_baud >> 8);
+  47               		.loc 1 19 0
+  48 002a BB27      		clr r27
+  49 002c A72F      		mov r26,r23
+  50 002e 962F      		mov r25,r22
+  51 0030 852F      		mov r24,r21
+  52 0032 8093 C500 		sts 197,r24
+  20:src/Uart.c    **** 	UBRR0L = (unsigned char) temp_baud;
+  53               		.loc 1 20 0
+  54 0036 4093 C400 		sts 196,r20
+  21:src/Uart.c    **** 
+  22:src/Uart.c    **** 	UCSR0A |= (1 << U2X0);
+  55               		.loc 1 22 0
+  56 003a E0EC      		ldi r30,lo8(-64)
+  57 003c F0E0      		ldi r31,0
+  58 003e 8081      		ld r24,Z
+  59 0040 8260      		ori r24,lo8(2)
+  60 0042 8083      		st Z,r24
+  23:src/Uart.c    **** 
+  24:src/Uart.c    **** 	UCSR0B |= (1 << RXEN0);							// Disable RX
+  61               		.loc 1 24 0
+  62 0044 E1EC      		ldi r30,lo8(-63)
+  63 0046 F0E0      		ldi r31,0
+  64 0048 8081      		ld r24,Z
+  65 004a 8061      		ori r24,lo8(16)
+  66 004c 8083      		st Z,r24
+  25:src/Uart.c    **** 
+  26:src/Uart.c    **** 	DDRE |= (1 << PE1);								// Set TX as output
+  67               		.loc 1 26 0
+  68 004e 699A      		sbi 0xd,1
+  27:src/Uart.c    **** 	DDRE &= ~(1 << PE0);							// Set RX as input
+  69               		.loc 1 27 0
+  70 0050 6898      		cbi 0xd,0
+  28:src/Uart.c    **** 
+  29:src/Uart.c    **** 	UCSR0B |= (1 << TXEN0);							//Enable TX
+  71               		.loc 1 29 0
+  72 0052 8081      		ld r24,Z
+  73 0054 8860      		ori r24,lo8(8)
+  74 0056 8083      		st Z,r24
+  30:src/Uart.c    **** 	UCSR0B &= ~(1 << UCSZ02);						//Data size
+  75               		.loc 1 30 0
+  76 0058 8081      		ld r24,Z
+  77 005a 8B7F      		andi r24,lo8(-5)
+  78 005c 8083      		st Z,r24
+  31:src/Uart.c    **** 
+  32:src/Uart.c    **** 	// async, no parity, 1 stop bit, 8 bit data size
+  33:src/Uart.c    **** 	UCSR0C &= ~(1 << 7);
+  79               		.loc 1 33 0
+  80 005e E2EC      		ldi r30,lo8(-62)
+  81 0060 F0E0      		ldi r31,0
+  82 0062 8081      		ld r24,Z
+  83 0064 8F77      		andi r24,lo8(127)
+  84 0066 8083      		st Z,r24
+  34:src/Uart.c    **** 	UCSR0C &= ~(1 << UMSEL0);
+  85               		.loc 1 34 0
+  86 0068 8081      		ld r24,Z
+  87 006a 8F7B      		andi r24,lo8(-65)
+  88 006c 8083      		st Z,r24
+  35:src/Uart.c    **** 	UCSR0C &= ~(1 << UPM01) ;
+  89               		.loc 1 35 0
+  90 006e 8081      		ld r24,Z
+  91 0070 8F7D      		andi r24,lo8(-33)
+  92 0072 8083      		st Z,r24
+  36:src/Uart.c    **** 	UCSR0C &= ~(1 << UPM00);
+  93               		.loc 1 36 0
+  94 0074 8081      		ld r24,Z
+  95 0076 8F7E      		andi r24,lo8(-17)
+  96 0078 8083      		st Z,r24
+  37:src/Uart.c    **** 	UCSR0C &= ~(1 << USBS0);
+  97               		.loc 1 37 0
+  98 007a 8081      		ld r24,Z
+  99 007c 877F      		andi r24,lo8(-9)
+ 100 007e 8083      		st Z,r24
+  38:src/Uart.c    **** 	UCSR0C &= ~(1 << USBS0);
+ 101               		.loc 1 38 0
+ 102 0080 8081      		ld r24,Z
+ 103 0082 877F      		andi r24,lo8(-9)
+ 104 0084 8083      		st Z,r24
+  39:src/Uart.c    **** 	UCSR0C |= (1 << UCSZ01);
+ 105               		.loc 1 39 0
+ 106 0086 8081      		ld r24,Z
+ 107 0088 8460      		ori r24,lo8(4)
+ 108 008a 8083      		st Z,r24
+  40:src/Uart.c    **** 	UCSR0C |= (1 << UCSZ00);
+ 109               		.loc 1 40 0
+ 110 008c 8081      		ld r24,Z
+ 111 008e 8260      		ori r24,lo8(2)
+ 112 0090 8083      		st Z,r24
+ 113 0092 0895      		ret
+ 114               		.cfi_endproc
+ 115               	.LFE7:
+ 117               	.global	USART0_transmit
+ 119               	USART0_transmit:
+ 120               	.LFB8:
+  41:src/Uart.c    **** 
+  42:src/Uart.c    **** } // end of USART0_init()
+  43:src/Uart.c    **** 
+  44:src/Uart.c    **** /*
+  45:src/Uart.c    ****  *	Function: 		void USART0_transmit(unsigned char data)
+  46:src/Uart.c    ****  *  Description: 	transmit unsigned char through USART0
+  47:src/Uart.c    ****  */
+  48:src/Uart.c    **** void USART0_transmit(unsigned char data)
+  49:src/Uart.c    **** {
+ 121               		.loc 1 49 0
+ 122               		.cfi_startproc
+ 123               	/* prologue: function */
+ 124               	/* frame size = 0 */
+ 125               	/* stack size = 0 */
+ 126               	.L__stack_usage = 0
+ 127               	.LVL3:
+ 128               	.L3:
+  50:src/Uart.c    **** 	while ( ! ( UCSR0A & (1<<UDRE0))); 				// Wait for empty transmit buffer
+ 129               		.loc 1 50 0 discriminator 1
+ 130 0094 9091 C000 		lds r25,192
+ 131 0098 95FF      		sbrs r25,5
+ 132 009a 00C0      		rjmp .L3
+  51:src/Uart.c    **** 
+  52:src/Uart.c    **** 	UDR0 = data; 									// Put data into buffer, sends the data
+ 133               		.loc 1 52 0
+ 134 009c 8093 C600 		sts 198,r24
+ 135 00a0 0895      		ret
+ 136               		.cfi_endproc
+ 137               	.LFE8:
+ 139               	.global	USART0_receive
+ 141               	USART0_receive:
+ 142               	.LFB9:
+  53:src/Uart.c    **** 
+  54:src/Uart.c    **** } // end of USART0_transmit()
+  55:src/Uart.c    **** 
+  56:src/Uart.c    **** /*
+  57:src/Uart.c    ****  *	Function: 		unsigned char USART0_receive(void)
+  58:src/Uart.c    ****  *  Description: 	receive data through USART0
+  59:src/Uart.c    ****  */
+  60:src/Uart.c    **** unsigned char USART0_receive(void)
+  61:src/Uart.c    **** {
+ 143               		.loc 1 61 0
+ 144               		.cfi_startproc
+ 145               	/* prologue: function */
+ 146               	/* frame size = 0 */
+ 147               	/* stack size = 0 */
+ 148               	.L__stack_usage = 0
+ 149               	.L8:
+  62:src/Uart.c    **** 	while ( ! (UCSR0A & (1<<RXC0)));				// Wait for data to be received
+ 150               		.loc 1 62 0 discriminator 1
+ 151 00a2 8091 C000 		lds r24,192
+ 152 00a6 87FF      		sbrs r24,7
+ 153 00a8 00C0      		rjmp .L8
+  63:src/Uart.c    **** 
+  64:src/Uart.c    **** 	return UDR0;									// return it
+ 154               		.loc 1 64 0
+ 155 00aa 8091 C600 		lds r24,198
+  65:src/Uart.c    **** } // end of USART0_receive()
+ 156               		.loc 1 65 0
+ 157 00ae 0895      		ret
+ 158               		.cfi_endproc
+ 159               	.LFE9:
+ 161               	.global	USART0_string
+ 163               	USART0_string:
+ 164               	.LFB10:
+  66:src/Uart.c    **** 
+  67:src/Uart.c    **** /*
+  68:src/Uart.c    ****  *	Function: 		void USART0_string(char *s)
+  69:src/Uart.c    ****  *  Description: 	transmit a string through USART0
+  70:src/Uart.c    ****  */
+  71:src/Uart.c    **** void USART0_string(char *s)
+  72:src/Uart.c    **** {
+ 165               		.loc 1 72 0
+ 166               		.cfi_startproc
+ 167               	.LVL4:
+ 168 00b0 CF93      		push r28
+ 169               	.LCFI0:
+ 170               		.cfi_def_cfa_offset 3
+ 171               		.cfi_offset 28, -2
+ 172 00b2 DF93      		push r29
+ 173               	.LCFI1:
+ 174               		.cfi_def_cfa_offset 4
+ 175               		.cfi_offset 29, -3
+ 176               	/* prologue: function */
+ 177               	/* frame size = 0 */
+ 178               	/* stack size = 2 */
+ 179               	.L__stack_usage = 2
+ 180 00b4 EC01      		movw r28,r24
+ 181               	.LVL5:
+ 182               	.L11:
+  73:src/Uart.c    ****    	while (*s != 0x00)
+ 183               		.loc 1 73 0
+ 184 00b6 8991      		ld r24,Y+
+ 185               	.LVL6:
+ 186 00b8 8823      		tst r24
+ 187 00ba 01F0      		breq .L13
+  74:src/Uart.c    ****    	{
+  75:src/Uart.c    **** 		USART0_transmit(*s);
+ 188               		.loc 1 75 0
+ 189 00bc 0E94 0000 		call USART0_transmit
+ 190               	.LVL7:
+ 191 00c0 00C0      		rjmp .L11
+ 192               	.LVL8:
+ 193               	.L13:
+ 194               	/* epilogue start */
+  76:src/Uart.c    ****       	s++;
+  77:src/Uart.c    ****    	}
+  78:src/Uart.c    **** } // end of USART0_string()
+ 195               		.loc 1 78 0
+ 196 00c2 DF91      		pop r29
+ 197 00c4 CF91      		pop r28
+ 198               	.LVL9:
+ 199 00c6 0895      		ret
+ 200               		.cfi_endproc
+ 201               	.LFE10:
+ 203               	.global	debug_printf
+ 205               	debug_printf:
+ 206               	.LFB11:
+  79:src/Uart.c    **** 
+  80:src/Uart.c    **** /*
+  81:src/Uart.c    ****  * 	Function: 		void debug_printf(char *s)
+  82:src/Uart.c    ****  *  Description: 	print if DEBUG is defined
+  83:src/Uart.c    ****  */
+  84:src/Uart.c    **** void debug_printf(char *s) {
+ 207               		.loc 1 84 0
+ 208               		.cfi_startproc
+ 209               	.LVL10:
+ 210               	/* prologue: function */
+ 211               	/* frame size = 0 */
+ 212               	/* stack size = 0 */
+ 213               	.L__stack_usage = 0
+ 214 00c8 0895      		ret
+ 215               		.cfi_endproc
+ 216               	.LFE11:
+ 218               	.global	debug_printf_num
+ 220               	debug_printf_num:
+ 221               	.LFB12:
+  85:src/Uart.c    **** 	#ifdef DEBUG
+  86:src/Uart.c    **** 		USART0_string(*s);
+  87:src/Uart.c    **** 	#endif
+  88:src/Uart.c    **** } // end of debug_printf()
+  89:src/Uart.c    **** 
+  90:src/Uart.c    **** /*
+  91:src/Uart.c    ****  * 	Function: 		void debug_printf_num(int num)
+  92:src/Uart.c    ****  *  Description: 	print if DEBUG is defined
+  93:src/Uart.c    ****  */
+  94:src/Uart.c    **** void debug_printf_num(int num) {
+ 222               		.loc 1 94 0
+ 223               		.cfi_startproc
+ 224               	.LVL11:
+ 225               	/* prologue: function */
+ 226               	/* frame size = 0 */
+ 227               	/* stack size = 0 */
+ 228               	.L__stack_usage = 0
+ 229 00ca 0895      		ret
+ 230               		.cfi_endproc
+ 231               	.LFE12:
+ 233               	.Letext0:
+ 234               		.file 2 "/usr/lib/avr/include/stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 Uart.c
+     /tmp/cc1YyKFo.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc1YyKFo.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc1YyKFo.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc1YyKFo.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/cc1YyKFo.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc1YyKFo.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc1YyKFo.s:13     .text:0000000000000000 USART0_init
+     /tmp/cc1YyKFo.s:119    .text:0000000000000094 USART0_transmit
+     /tmp/cc1YyKFo.s:141    .text:00000000000000a2 USART0_receive
+     /tmp/cc1YyKFo.s:163    .text:00000000000000b0 USART0_string
+     /tmp/cc1YyKFo.s:205    .text:00000000000000c8 debug_printf
+     /tmp/cc1YyKFo.s:220    .text:00000000000000ca debug_printf_num
+
+UNDEFINED SYMBOLS
+__udivmodsi4

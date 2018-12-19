@@ -1,0 +1,77 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.text.startup,"ax",@progbits
+  12               	.global	main
+  14               	main:
+  15               	.LFB22:
+  16               		.file 1 "src/main.c"
+   1:src/main.c    **** #include <avr/io.h>
+   2:src/main.c    **** #include <util/delay.h>
+   3:src/main.c    **** #include <avr/interrupt.h>
+   4:src/main.c    **** #include <string.h>
+   5:src/main.c    **** #include "system.h"
+   6:src/main.c    **** 
+   7:src/main.c    **** int main(void) {
+  17               		.loc 1 7 0
+  18               		.cfi_startproc
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+   8:src/main.c    **** 
+   9:src/main.c    **** 	system_init();
+  23               		.loc 1 9 0
+  24 0000 0E94 0000 		call system_init
+  25               	.LVL0:
+  26               	.L3:
+  10:src/main.c    **** 	 
+  11:src/main.c    **** 	while(1) {
+  12:src/main.c    **** 		gpio_write_pin(PIN_LED1, read_switch(1));
+  27               		.loc 1 12 0 discriminator 1
+  28 0004 81E0      		ldi r24,lo8(1)
+  29 0006 0E94 0000 		call read_switch
+  30               	.LVL1:
+  31 000a 61E0      		ldi r22,lo8(1)
+  32 000c 8111      		cpse r24,__zero_reg__
+  33 000e 00C0      		rjmp .L2
+  34 0010 60E0      		ldi r22,0
+  35               	.L2:
+  36 0012 80E3      		ldi r24,lo8(48)
+  37 0014 0E94 0000 		call gpio_write_pin
+  38               	.LVL2:
+  13:src/main.c    **** 		delay(10);
+  39               		.loc 1 13 0 discriminator 1
+  40 0018 8AE0      		ldi r24,lo8(10)
+  41 001a 90E0      		ldi r25,0
+  42 001c 0E94 0000 		call delay
+  43               	.LVL3:
+  44 0020 00C0      		rjmp .L3
+  45               		.cfi_endproc
+  46               	.LFE22:
+  48               		.text
+  49               	.Letext0:
+  50               		.file 2 "src/system.h"
+  51               		.file 3 "src/gpio.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccGPGgFp.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccGPGgFp.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccGPGgFp.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccGPGgFp.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/ccGPGgFp.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccGPGgFp.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccGPGgFp.s:14     .text.startup:0000000000000000 main
+
+UNDEFINED SYMBOLS
+system_init
+read_switch
+gpio_write_pin
+delay

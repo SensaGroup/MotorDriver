@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define GPIO_DEBOUNCE_COUNT         2
+#define GPIO_DEBOUNCE_COUNT         10
 #define GPIO_DIRECTION_INPUT        0
 #define GPIO_DIRECTION_OUTPUT       1
 

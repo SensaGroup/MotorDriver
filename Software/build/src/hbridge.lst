@@ -1,0 +1,884 @@
+   1               		.file	"hbridge.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.rodata.str1.1,"aMS",@progbits,1
+  12               	.LC0:
+  13 0000 494E 464F 		.string	"INFO! hbridge_move - [A_value, B_value, num] - "
+  13      2120 6862 
+  13      7269 6467 
+  13      655F 6D6F 
+  13      7665 202D 
+  14               	.LC1:
+  15 0030 2C00      		.string	","
+  16               	.LC2:
+  17 0032 0A00      		.string	"\n"
+  18               		.text
+  19               	.global	hbridge_move
+  21               	hbridge_move:
+  22               	.LFB23:
+  23               		.file 1 "src/hbridge.c"
+   1:src/hbridge.c **** #include "hbridge.h"
+   2:src/hbridge.c **** 
+   3:src/hbridge.c **** int current_A_1, current_B_1, current_A_2, current_B_2;
+   4:src/hbridge.c **** 
+   5:src/hbridge.c **** /*
+   6:src/hbridge.c ****  *  Function: unsigned int init_hbridge(void)
+   7:src/hbridge.c ****  *  Description: init the hbridge
+   8:src/hbridge.c ****  */
+   9:src/hbridge.c **** unsigned char init_hbridge(void) {
+  10:src/hbridge.c **** 
+  11:src/hbridge.c ****     // set everything to output
+  12:src/hbridge.c ****     gpio_register_pin(PIN_MOTOR1_A, GPIO_DIRECTION_OUTPUT, false);
+  13:src/hbridge.c ****     gpio_register_pin(PIN_MOTOR1_B, GPIO_DIRECTION_OUTPUT, false);
+  14:src/hbridge.c ****     gpio_register_pin(PIN_MOTOR2_A, GPIO_DIRECTION_OUTPUT, false);
+  15:src/hbridge.c ****     gpio_register_pin(PIN_MOTOR2_B, GPIO_DIRECTION_OUTPUT, false);			
+  16:src/hbridge.c **** 
+  17:src/hbridge.c ****     ICR3 = 5000;
+  18:src/hbridge.c **** 
+  19:src/hbridge.c **** 	TCNT3 = 0;
+  20:src/hbridge.c **** 	TCNT0 = 0;
+  21:src/hbridge.c **** 
+  22:src/hbridge.c **** 	OCR3A = 0;
+  23:src/hbridge.c **** 	OCR3B = 0;
+  24:src/hbridge.c **** 	OCR3C = 0;
+  25:src/hbridge.c **** 
+  26:src/hbridge.c **** 	TCCR3A = (1 << COM3A1)  | (1 << COM3B1) | (1 << COM3C1) | (1 << WGM31);
+  27:src/hbridge.c **** 	TCCR3B = (1<< CS31) | (1 << WGM32) | (1 << WGM33); 		// PRESKALER = 8
+  28:src/hbridge.c **** 
+  29:src/hbridge.c ****     TCCR0A |= (1<<WGM00) | (1<<WGM01) | (1<<COM0A1) | (1<<CS00);
+  30:src/hbridge.c **** 
+  31:src/hbridge.c ****     hbridge_move(0,0,1);
+  32:src/hbridge.c ****     hbridge_move(0,0,2);
+  33:src/hbridge.c **** 
+  34:src/hbridge.c ****     return 1;
+  35:src/hbridge.c **** } // end of init_hbridge()
+  36:src/hbridge.c **** 
+  37:src/hbridge.c **** /*
+  38:src/hbridge.c ****  * Function: void hbridge_move(int A_value, int B_value, uint8_t num);
+  39:src/hbridge.c ****  * Description: move the hbridge by A_value and B_value. The ID is num
+  40:src/hbridge.c ****  */
+  41:src/hbridge.c **** void hbridge_move(int A_value, int B_value, uint8_t num) {
+  24               		.loc 1 41 0
+  25               		.cfi_startproc
+  26               	.LVL0:
+  27 0000 CF92      		push r12
+  28               	.LCFI0:
+  29               		.cfi_def_cfa_offset 3
+  30               		.cfi_offset 12, -2
+  31 0002 DF92      		push r13
+  32               	.LCFI1:
+  33               		.cfi_def_cfa_offset 4
+  34               		.cfi_offset 13, -3
+  35 0004 EF92      		push r14
+  36               	.LCFI2:
+  37               		.cfi_def_cfa_offset 5
+  38               		.cfi_offset 14, -4
+  39 0006 FF92      		push r15
+  40               	.LCFI3:
+  41               		.cfi_def_cfa_offset 6
+  42               		.cfi_offset 15, -5
+  43 0008 0F93      		push r16
+  44               	.LCFI4:
+  45               		.cfi_def_cfa_offset 7
+  46               		.cfi_offset 16, -6
+  47 000a 1F93      		push r17
+  48               	.LCFI5:
+  49               		.cfi_def_cfa_offset 8
+  50               		.cfi_offset 17, -7
+  51 000c CF93      		push r28
+  52               	.LCFI6:
+  53               		.cfi_def_cfa_offset 9
+  54               		.cfi_offset 28, -8
+  55 000e DF93      		push r29
+  56               	.LCFI7:
+  57               		.cfi_def_cfa_offset 10
+  58               		.cfi_offset 29, -9
+  59               	/* prologue: function */
+  60               	/* frame size = 0 */
+  61               	/* stack size = 8 */
+  62               	.L__stack_usage = 8
+  63 0010 8C01      		movw r16,r24
+  64 0012 EB01      		movw r28,r22
+  65 0014 F42E      		mov r15,r20
+  42:src/hbridge.c ****     
+  43:src/hbridge.c ****    debug_printf("INFO! hbridge_move - [A_value, B_value, num] - ");
+  66               		.loc 1 43 0
+  67 0016 80E0      		ldi r24,lo8(.LC0)
+  68 0018 90E0      		ldi r25,hi8(.LC0)
+  69               	.LVL1:
+  70 001a 0E94 0000 		call debug_printf
+  71               	.LVL2:
+  44:src/hbridge.c ****    debug_printf_num(A_value);
+  72               		.loc 1 44 0
+  73 001e C801      		movw r24,r16
+  74 0020 0E94 0000 		call debug_printf_num
+  75               	.LVL3:
+  45:src/hbridge.c ****    debug_printf(",");
+  76               		.loc 1 45 0
+  77 0024 80E0      		ldi r24,lo8(.LC1)
+  78 0026 90E0      		ldi r25,hi8(.LC1)
+  79 0028 0E94 0000 		call debug_printf
+  80               	.LVL4:
+  46:src/hbridge.c ****    debug_printf_num(B_value);
+  81               		.loc 1 46 0
+  82 002c CE01      		movw r24,r28
+  83 002e 0E94 0000 		call debug_printf_num
+  84               	.LVL5:
+  47:src/hbridge.c ****    debug_printf(",");
+  85               		.loc 1 47 0
+  86 0032 80E0      		ldi r24,lo8(.LC1)
+  87 0034 90E0      		ldi r25,hi8(.LC1)
+  88 0036 0E94 0000 		call debug_printf
+  89               	.LVL6:
+  48:src/hbridge.c ****    debug_printf_num(num);
+  90               		.loc 1 48 0
+  91 003a 8F2D      		mov r24,r15
+  92 003c 90E0      		ldi r25,0
+  93 003e 0E94 0000 		call debug_printf_num
+  94               	.LVL7:
+  49:src/hbridge.c ****    debug_printf("\n");
+  95               		.loc 1 49 0
+  96 0042 80E0      		ldi r24,lo8(.LC2)
+  97 0044 90E0      		ldi r25,hi8(.LC2)
+  98 0046 0E94 0000 		call debug_printf
+  99               	.LVL8:
+  50:src/hbridge.c **** 
+  51:src/hbridge.c ****     switch(num) {
+ 100               		.loc 1 51 0
+ 101 004a 81E0      		ldi r24,lo8(1)
+ 102 004c F816      		cp r15,r24
+ 103 004e 01F0      		breq .L3
+ 104 0050 82E0      		ldi r24,lo8(2)
+ 105 0052 F816      		cp r15,r24
+ 106 0054 01F0      		breq .L4
+ 107 0056 00C0      		rjmp .L1
+ 108               	.L3:
+  52:src/hbridge.c ****         case 1:
+  53:src/hbridge.c ****             // convert to register
+  54:src/hbridge.c ****             OCR3C = (uint16_t)(conv_to_16(A_value));    // PE5
+ 109               		.loc 1 54 0
+ 110 0058 2FEF      		ldi r18,lo8(-1)
+ 111 005a 3FEF      		ldi r19,lo8(-1)
+ 112 005c D801      		movw r26,r16
+ 113 005e 0E94 0000 		call __usmulhisi3
+ 114 0062 24E6      		ldi r18,lo8(100)
+ 115 0064 30E0      		ldi r19,0
+ 116 0066 40E0      		ldi r20,0
+ 117 0068 50E0      		ldi r21,0
+ 118 006a 0E94 0000 		call __divmodsi4
+ 119 006e 3093 9D00 		sts 156+1,r19
+ 120 0072 2093 9C00 		sts 156,r18
+  55:src/hbridge.c ****             OCR0A = (uint8_t)(conv_to_8(B_value));      // PB7
+ 121               		.loc 1 55 0
+ 122 0076 2FEF      		ldi r18,lo8(-1)
+ 123 0078 2C9F      		mul r18,r28
+ 124 007a C001      		movw r24,r0
+ 125 007c 2D9F      		mul r18,r29
+ 126 007e 900D      		add r25,r0
+ 127 0080 1124      		clr __zero_reg__
+ 128 0082 64E6      		ldi r22,lo8(100)
+ 129 0084 70E0      		ldi r23,0
+ 130 0086 0E94 0000 		call __divmodhi4
+ 131 008a 67BD      		out 0x27,r22
+  56:src/hbridge.c ****             
+  57:src/hbridge.c ****             // if one of it is 0, then just write a LOW
+  58:src/hbridge.c ****             if(A_value == 0) {
+ 132               		.loc 1 58 0
+ 133 008c 0115      		cp r16,__zero_reg__
+ 134 008e 1105      		cpc r17,__zero_reg__
+ 135 0090 01F4      		brne .L5
+  59:src/hbridge.c ****                 gpio_write_pin(PIN_MOTOR2_A, LOW);
+ 136               		.loc 1 59 0
+ 137 0092 60E0      		ldi r22,0
+ 138 0094 85E2      		ldi r24,lo8(37)
+ 139 0096 0E94 0000 		call gpio_write_pin
+ 140               	.LVL9:
+ 141               	.L5:
+  60:src/hbridge.c ****             } 
+  61:src/hbridge.c ****             
+  62:src/hbridge.c ****             if(B_value == 0) {
+ 142               		.loc 1 62 0
+ 143 009a 2097      		sbiw r28,0
+ 144 009c 01F4      		brne .L6
+  63:src/hbridge.c ****                 gpio_write_pin(PIN_MOTOR2_B, LOW);
+ 145               		.loc 1 63 0
+ 146 009e 60E0      		ldi r22,0
+ 147 00a0 8FE0      		ldi r24,lo8(15)
+ 148 00a2 0E94 0000 		call gpio_write_pin
+ 149               	.LVL10:
+ 150               	.L6:
+  64:src/hbridge.c ****             }
+  65:src/hbridge.c **** 
+  66:src/hbridge.c ****             // update the local variable
+  67:src/hbridge.c ****             current_A_2 = A_value;
+ 151               		.loc 1 67 0
+ 152 00a6 1093 0000 		sts current_A_2+1,r17
+ 153 00aa 0093 0000 		sts current_A_2,r16
+  68:src/hbridge.c ****             current_B_2 = B_value;
+ 154               		.loc 1 68 0
+ 155 00ae D093 0000 		sts current_B_2+1,r29
+ 156 00b2 C093 0000 		sts current_B_2,r28
+  69:src/hbridge.c **** 
+  70:src/hbridge.c ****             break;
+ 157               		.loc 1 70 0
+ 158 00b6 00C0      		rjmp .L1
+ 159               	.L4:
+  71:src/hbridge.c ****         case 2:
+  72:src/hbridge.c ****             // convert to register
+  73:src/hbridge.c ****             OCR3A = (uint16_t)(conv_to_16(A_value));    // PE3
+ 160               		.loc 1 73 0
+ 161 00b8 2FEF      		ldi r18,lo8(-1)
+ 162 00ba 3FEF      		ldi r19,lo8(-1)
+ 163 00bc D801      		movw r26,r16
+ 164 00be 0E94 0000 		call __usmulhisi3
+ 165 00c2 24E6      		ldi r18,lo8(100)
+ 166 00c4 C22E      		mov r12,r18
+ 167 00c6 D12C      		mov r13,__zero_reg__
+ 168 00c8 E12C      		mov r14,__zero_reg__
+ 169 00ca F12C      		mov r15,__zero_reg__
+ 170 00cc A701      		movw r20,r14
+ 171 00ce 9601      		movw r18,r12
+ 172 00d0 0E94 0000 		call __divmodsi4
+ 173 00d4 3093 9900 		sts 152+1,r19
+ 174 00d8 2093 9800 		sts 152,r18
+  74:src/hbridge.c ****             OCR3B = (uint16_t)(conv_to_16(B_value));    // PE4
+ 175               		.loc 1 74 0
+ 176 00dc 2FEF      		ldi r18,lo8(-1)
+ 177 00de 3FEF      		ldi r19,lo8(-1)
+ 178 00e0 DE01      		movw r26,r28
+ 179 00e2 0E94 0000 		call __usmulhisi3
+ 180 00e6 A701      		movw r20,r14
+ 181 00e8 9601      		movw r18,r12
+ 182 00ea 0E94 0000 		call __divmodsi4
+ 183 00ee 3093 9B00 		sts 154+1,r19
+ 184 00f2 2093 9A00 		sts 154,r18
+  75:src/hbridge.c **** 
+  76:src/hbridge.c ****             // if one of it is 0, then just write a LOW
+  77:src/hbridge.c ****             if(A_value == 0) {
+ 185               		.loc 1 77 0
+ 186 00f6 0115      		cp r16,__zero_reg__
+ 187 00f8 1105      		cpc r17,__zero_reg__
+ 188 00fa 01F4      		brne .L7
+  78:src/hbridge.c ****                 gpio_write_pin(PIN_MOTOR1_A, LOW);
+ 189               		.loc 1 78 0
+ 190 00fc 60E0      		ldi r22,0
+ 191 00fe 83E2      		ldi r24,lo8(35)
+ 192 0100 0E94 0000 		call gpio_write_pin
+ 193               	.LVL11:
+ 194               	.L7:
+  79:src/hbridge.c ****             } 
+  80:src/hbridge.c ****             
+  81:src/hbridge.c ****             if(B_value == 0) {
+ 195               		.loc 1 81 0
+ 196 0104 2097      		sbiw r28,0
+ 197 0106 01F4      		brne .L8
+  82:src/hbridge.c ****                 gpio_write_pin(PIN_MOTOR1_B, LOW);
+ 198               		.loc 1 82 0
+ 199 0108 60E0      		ldi r22,0
+ 200 010a 84E2      		ldi r24,lo8(36)
+ 201 010c 0E94 0000 		call gpio_write_pin
+ 202               	.LVL12:
+ 203               	.L8:
+  83:src/hbridge.c ****             }
+  84:src/hbridge.c **** 
+  85:src/hbridge.c ****             // update the local variable
+  86:src/hbridge.c ****             current_A_1 = A_value;
+ 204               		.loc 1 86 0
+ 205 0110 1093 0000 		sts current_A_1+1,r17
+ 206 0114 0093 0000 		sts current_A_1,r16
+  87:src/hbridge.c ****             current_B_1 = B_value;
+ 207               		.loc 1 87 0
+ 208 0118 D093 0000 		sts current_B_1+1,r29
+ 209 011c C093 0000 		sts current_B_1,r28
+ 210               	.L1:
+ 211               	/* epilogue start */
+  88:src/hbridge.c **** 
+  89:src/hbridge.c ****             break;
+  90:src/hbridge.c ****     }
+  91:src/hbridge.c **** } // end of hbridge_move()
+ 212               		.loc 1 91 0
+ 213 0120 DF91      		pop r29
+ 214 0122 CF91      		pop r28
+ 215               	.LVL13:
+ 216 0124 1F91      		pop r17
+ 217 0126 0F91      		pop r16
+ 218               	.LVL14:
+ 219 0128 FF90      		pop r15
+ 220               	.LVL15:
+ 221 012a EF90      		pop r14
+ 222 012c DF90      		pop r13
+ 223 012e CF90      		pop r12
+ 224 0130 0895      		ret
+ 225               		.cfi_endproc
+ 226               	.LFE23:
+ 228               	.global	init_hbridge
+ 230               	init_hbridge:
+ 231               	.LFB22:
+   9:src/hbridge.c **** 
+ 232               		.loc 1 9 0
+ 233               		.cfi_startproc
+ 234               	/* prologue: function */
+ 235               	/* frame size = 0 */
+ 236               	/* stack size = 0 */
+ 237               	.L__stack_usage = 0
+  12:src/hbridge.c ****     gpio_register_pin(PIN_MOTOR1_B, GPIO_DIRECTION_OUTPUT, false);
+ 238               		.loc 1 12 0
+ 239 0132 40E0      		ldi r20,0
+ 240 0134 61E0      		ldi r22,lo8(1)
+ 241 0136 83E2      		ldi r24,lo8(35)
+ 242 0138 0E94 0000 		call gpio_register_pin
+ 243               	.LVL16:
+  13:src/hbridge.c ****     gpio_register_pin(PIN_MOTOR2_A, GPIO_DIRECTION_OUTPUT, false);
+ 244               		.loc 1 13 0
+ 245 013c 40E0      		ldi r20,0
+ 246 013e 61E0      		ldi r22,lo8(1)
+ 247 0140 84E2      		ldi r24,lo8(36)
+ 248 0142 0E94 0000 		call gpio_register_pin
+ 249               	.LVL17:
+  14:src/hbridge.c ****     gpio_register_pin(PIN_MOTOR2_B, GPIO_DIRECTION_OUTPUT, false);			
+ 250               		.loc 1 14 0
+ 251 0146 40E0      		ldi r20,0
+ 252 0148 61E0      		ldi r22,lo8(1)
+ 253 014a 85E2      		ldi r24,lo8(37)
+ 254 014c 0E94 0000 		call gpio_register_pin
+ 255               	.LVL18:
+  15:src/hbridge.c **** 
+ 256               		.loc 1 15 0
+ 257 0150 40E0      		ldi r20,0
+ 258 0152 61E0      		ldi r22,lo8(1)
+ 259 0154 8FE0      		ldi r24,lo8(15)
+ 260 0156 0E94 0000 		call gpio_register_pin
+ 261               	.LVL19:
+  17:src/hbridge.c **** 
+ 262               		.loc 1 17 0
+ 263 015a 88E8      		ldi r24,lo8(-120)
+ 264 015c 93E1      		ldi r25,lo8(19)
+ 265 015e 9093 9700 		sts 150+1,r25
+ 266 0162 8093 9600 		sts 150,r24
+  19:src/hbridge.c **** 	TCNT0 = 0;
+ 267               		.loc 1 19 0
+ 268 0166 1092 9500 		sts 148+1,__zero_reg__
+ 269 016a 1092 9400 		sts 148,__zero_reg__
+  20:src/hbridge.c **** 
+ 270               		.loc 1 20 0
+ 271 016e 16BC      		out 0x26,__zero_reg__
+  22:src/hbridge.c **** 	OCR3B = 0;
+ 272               		.loc 1 22 0
+ 273 0170 1092 9900 		sts 152+1,__zero_reg__
+ 274 0174 1092 9800 		sts 152,__zero_reg__
+  23:src/hbridge.c **** 	OCR3C = 0;
+ 275               		.loc 1 23 0
+ 276 0178 1092 9B00 		sts 154+1,__zero_reg__
+ 277 017c 1092 9A00 		sts 154,__zero_reg__
+  24:src/hbridge.c **** 
+ 278               		.loc 1 24 0
+ 279 0180 1092 9D00 		sts 156+1,__zero_reg__
+ 280 0184 1092 9C00 		sts 156,__zero_reg__
+  26:src/hbridge.c **** 	TCCR3B = (1<< CS31) | (1 << WGM32) | (1 << WGM33); 		// PRESKALER = 8
+ 281               		.loc 1 26 0
+ 282 0188 8AEA      		ldi r24,lo8(-86)
+ 283 018a 8093 9000 		sts 144,r24
+  27:src/hbridge.c **** 
+ 284               		.loc 1 27 0
+ 285 018e 8AE1      		ldi r24,lo8(26)
+ 286 0190 8093 9100 		sts 145,r24
+  29:src/hbridge.c **** 
+ 287               		.loc 1 29 0
+ 288 0194 84B5      		in r24,0x24
+ 289 0196 8966      		ori r24,lo8(105)
+ 290 0198 84BD      		out 0x24,r24
+  31:src/hbridge.c ****     hbridge_move(0,0,2);
+ 291               		.loc 1 31 0
+ 292 019a 41E0      		ldi r20,lo8(1)
+ 293 019c 60E0      		ldi r22,0
+ 294 019e 70E0      		ldi r23,0
+ 295 01a0 80E0      		ldi r24,0
+ 296 01a2 90E0      		ldi r25,0
+ 297 01a4 0E94 0000 		call hbridge_move
+ 298               	.LVL20:
+  32:src/hbridge.c **** 
+ 299               		.loc 1 32 0
+ 300 01a8 42E0      		ldi r20,lo8(2)
+ 301 01aa 60E0      		ldi r22,0
+ 302 01ac 70E0      		ldi r23,0
+ 303 01ae 80E0      		ldi r24,0
+ 304 01b0 90E0      		ldi r25,0
+ 305 01b2 0E94 0000 		call hbridge_move
+ 306               	.LVL21:
+  35:src/hbridge.c **** 
+ 307               		.loc 1 35 0
+ 308 01b6 81E0      		ldi r24,lo8(1)
+ 309 01b8 0895      		ret
+ 310               		.cfi_endproc
+ 311               	.LFE22:
+ 313               	.global	hbridge_break
+ 315               	hbridge_break:
+ 316               	.LFB24:
+  92:src/hbridge.c **** 
+  93:src/hbridge.c **** /*
+  94:src/hbridge.c ****  * Function:    void hbridge_break(uint8_t num)
+  95:src/hbridge.c ****  * Description: break the `num` hbridge
+  96:src/hbridge.c ****  */
+  97:src/hbridge.c **** void hbridge_break(uint8_t num) {
+ 317               		.loc 1 97 0
+ 318               		.cfi_startproc
+ 319               	.LVL22:
+ 320               	/* prologue: function */
+ 321               	/* frame size = 0 */
+ 322               	/* stack size = 0 */
+ 323               	.L__stack_usage = 0
+  98:src/hbridge.c ****     hbridge_move(100, 100, num);
+ 324               		.loc 1 98 0
+ 325 01ba 482F      		mov r20,r24
+ 326 01bc 64E6      		ldi r22,lo8(100)
+ 327 01be 70E0      		ldi r23,0
+ 328 01c0 84E6      		ldi r24,lo8(100)
+ 329 01c2 90E0      		ldi r25,0
+ 330               	.LVL23:
+ 331 01c4 0C94 0000 		jmp hbridge_move
+ 332               	.LVL24:
+ 333               		.cfi_endproc
+ 334               	.LFE24:
+ 336               	.global	hbridge_time
+ 338               	hbridge_time:
+ 339               	.LFB25:
+  99:src/hbridge.c **** } // end of hbridge_break()
+ 100:src/hbridge.c **** 
+ 101:src/hbridge.c **** /*
+ 102:src/hbridge.c ****  * Function:    void hbridge_break(uint8_t num)
+ 103:src/hbridge.c ****  * Description: break the `num` hbridge
+ 104:src/hbridge.c ****  */
+ 105:src/hbridge.c **** void hbridge_time(int num, int dir, int achieve, int time) {
+ 340               		.loc 1 105 0
+ 341               		.cfi_startproc
+ 342               	.LVL25:
+ 343 01c8 EF92      		push r14
+ 344               	.LCFI8:
+ 345               		.cfi_def_cfa_offset 3
+ 346               		.cfi_offset 14, -2
+ 347 01ca FF92      		push r15
+ 348               	.LCFI9:
+ 349               		.cfi_def_cfa_offset 4
+ 350               		.cfi_offset 15, -3
+ 351 01cc 0F93      		push r16
+ 352               	.LCFI10:
+ 353               		.cfi_def_cfa_offset 5
+ 354               		.cfi_offset 16, -4
+ 355 01ce 1F93      		push r17
+ 356               	.LCFI11:
+ 357               		.cfi_def_cfa_offset 6
+ 358               		.cfi_offset 17, -5
+ 359 01d0 CF93      		push r28
+ 360               	.LCFI12:
+ 361               		.cfi_def_cfa_offset 7
+ 362               		.cfi_offset 28, -6
+ 363 01d2 DF93      		push r29
+ 364               	.LCFI13:
+ 365               		.cfi_def_cfa_offset 8
+ 366               		.cfi_offset 29, -7
+ 367               	/* prologue: function */
+ 368               	/* frame size = 0 */
+ 369               	/* stack size = 6 */
+ 370               	.L__stack_usage = 6
+ 371 01d4 FC01      		movw r30,r24
+ 372 01d6 C901      		movw r24,r18
+ 373               	.LVL26:
+ 106:src/hbridge.c ****     
+ 107:src/hbridge.c ****     // calculate the difference from the current and achieve speed
+ 108:src/hbridge.c ****     int dif = 0;
+ 109:src/hbridge.c **** 
+ 110:src/hbridge.c ****     // switch between 1 and 2 motor
+ 111:src/hbridge.c ****     switch(num) {
+ 374               		.loc 1 111 0
+ 375 01d8 E130      		cpi r30,1
+ 376 01da F105      		cpc r31,__zero_reg__
+ 377 01dc 01F0      		breq .L14
+ 378 01de 3297      		sbiw r30,2
+ 379 01e0 01F4      		brne .+2
+ 380 01e2 00C0      		rjmp .L15
+ 381 01e4 00C0      		rjmp .L12
+ 382               	.L14:
+ 112:src/hbridge.c ****         case 1:
+ 113:src/hbridge.c ****             // CW direction
+ 114:src/hbridge.c ****             if(dir == CW) {
+ 383               		.loc 1 114 0
+ 384 01e6 6130      		cpi r22,1
+ 385 01e8 7105      		cpc r23,__zero_reg__
+ 386 01ea 01F4      		brne .L16
+ 115:src/hbridge.c **** 
+ 116:src/hbridge.c ****                 // one side is always OFF
+ 117:src/hbridge.c ****                 current_A_1 = 0;                                        
+ 387               		.loc 1 117 0
+ 388 01ec 1092 0000 		sts current_A_1+1,__zero_reg__
+ 389 01f0 1092 0000 		sts current_A_1,__zero_reg__
+ 118:src/hbridge.c **** 
+ 119:src/hbridge.c ****                 // calculate the difference
+ 120:src/hbridge.c ****                 dif = achieve - current_B_1;
+ 390               		.loc 1 120 0
+ 391 01f4 2091 0000 		lds r18,current_B_1
+ 392 01f8 3091 0000 		lds r19,current_B_1+1
+ 393               	.LVL27:
+ 394 01fc EA01      		movw r28,r20
+ 395 01fe C21B      		sub r28,r18
+ 396 0200 D30B      		sbc r29,r19
+ 397               	.LVL28:
+ 398               	.LBB2:
+ 121:src/hbridge.c **** 
+ 122:src/hbridge.c ****                 // for loop depends on how long we want to increment
+ 123:src/hbridge.c ****                 for(int i=0; i < time/100;i++) {
+ 399               		.loc 1 123 0
+ 400 0202 64E6      		ldi r22,lo8(100)
+ 401 0204 70E0      		ldi r23,0
+ 402               	.LVL29:
+ 403 0206 0E94 0000 		call __divmodhi4
+ 404               	.LVL30:
+ 405 020a 7B01      		movw r14,r22
+ 406 020c 00E0      		ldi r16,0
+ 407 020e 10E0      		ldi r17,0
+ 408               	.LVL31:
+ 409               	.L17:
+ 410               		.loc 1 123 0 is_stmt 0 discriminator 1
+ 411 0210 0E15      		cp r16,r14
+ 412 0212 1F05      		cpc r17,r15
+ 413 0214 04F0      		brlt .+2
+ 414 0216 00C0      		rjmp .L12
+ 124:src/hbridge.c ****                     // current = current + (difference / (time / 100))
+ 125:src/hbridge.c ****                     // we always increment the speed by a portion of the time (linear)
+ 126:src/hbridge.c ****                     current_B_1 += dif/(time/100);
+ 415               		.loc 1 126 0 is_stmt 1 discriminator 3
+ 416 0218 CE01      		movw r24,r28
+ 417 021a B701      		movw r22,r14
+ 418 021c 0E94 0000 		call __divmodhi4
+ 419 0220 8091 0000 		lds r24,current_B_1
+ 420 0224 9091 0000 		lds r25,current_B_1+1
+ 421 0228 680F      		add r22,r24
+ 422 022a 791F      		adc r23,r25
+ 423 022c 7093 0000 		sts current_B_1+1,r23
+ 424 0230 6093 0000 		sts current_B_1,r22
+ 127:src/hbridge.c ****                     
+ 128:src/hbridge.c ****                     // write to hbridge
+ 129:src/hbridge.c ****                     hbridge_move(current_A_1, current_B_1, num);
+ 425               		.loc 1 129 0 discriminator 3
+ 426 0234 41E0      		ldi r20,lo8(1)
+ 427 0236 8091 0000 		lds r24,current_A_1
+ 428 023a 9091 0000 		lds r25,current_A_1+1
+ 429 023e 0E94 0000 		call hbridge_move
+ 430               	.LVL32:
+ 130:src/hbridge.c ****                     delay(100);
+ 431               		.loc 1 130 0 discriminator 3
+ 432 0242 84E6      		ldi r24,lo8(100)
+ 433 0244 90E0      		ldi r25,0
+ 434 0246 0E94 0000 		call delay
+ 435               	.LVL33:
+ 123:src/hbridge.c ****                     // current = current + (difference / (time / 100))
+ 436               		.loc 1 123 0 discriminator 3
+ 437 024a 0F5F      		subi r16,-1
+ 438 024c 1F4F      		sbci r17,-1
+ 439               	.LVL34:
+ 440 024e 00C0      		rjmp .L17
+ 441               	.LVL35:
+ 442               	.L16:
+ 443               	.LBE2:
+ 131:src/hbridge.c ****                 }
+ 132:src/hbridge.c ****             } 
+ 133:src/hbridge.c ****             // CCW direction
+ 134:src/hbridge.c ****             else if(dir == CCW) {
+ 444               		.loc 1 134 0
+ 445 0250 672B      		or r22,r23
+ 446 0252 01F0      		breq .+2
+ 447 0254 00C0      		rjmp .L12
+ 135:src/hbridge.c **** 
+ 136:src/hbridge.c ****                 // one side is always OFF
+ 137:src/hbridge.c ****                 current_B_1 = 0;
+ 448               		.loc 1 137 0
+ 449 0256 1092 0000 		sts current_B_1+1,__zero_reg__
+ 450 025a 1092 0000 		sts current_B_1,__zero_reg__
+ 138:src/hbridge.c **** 
+ 139:src/hbridge.c ****                 // calculate the difference
+ 140:src/hbridge.c ****                 dif = achieve - current_A_1;
+ 451               		.loc 1 140 0
+ 452 025e 2091 0000 		lds r18,current_A_1
+ 453 0262 3091 0000 		lds r19,current_A_1+1
+ 454               	.LVL36:
+ 455 0266 EA01      		movw r28,r20
+ 456 0268 C21B      		sub r28,r18
+ 457 026a D30B      		sbc r29,r19
+ 458               	.LVL37:
+ 459               	.LBB3:
+ 141:src/hbridge.c **** 
+ 142:src/hbridge.c ****                 // for loop depends on how long we want to increment
+ 143:src/hbridge.c ****                 for(int i=0; i < time/100;i++) {
+ 460               		.loc 1 143 0
+ 461 026c 64E6      		ldi r22,lo8(100)
+ 462 026e 70E0      		ldi r23,0
+ 463               	.LVL38:
+ 464 0270 0E94 0000 		call __divmodhi4
+ 465               	.LVL39:
+ 466 0274 7B01      		movw r14,r22
+ 467 0276 00E0      		ldi r16,0
+ 468 0278 10E0      		ldi r17,0
+ 469               	.LVL40:
+ 470               	.L20:
+ 471               		.loc 1 143 0 is_stmt 0 discriminator 1
+ 472 027a 0E15      		cp r16,r14
+ 473 027c 1F05      		cpc r17,r15
+ 474 027e 04F0      		brlt .+2
+ 475 0280 00C0      		rjmp .L12
+ 144:src/hbridge.c ****                     // current = current + (difference / (time / 100))
+ 145:src/hbridge.c ****                     current_A_1 += dif/(time/100);
+ 476               		.loc 1 145 0 is_stmt 1 discriminator 3
+ 477 0282 CE01      		movw r24,r28
+ 478 0284 B701      		movw r22,r14
+ 479 0286 0E94 0000 		call __divmodhi4
+ 480 028a 8091 0000 		lds r24,current_A_1
+ 481 028e 9091 0000 		lds r25,current_A_1+1
+ 482 0292 860F      		add r24,r22
+ 483 0294 971F      		adc r25,r23
+ 484 0296 9093 0000 		sts current_A_1+1,r25
+ 485 029a 8093 0000 		sts current_A_1,r24
+ 146:src/hbridge.c **** 
+ 147:src/hbridge.c ****                     // write to hbridge
+ 148:src/hbridge.c ****                     hbridge_move(current_A_1, current_B_1, num);
+ 486               		.loc 1 148 0 discriminator 3
+ 487 029e 6091 0000 		lds r22,current_B_1
+ 488 02a2 7091 0000 		lds r23,current_B_1+1
+ 489 02a6 41E0      		ldi r20,lo8(1)
+ 490 02a8 0E94 0000 		call hbridge_move
+ 491               	.LVL41:
+ 149:src/hbridge.c ****                     delay(100);
+ 492               		.loc 1 149 0 discriminator 3
+ 493 02ac 84E6      		ldi r24,lo8(100)
+ 494 02ae 90E0      		ldi r25,0
+ 495 02b0 0E94 0000 		call delay
+ 496               	.LVL42:
+ 143:src/hbridge.c ****                     // current = current + (difference / (time / 100))
+ 497               		.loc 1 143 0 discriminator 3
+ 498 02b4 0F5F      		subi r16,-1
+ 499 02b6 1F4F      		sbci r17,-1
+ 500               	.LVL43:
+ 501 02b8 00C0      		rjmp .L20
+ 502               	.LVL44:
+ 503               	.L15:
+ 504               	.LBE3:
+ 150:src/hbridge.c ****                 }
+ 151:src/hbridge.c ****             }
+ 152:src/hbridge.c ****             break;
+ 153:src/hbridge.c ****         case 2:
+ 154:src/hbridge.c ****             // CW direction
+ 155:src/hbridge.c ****             if(dir == CW) {
+ 505               		.loc 1 155 0
+ 506 02ba 6130      		cpi r22,1
+ 507 02bc 7105      		cpc r23,__zero_reg__
+ 508 02be 01F4      		brne .L22
+ 156:src/hbridge.c **** 
+ 157:src/hbridge.c ****                 // one side is always OFF
+ 158:src/hbridge.c ****                 current_A_2 = 0;
+ 509               		.loc 1 158 0
+ 510 02c0 1092 0000 		sts current_A_2+1,__zero_reg__
+ 511 02c4 1092 0000 		sts current_A_2,__zero_reg__
+ 159:src/hbridge.c **** 
+ 160:src/hbridge.c ****                 // calculate the difference
+ 161:src/hbridge.c ****                 dif = achieve - current_B_2;
+ 512               		.loc 1 161 0
+ 513 02c8 2091 0000 		lds r18,current_B_2
+ 514 02cc 3091 0000 		lds r19,current_B_2+1
+ 515               	.LVL45:
+ 516 02d0 EA01      		movw r28,r20
+ 517 02d2 C21B      		sub r28,r18
+ 518 02d4 D30B      		sbc r29,r19
+ 519               	.LVL46:
+ 520               	.LBB4:
+ 162:src/hbridge.c **** 
+ 163:src/hbridge.c ****                 // for loop depends on how long we want to increment
+ 164:src/hbridge.c ****                 for(int i=0; i < time/100;i++) {
+ 521               		.loc 1 164 0
+ 522 02d6 64E6      		ldi r22,lo8(100)
+ 523 02d8 70E0      		ldi r23,0
+ 524               	.LVL47:
+ 525 02da 0E94 0000 		call __divmodhi4
+ 526               	.LVL48:
+ 527 02de 7B01      		movw r14,r22
+ 528 02e0 00E0      		ldi r16,0
+ 529 02e2 10E0      		ldi r17,0
+ 530               	.LVL49:
+ 531               	.L23:
+ 532               		.loc 1 164 0 is_stmt 0 discriminator 1
+ 533 02e4 0E15      		cp r16,r14
+ 534 02e6 1F05      		cpc r17,r15
+ 535 02e8 04F0      		brlt .+2
+ 536 02ea 00C0      		rjmp .L12
+ 165:src/hbridge.c ****                     // current = current + (difference / (time / 100))
+ 166:src/hbridge.c ****                     current_B_2 += dif/(time/100);
+ 537               		.loc 1 166 0 is_stmt 1 discriminator 3
+ 538 02ec CE01      		movw r24,r28
+ 539 02ee B701      		movw r22,r14
+ 540 02f0 0E94 0000 		call __divmodhi4
+ 541 02f4 8091 0000 		lds r24,current_B_2
+ 542 02f8 9091 0000 		lds r25,current_B_2+1
+ 543 02fc 680F      		add r22,r24
+ 544 02fe 791F      		adc r23,r25
+ 545 0300 7093 0000 		sts current_B_2+1,r23
+ 546 0304 6093 0000 		sts current_B_2,r22
+ 167:src/hbridge.c **** 
+ 168:src/hbridge.c ****                     // write to hbridge
+ 169:src/hbridge.c ****                     hbridge_move(current_A_2, current_B_2, num);
+ 547               		.loc 1 169 0 discriminator 3
+ 548 0308 42E0      		ldi r20,lo8(2)
+ 549 030a 8091 0000 		lds r24,current_A_2
+ 550 030e 9091 0000 		lds r25,current_A_2+1
+ 551 0312 0E94 0000 		call hbridge_move
+ 552               	.LVL50:
+ 170:src/hbridge.c ****                     delay(100);
+ 553               		.loc 1 170 0 discriminator 3
+ 554 0316 84E6      		ldi r24,lo8(100)
+ 555 0318 90E0      		ldi r25,0
+ 556 031a 0E94 0000 		call delay
+ 557               	.LVL51:
+ 164:src/hbridge.c ****                     // current = current + (difference / (time / 100))
+ 558               		.loc 1 164 0 discriminator 3
+ 559 031e 0F5F      		subi r16,-1
+ 560 0320 1F4F      		sbci r17,-1
+ 561               	.LVL52:
+ 562 0322 00C0      		rjmp .L23
+ 563               	.LVL53:
+ 564               	.L22:
+ 565               	.LBE4:
+ 171:src/hbridge.c ****                 }
+ 172:src/hbridge.c ****             }
+ 173:src/hbridge.c ****             // CCW direction
+ 174:src/hbridge.c ****             else if(dir == CCW) {
+ 566               		.loc 1 174 0
+ 567 0324 672B      		or r22,r23
+ 568 0326 01F4      		brne .L12
+ 175:src/hbridge.c **** 
+ 176:src/hbridge.c ****                 // one side is always OFF
+ 177:src/hbridge.c ****                 current_B_2 = 0;
+ 569               		.loc 1 177 0
+ 570 0328 1092 0000 		sts current_B_2+1,__zero_reg__
+ 571 032c 1092 0000 		sts current_B_2,__zero_reg__
+ 178:src/hbridge.c **** 
+ 179:src/hbridge.c ****                 // calculate the difference
+ 180:src/hbridge.c ****                 dif = achieve - current_A_2;
+ 572               		.loc 1 180 0
+ 573 0330 2091 0000 		lds r18,current_A_2
+ 574 0334 3091 0000 		lds r19,current_A_2+1
+ 575               	.LVL54:
+ 576 0338 EA01      		movw r28,r20
+ 577 033a C21B      		sub r28,r18
+ 578 033c D30B      		sbc r29,r19
+ 579               	.LVL55:
+ 580               	.LBB5:
+ 181:src/hbridge.c **** 
+ 182:src/hbridge.c ****                 // for loop depends on how long we want to increment
+ 183:src/hbridge.c ****                 for(int i=0; i < time/100;i++) {
+ 581               		.loc 1 183 0
+ 582 033e 64E6      		ldi r22,lo8(100)
+ 583 0340 70E0      		ldi r23,0
+ 584               	.LVL56:
+ 585 0342 0E94 0000 		call __divmodhi4
+ 586               	.LVL57:
+ 587 0346 7B01      		movw r14,r22
+ 588 0348 00E0      		ldi r16,0
+ 589 034a 10E0      		ldi r17,0
+ 590               	.LVL58:
+ 591               	.L25:
+ 592               		.loc 1 183 0 is_stmt 0 discriminator 1
+ 593 034c 0E15      		cp r16,r14
+ 594 034e 1F05      		cpc r17,r15
+ 595 0350 04F4      		brge .L12
+ 184:src/hbridge.c ****                     // current = current + (difference / (time / 100))
+ 185:src/hbridge.c ****                     current_A_2 += dif/(time/100);
+ 596               		.loc 1 185 0 is_stmt 1 discriminator 3
+ 597 0352 CE01      		movw r24,r28
+ 598 0354 B701      		movw r22,r14
+ 599 0356 0E94 0000 		call __divmodhi4
+ 600 035a 8091 0000 		lds r24,current_A_2
+ 601 035e 9091 0000 		lds r25,current_A_2+1
+ 602 0362 860F      		add r24,r22
+ 603 0364 971F      		adc r25,r23
+ 604 0366 9093 0000 		sts current_A_2+1,r25
+ 605 036a 8093 0000 		sts current_A_2,r24
+ 186:src/hbridge.c **** 
+ 187:src/hbridge.c ****                     // write to hbridge
+ 188:src/hbridge.c ****                     hbridge_move(current_A_2, current_B_2, num);
+ 606               		.loc 1 188 0 discriminator 3
+ 607 036e 6091 0000 		lds r22,current_B_2
+ 608 0372 7091 0000 		lds r23,current_B_2+1
+ 609 0376 42E0      		ldi r20,lo8(2)
+ 610 0378 0E94 0000 		call hbridge_move
+ 611               	.LVL59:
+ 189:src/hbridge.c ****                     delay(100);
+ 612               		.loc 1 189 0 discriminator 3
+ 613 037c 84E6      		ldi r24,lo8(100)
+ 614 037e 90E0      		ldi r25,0
+ 615 0380 0E94 0000 		call delay
+ 616               	.LVL60:
+ 183:src/hbridge.c ****                     // current = current + (difference / (time / 100))
+ 617               		.loc 1 183 0 discriminator 3
+ 618 0384 0F5F      		subi r16,-1
+ 619 0386 1F4F      		sbci r17,-1
+ 620               	.LVL61:
+ 621 0388 00C0      		rjmp .L25
+ 622               	.LVL62:
+ 623               	.L12:
+ 624               	/* epilogue start */
+ 625               	.LBE5:
+ 190:src/hbridge.c ****                 }
+ 191:src/hbridge.c ****             }
+ 192:src/hbridge.c ****             break;
+ 193:src/hbridge.c ****     }
+ 194:src/hbridge.c **** } // end of hbridge_time()...
+ 626               		.loc 1 194 0
+ 627 038a DF91      		pop r29
+ 628 038c CF91      		pop r28
+ 629 038e 1F91      		pop r17
+ 630 0390 0F91      		pop r16
+ 631 0392 FF90      		pop r15
+ 632 0394 EF90      		pop r14
+ 633 0396 0895      		ret
+ 634               		.cfi_endproc
+ 635               	.LFE25:
+ 637               		.comm	current_B_2,2,1
+ 638               		.comm	current_A_2,2,1
+ 639               		.comm	current_B_1,2,1
+ 640               		.comm	current_A_1,2,1
+ 641               	.Letext0:
+ 642               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 643               		.file 3 "src/Uart.h"
+ 644               		.file 4 "src/gpio.h"
+ 645               		.file 5 "src/system.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 hbridge.c
+     /tmp/ccea4XBw.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccea4XBw.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccea4XBw.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccea4XBw.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/ccea4XBw.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccea4XBw.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccea4XBw.s:21     .text:0000000000000000 hbridge_move
+                            *COM*:0000000000000002 current_A_2
+                            *COM*:0000000000000002 current_B_2
+                            *COM*:0000000000000002 current_A_1
+                            *COM*:0000000000000002 current_B_1
+     /tmp/ccea4XBw.s:230    .text:0000000000000132 init_hbridge
+     /tmp/ccea4XBw.s:315    .text:00000000000001ba hbridge_break
+     /tmp/ccea4XBw.s:338    .text:00000000000001c8 hbridge_time
+
+UNDEFINED SYMBOLS
+debug_printf
+debug_printf_num
+__usmulhisi3
+__divmodsi4
+__divmodhi4
+gpio_write_pin
+gpio_register_pin
+delay
+__do_copy_data
+__do_clear_bss

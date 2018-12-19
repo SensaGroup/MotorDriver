@@ -1,0 +1,261 @@
+   1               		.file	"HBridge.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               	.global	HBridge_Add
+  13               	HBridge_Add:
+  14               	.LFB5:
+  15               		.file 1 "src/HBridge.c"
+   1:src/HBridge.c **** #include "HBridge.h"
+   2:src/HBridge.c **** 
+   3:src/HBridge.c **** #include "Utils.h"
+   4:src/HBridge.c **** #include <can/can_wrapper.h>
+   5:src/HBridge.c **** 
+   6:src/HBridge.c **** HBridge instances[HBRIDGE_CONFIG_COUNT_MAX];
+   7:src/HBridge.c **** static uint8_t count = 0;
+   8:src/HBridge.c **** 
+   9:src/HBridge.c **** void HBridge_Add(Pin* inA, Pin* inB, PinFrequency frequency, uint8_t number) {
+  16               		.loc 1 9 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19 0000 FF92      		push r15
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 3
+  22               		.cfi_offset 15, -2
+  23 0002 0F93      		push r16
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 4
+  26               		.cfi_offset 16, -3
+  27 0004 1F93      		push r17
+  28               	.LCFI2:
+  29               		.cfi_def_cfa_offset 5
+  30               		.cfi_offset 17, -4
+  31 0006 CF93      		push r28
+  32               	.LCFI3:
+  33               		.cfi_def_cfa_offset 6
+  34               		.cfi_offset 28, -5
+  35 0008 DF93      		push r29
+  36               	.LCFI4:
+  37               		.cfi_def_cfa_offset 7
+  38               		.cfi_offset 29, -6
+  39               	/* prologue: function */
+  40               	/* frame size = 0 */
+  41               	/* stack size = 5 */
+  42               	.L__stack_usage = 5
+  43 000a 8C01      		movw r16,r24
+  44 000c EB01      		movw r28,r22
+  45 000e F42E      		mov r15,r20
+  10:src/HBridge.c **** 	instances[count].inA = inA;
+  46               		.loc 1 10 0
+  47 0010 E091 0000 		lds r30,count
+  48 0014 86E0      		ldi r24,lo8(6)
+  49               	.LVL1:
+  50 0016 E89F      		mul r30,r24
+  51 0018 F001      		movw r30,r0
+  52 001a 1124      		clr __zero_reg__
+  53 001c E050      		subi r30,lo8(-(instances))
+  54 001e F040      		sbci r31,hi8(-(instances))
+  55 0020 1183      		std Z+1,r17
+  56 0022 0083      		st Z,r16
+  11:src/HBridge.c **** 	instances[count].inB = inB;
+  57               		.loc 1 11 0
+  58 0024 7383      		std Z+3,r23
+  59 0026 6283      		std Z+2,r22
+  12:src/HBridge.c **** 	instances[count].canId = H_BRIDGE_CANID + number;
+  60               		.loc 1 12 0
+  61 0028 30E0      		ldi r19,0
+  62 002a 205C      		subi r18,-64
+  63 002c 3349      		sbci r19,-109
+  64               	.LVL2:
+  65 002e 3583      		std Z+5,r19
+  66 0030 2483      		std Z+4,r18
+  13:src/HBridge.c **** 
+  14:src/HBridge.c **** 	Pin_SetMode(inA, PIN_OUTPUT);
+  67               		.loc 1 14 0
+  68 0032 61E0      		ldi r22,lo8(1)
+  69               	.LVL3:
+  70 0034 C801      		movw r24,r16
+  71 0036 0E94 0000 		call Pin_SetMode
+  72               	.LVL4:
+  15:src/HBridge.c **** 	Pin_SetMode(inB, PIN_OUTPUT);
+  73               		.loc 1 15 0
+  74 003a 61E0      		ldi r22,lo8(1)
+  75 003c CE01      		movw r24,r28
+  76 003e 0E94 0000 		call Pin_SetMode
+  77               	.LVL5:
+  16:src/HBridge.c ****     Pin_EnableAnalog(inA, frequency);
+  78               		.loc 1 16 0
+  79 0042 6F2D      		mov r22,r15
+  80 0044 C801      		movw r24,r16
+  81 0046 0E94 0000 		call Pin_EnableAnalog
+  82               	.LVL6:
+  17:src/HBridge.c **** 	Pin_EnableAnalog(inB, frequency);
+  83               		.loc 1 17 0
+  84 004a 6F2D      		mov r22,r15
+  85 004c CE01      		movw r24,r28
+  86 004e 0E94 0000 		call Pin_EnableAnalog
+  87               	.LVL7:
+  18:src/HBridge.c **** 
+  19:src/HBridge.c **** 	count++;
+  88               		.loc 1 19 0
+  89 0052 8091 0000 		lds r24,count
+  90 0056 8F5F      		subi r24,lo8(-(1))
+  91 0058 8093 0000 		sts count,r24
+  92               	/* epilogue start */
+  20:src/HBridge.c **** }
+  93               		.loc 1 20 0
+  94 005c DF91      		pop r29
+  95 005e CF91      		pop r28
+  96               	.LVL8:
+  97 0060 1F91      		pop r17
+  98 0062 0F91      		pop r16
+  99               	.LVL9:
+ 100 0064 FF90      		pop r15
+ 101               	.LVL10:
+ 102 0066 0895      		ret
+ 103               		.cfi_endproc
+ 104               	.LFE5:
+ 106               	.global	HBridge_Move
+ 108               	HBridge_Move:
+ 109               	.LFB6:
+  21:src/HBridge.c **** 
+  22:src/HBridge.c **** void HBridge_Move(uint16_t A_value, uint16_t B_value, uint8_t number) {
+ 110               		.loc 1 22 0
+ 111               		.cfi_startproc
+ 112               	.LVL11:
+ 113 0068 0F93      		push r16
+ 114               	.LCFI5:
+ 115               		.cfi_def_cfa_offset 3
+ 116               		.cfi_offset 16, -2
+ 117 006a 1F93      		push r17
+ 118               	.LCFI6:
+ 119               		.cfi_def_cfa_offset 4
+ 120               		.cfi_offset 17, -3
+ 121 006c CF93      		push r28
+ 122               	.LCFI7:
+ 123               		.cfi_def_cfa_offset 5
+ 124               		.cfi_offset 28, -4
+ 125 006e DF93      		push r29
+ 126               	.LCFI8:
+ 127               		.cfi_def_cfa_offset 6
+ 128               		.cfi_offset 29, -5
+ 129               	/* prologue: function */
+ 130               	/* frame size = 0 */
+ 131               	/* stack size = 4 */
+ 132               	.L__stack_usage = 4
+ 133 0070 8B01      		movw r16,r22
+  23:src/HBridge.c **** 	Pin_WriteAnalog(instances[number].inA, A_value);
+ 134               		.loc 1 23 0
+ 135 0072 26E0      		ldi r18,lo8(6)
+ 136 0074 429F      		mul r20,r18
+ 137 0076 E001      		movw r28,r0
+ 138 0078 1124      		clr __zero_reg__
+ 139 007a C050      		subi r28,lo8(-(instances))
+ 140 007c D040      		sbci r29,hi8(-(instances))
+ 141 007e BC01      		movw r22,r24
+ 142               	.LVL12:
+ 143 0080 8881      		ld r24,Y
+ 144 0082 9981      		ldd r25,Y+1
+ 145               	.LVL13:
+ 146 0084 0E94 0000 		call Pin_WriteAnalog
+ 147               	.LVL14:
+  24:src/HBridge.c **** 	Pin_WriteAnalog(instances[number].inB, B_value);
+ 148               		.loc 1 24 0
+ 149 0088 B801      		movw r22,r16
+ 150 008a 8A81      		ldd r24,Y+2
+ 151 008c 9B81      		ldd r25,Y+3
+ 152               	/* epilogue start */
+  25:src/HBridge.c **** }
+ 153               		.loc 1 25 0
+ 154 008e DF91      		pop r29
+ 155 0090 CF91      		pop r28
+ 156 0092 1F91      		pop r17
+ 157 0094 0F91      		pop r16
+ 158               	.LVL15:
+  24:src/HBridge.c **** 	Pin_WriteAnalog(instances[number].inB, B_value);
+ 159               		.loc 1 24 0
+ 160 0096 0C94 0000 		jmp Pin_WriteAnalog
+ 161               	.LVL16:
+ 162               		.cfi_endproc
+ 163               	.LFE6:
+ 165               	.global	HBridge_OnMessage
+ 167               	HBridge_OnMessage:
+ 168               	.LFB7:
+  26:src/HBridge.c **** 
+  27:src/HBridge.c **** bool HBridge_OnMessage(can_t* canMsg) {
+ 169               		.loc 1 27 0
+ 170               		.cfi_startproc
+ 171               	.LVL17:
+ 172               	/* prologue: function */
+ 173               	/* frame size = 0 */
+ 174               	/* stack size = 0 */
+ 175               	.L__stack_usage = 0
+  28:src/HBridge.c **** 	size_t i;
+  29:src/HBridge.c **** /*
+  30:src/HBridge.c **** 	for (i = 0; i < count; i++) {
+  31:src/HBridge.c **** 		if (unlikely(canMsg->id == instances[i].canId)) {
+  32:src/HBridge.c **** 
+  33:src/HBridge.c **** 			switch(canMsg->data[1]) {
+  34:src/HBridge.c **** 				case 0: // Left
+  35:src/HBridge.c **** 					Pin_WriteAnalog(instances[i].inA, 80);
+  36:src/HBridge.c **** 					Pin_WriteDigital(instances[i].inB, PIN_LOW);
+  37:src/HBridge.c **** 					Pin_WriteDigital(instances[i].inH, PIN_HIGH);
+  38:src/HBridge.c **** 					break;
+  39:src/HBridge.c **** 				case 1:	// Right
+  40:src/HBridge.c **** 					Pin_WriteAnalog(instances[i].inA, 20);
+  41:src/HBridge.c **** 					Pin_WriteDigital(instances[i].inB, PIN_HIGH);
+  42:src/HBridge.c **** 					Pin_WriteDigital(instances[i].inH, PIN_HIGH);
+  43:src/HBridge.c **** 					break;
+  44:src/HBridge.c **** 				case 2:	// Stop
+  45:src/HBridge.c **** 					Pin_WriteAnalog(instances[i].inA, 0);
+  46:src/HBridge.c **** 					Pin_WriteDigital(instances[i].inB, PIN_LOW);
+  47:src/HBridge.c **** 					Pin_WriteDigital(instances[i].inH, PIN_LOW);
+  48:src/HBridge.c **** 					break;
+  49:src/HBridge.c **** 			}
+  50:src/HBridge.c **** 
+  51:src/HBridge.c **** 		return true;
+  52:src/HBridge.c **** 		}
+  53:src/HBridge.c **** 	}*/
+  54:src/HBridge.c **** 
+  55:src/HBridge.c **** 	return false;
+  56:src/HBridge.c **** }
+ 176               		.loc 1 56 0
+ 177 009a 80E0      		ldi r24,0
+ 178               	.LVL18:
+ 179 009c 0895      		ret
+ 180               		.cfi_endproc
+ 181               	.LFE7:
+ 183               		.local	count
+ 184               		.comm	count,1,1
+ 185               		.comm	instances,60,1
+ 186               	.Letext0:
+ 187               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 188               		.file 3 "/usr/lib/gcc/avr/5.4.0/include/stddef.h"
+ 189               		.file 4 "./libs/can/can.h"
+ 190               		.file 5 "src/Pin.h"
+ 191               		.file 6 "src/HBridge.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 HBridge.c
+     /tmp/ccZRmCKz.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccZRmCKz.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccZRmCKz.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccZRmCKz.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/ccZRmCKz.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccZRmCKz.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccZRmCKz.s:13     .text:0000000000000000 HBridge_Add
+                             .bss:0000000000000000 count
+                            *COM*:000000000000003c instances
+     /tmp/ccZRmCKz.s:108    .text:0000000000000068 HBridge_Move
+     /tmp/ccZRmCKz.s:167    .text:000000000000009a HBridge_OnMessage
+
+UNDEFINED SYMBOLS
+Pin_SetMode
+Pin_EnableAnalog
+Pin_WriteAnalog
+__do_clear_bss

@@ -1,0 +1,1214 @@
+   1               		.file	"Pin.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               	.global	Pin_SetMode
+  13               	Pin_SetMode:
+  14               	.LFB4:
+  15               		.file 1 "src/Pin.c"
+   1:src/Pin.c     **** #include <avr/io.h>
+   2:src/Pin.c     **** #include "Pin.h"
+   3:src/Pin.c     **** 
+   4:src/Pin.c     **** 
+   5:src/Pin.c     **** void Pin_SetMode(Pin* pin, PinMode mode) {
+  16               		.loc 1 5 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  23 0000 FC01      		movw r30,r24
+  24 0002 4681      		ldd r20,Z+6
+   6:src/Pin.c     **** 	if (mode == PIN_INPUT) {
+  25               		.loc 1 6 0
+  26 0004 6111      		cpse r22,__zero_reg__
+  27 0006 00C0      		rjmp .L2
+   7:src/Pin.c     **** 		// Set pull-up resistor
+   8:src/Pin.c     **** 		set_bit(*(pin->PORTx), pin->Pxn);
+  28               		.loc 1 8 0
+  29 0008 A281      		ldd r26,Z+2
+  30 000a B381      		ldd r27,Z+3
+  31 000c 5C91      		ld r21,X
+  32 000e 21E0      		ldi r18,lo8(1)
+  33 0010 30E0      		ldi r19,0
+  34 0012 C901      		movw r24,r18
+  35               	.LVL1:
+  36 0014 00C0      		rjmp 2f
+  37               		1:
+  38 0016 880F      		lsl r24
+  39               		2:
+  40 0018 4A95      		dec r20
+  41 001a 02F4      		brpl 1b
+  42 001c 852B      		or r24,r21
+  43 001e 8C93      		st X,r24
+   9:src/Pin.c     **** 
+  10:src/Pin.c     **** 		// Set input pin
+  11:src/Pin.c     **** 		clear_bit(*(pin->DDRx), pin->Pxn);
+  44               		.loc 1 11 0
+  45 0020 A081      		ld r26,Z
+  46 0022 B181      		ldd r27,Z+1
+  47 0024 8C91      		ld r24,X
+  48 0026 0680      		ldd r0,Z+6
+  49 0028 00C0      		rjmp 2f
+  50               		1:
+  51 002a 220F      		lsl r18
+  52 002c 331F      		rol r19
+  53               		2:
+  54 002e 0A94      		dec r0
+  55 0030 02F4      		brpl 1b
+  56 0032 2095      		com r18
+  57 0034 2823      		and r18,r24
+  58 0036 2C93      		st X,r18
+  59 0038 0895      		ret
+  60               	.LVL2:
+  61               	.L2:
+  12:src/Pin.c     **** 	} else {
+  13:src/Pin.c     **** 		set_bit(*(pin->DDRx), pin->Pxn);
+  62               		.loc 1 13 0
+  63 003a 0190      		ld __tmp_reg__,Z+
+  64 003c F081      		ld r31,Z
+  65 003e E02D      		mov r30,__tmp_reg__
+  66 0040 2081      		ld r18,Z
+  67 0042 81E0      		ldi r24,lo8(1)
+  68 0044 90E0      		ldi r25,0
+  69               	.LVL3:
+  70 0046 00C0      		rjmp 2f
+  71               		1:
+  72 0048 880F      		lsl r24
+  73               		2:
+  74 004a 4A95      		dec r20
+  75 004c 02F4      		brpl 1b
+  76 004e 822B      		or r24,r18
+  77 0050 8083      		st Z,r24
+  78 0052 0895      		ret
+  79               		.cfi_endproc
+  80               	.LFE4:
+  82               	.global	Pin_EnableAnalog
+  84               	Pin_EnableAnalog:
+  85               	.LFB5:
+  14:src/Pin.c     **** 	}
+  15:src/Pin.c     **** }
+  16:src/Pin.c     **** 
+  17:src/Pin.c     **** void Pin_EnableAnalog(Pin* pin, PinFrequency frequency) {
+  86               		.loc 1 17 0
+  87               		.cfi_startproc
+  88               	.LVL4:
+  89 0054 CF93      		push r28
+  90               	.LCFI0:
+  91               		.cfi_def_cfa_offset 3
+  92               		.cfi_offset 28, -2
+  93 0056 DF93      		push r29
+  94               	.LCFI1:
+  95               		.cfi_def_cfa_offset 4
+  96               		.cfi_offset 29, -3
+  97               	/* prologue: function */
+  98               	/* frame size = 0 */
+  99               	/* stack size = 2 */
+ 100               	.L__stack_usage = 2
+ 101 0058 DC01      		movw r26,r24
+  18:src/Pin.c     **** 	if(pin->Pxn == PE5 || pin->Pxn == PE4) {
+ 102               		.loc 1 18 0
+ 103 005a 1696      		adiw r26,6
+ 104 005c 8C91      		ld r24,X
+ 105 005e 1697      		sbiw r26,6
+ 106               	.LVL5:
+ 107 0060 8450      		subi r24,lo8(-(-4))
+ 108 0062 8230      		cpi r24,lo8(2)
+ 109 0064 00F4      		brsh .L6
+  19:src/Pin.c     **** 
+  20:src/Pin.c     **** 		//DDRE |= (1 << PINE4) | (1 << PINE5);
+  21:src/Pin.c     **** 
+  22:src/Pin.c     **** 		TCNT3 = 0;
+ 110               		.loc 1 22 0
+ 111 0066 1092 9500 		sts 148+1,__zero_reg__
+ 112 006a 1092 9400 		sts 148,__zero_reg__
+  23:src/Pin.c     **** 		OCR3A = 0;
+ 113               		.loc 1 23 0
+ 114 006e 1092 9900 		sts 152+1,__zero_reg__
+ 115 0072 1092 9800 		sts 152,__zero_reg__
+  24:src/Pin.c     **** 		OCR3B = 0;
+ 116               		.loc 1 24 0
+ 117 0076 1092 9B00 		sts 154+1,__zero_reg__
+ 118 007a 1092 9A00 		sts 154,__zero_reg__
+  25:src/Pin.c     **** 		OCR3C = 0;
+ 119               		.loc 1 25 0
+ 120 007e 1092 9D00 		sts 156+1,__zero_reg__
+ 121 0082 1092 9C00 		sts 156,__zero_reg__
+  26:src/Pin.c     **** 
+  27:src/Pin.c     **** 		TCCR3A = (1 << COM3B1) | (1 << COM3B0) | (1 << COM3C1) | (1 << COM3C0) | (1 << WGM31);
+ 122               		.loc 1 27 0
+ 123 0086 8EE3      		ldi r24,lo8(62)
+ 124 0088 8093 9000 		sts 144,r24
+  28:src/Pin.c     **** 		TCCR3B = (1 << WGM32) | (1 << WGM33) | (1 << CS30); // PRESKALER = 1
+ 125               		.loc 1 28 0
+ 126 008c 89E1      		ldi r24,lo8(25)
+ 127 008e 8093 9100 		sts 145,r24
+  29:src/Pin.c     **** 		ICR3 = (double)F_CPU / 20 - 0.5;
+ 128               		.loc 1 29 0
+ 129 0092 8FEF      		ldi r24,lo8(-1)
+ 130 0094 9FEF      		ldi r25,lo8(-1)
+ 131 0096 9093 9700 		sts 150+1,r25
+ 132 009a 8093 9600 		sts 150,r24
+ 133 009e 00C0      		rjmp .L5
+ 134               	.L6:
+  30:src/Pin.c     **** 
+  31:src/Pin.c     **** 	} else {
+  32:src/Pin.c     **** 		switch (pin->timer->bits) {
+ 135               		.loc 1 32 0
+ 136 00a0 1796      		adiw r26,7
+ 137 00a2 ED91      		ld r30,X+
+ 138 00a4 FC91      		ld r31,X
+ 139 00a6 1897      		sbiw r26,7+1
+ 140 00a8 8489      		ldd r24,Z+20
+ 141 00aa 8830      		cpi r24,lo8(8)
+ 142 00ac 01F0      		breq .L8
+ 143 00ae 8031      		cpi r24,lo8(16)
+ 144 00b0 01F4      		brne .+2
+ 145 00b2 00C0      		rjmp .L9
+ 146 00b4 00C0      		rjmp .L5
+ 147               	.L8:
+  33:src/Pin.c     **** 			// Configuration for 8bit timers
+  34:src/Pin.c     **** 			case 8:
+  35:src/Pin.c     **** 				switch (frequency) {
+ 148               		.loc 1 35 0
+ 149 00b6 6130      		cpi r22,lo8(1)
+ 150 00b8 01F0      		breq .L10
+ 151 00ba 00F4      		brsh .+2
+ 152 00bc 00C0      		rjmp .L11
+ 153 00be 6330      		cpi r22,lo8(3)
+ 154 00c0 01F0      		breq .+2
+ 155 00c2 00C0      		rjmp .L5
+  36:src/Pin.c     **** 					case PIN_7KHz:
+  37:src/Pin.c     **** 						*(pin->timer->TCCRnA) |=
+  38:src/Pin.c     **** 							(1 << pin->timer->WGMn0) |
+  39:src/Pin.c     **** 							(1 << pin->timer->WGMn1) |
+  40:src/Pin.c     **** 							(1 << pin->timer->COMnA1) |
+  41:src/Pin.c     **** 							(1 << pin->timer->CSn1);
+  42:src/Pin.c     **** 					break;
+  43:src/Pin.c     **** 					case PIN_1KHz:
+  44:src/Pin.c     **** 						*(pin->timer->TCCRnA) |=
+  45:src/Pin.c     **** 						(1 << pin->timer->WGMn0) |
+  46:src/Pin.c     **** 						(1 << pin->timer->WGMn1) |
+  47:src/Pin.c     **** 						(1 << pin->timer->COMnA1) |
+  48:src/Pin.c     **** 						(1 << pin->timer->CSn0) |
+  49:src/Pin.c     **** 						(1 << pin->timer->CSn1);
+  50:src/Pin.c     **** 					break;
+  51:src/Pin.c     **** 					case PIN_66KHz:
+  52:src/Pin.c     **** 						*(pin->timer->TCCRnA) |=
+ 156               		.loc 1 52 0
+ 157 00c4 A081      		ld r26,Z
+ 158 00c6 B181      		ldd r27,Z+1
+ 159               	.LVL6:
+ 160 00c8 3C91      		ld r19,X
+ 161 00ca 81E0      		ldi r24,lo8(1)
+ 162 00cc 90E0      		ldi r25,0
+ 163 00ce BC01      		movw r22,r24
+ 164               	.LVL7:
+ 165 00d0 0084      		ldd r0,Z+8
+ 166 00d2 00C0      		rjmp 2f
+ 167               		1:
+ 168 00d4 660F      		lsl r22
+ 169 00d6 771F      		rol r23
+ 170               		2:
+ 171 00d8 0A94      		dec r0
+ 172 00da 02F4      		brpl 1b
+ 173 00dc AC01      		movw r20,r24
+ 174 00de 0184      		ldd r0,Z+9
+ 175 00e0 00C0      		rjmp 2f
+ 176               		1:
+ 177 00e2 440F      		lsl r20
+ 178 00e4 551F      		rol r21
+ 179               		2:
+ 180 00e6 0A94      		dec r0
+ 181 00e8 02F4      		brpl 1b
+ 182 00ea 462B      		or r20,r22
+ 183 00ec 432B      		or r20,r19
+ 184 00ee 9C01      		movw r18,r24
+ 185 00f0 0584      		ldd r0,Z+13
+ 186 00f2 00C0      		rjmp 2f
+ 187               		1:
+ 188 00f4 220F      		lsl r18
+ 189 00f6 331F      		rol r19
+ 190               		2:
+ 191 00f8 0A94      		dec r0
+ 192 00fa 02F4      		brpl 1b
+ 193 00fc 242B      		or r18,r20
+ 194 00fe 0288      		ldd r0,Z+18
+ 195 0100 00C0      		rjmp 2f
+ 196               		1:
+ 197 0102 880F      		lsl r24
+ 198 0104 991F      		rol r25
+ 199               		2:
+ 200 0106 0A94      		dec r0
+ 201 0108 02F4      		brpl 1b
+ 202 010a 00C0      		rjmp .L17
+ 203               	.LVL8:
+ 204               	.L10:
+  37:src/Pin.c     **** 							(1 << pin->timer->WGMn0) |
+ 205               		.loc 1 37 0
+ 206 010c A081      		ld r26,Z
+ 207 010e B181      		ldd r27,Z+1
+ 208               	.LVL9:
+ 209 0110 3C91      		ld r19,X
+ 210 0112 81E0      		ldi r24,lo8(1)
+ 211 0114 90E0      		ldi r25,0
+ 212 0116 BC01      		movw r22,r24
+ 213               	.LVL10:
+ 214 0118 0084      		ldd r0,Z+8
+ 215 011a 00C0      		rjmp 2f
+ 216               		1:
+ 217 011c 660F      		lsl r22
+ 218 011e 771F      		rol r23
+ 219               		2:
+ 220 0120 0A94      		dec r0
+ 221 0122 02F4      		brpl 1b
+ 222 0124 AC01      		movw r20,r24
+ 223 0126 0184      		ldd r0,Z+9
+ 224 0128 00C0      		rjmp 2f
+ 225               		1:
+ 226 012a 440F      		lsl r20
+ 227 012c 551F      		rol r21
+ 228               		2:
+ 229 012e 0A94      		dec r0
+ 230 0130 02F4      		brpl 1b
+ 231 0132 462B      		or r20,r22
+ 232 0134 432B      		or r20,r19
+ 233 0136 9C01      		movw r18,r24
+ 234 0138 0584      		ldd r0,Z+13
+ 235 013a 00C0      		rjmp 2f
+ 236               		1:
+ 237 013c 220F      		lsl r18
+ 238 013e 331F      		rol r19
+ 239               		2:
+ 240 0140 0A94      		dec r0
+ 241 0142 02F4      		brpl 1b
+ 242 0144 00C0      		rjmp .L16
+ 243               	.LVL11:
+ 244               	.L11:
+  44:src/Pin.c     **** 						(1 << pin->timer->WGMn0) |
+ 245               		.loc 1 44 0
+ 246 0146 A081      		ld r26,Z
+ 247 0148 B181      		ldd r27,Z+1
+ 248               	.LVL12:
+ 249 014a 3C91      		ld r19,X
+ 250 014c 81E0      		ldi r24,lo8(1)
+ 251 014e 90E0      		ldi r25,0
+ 252 0150 BC01      		movw r22,r24
+ 253               	.LVL13:
+ 254 0152 0084      		ldd r0,Z+8
+ 255 0154 00C0      		rjmp 2f
+ 256               		1:
+ 257 0156 660F      		lsl r22
+ 258 0158 771F      		rol r23
+ 259               		2:
+ 260 015a 0A94      		dec r0
+ 261 015c 02F4      		brpl 1b
+ 262 015e AC01      		movw r20,r24
+ 263 0160 0184      		ldd r0,Z+9
+ 264 0162 00C0      		rjmp 2f
+ 265               		1:
+ 266 0164 440F      		lsl r20
+ 267 0166 551F      		rol r21
+ 268               		2:
+ 269 0168 0A94      		dec r0
+ 270 016a 02F4      		brpl 1b
+ 271 016c 462B      		or r20,r22
+ 272 016e 242F      		mov r18,r20
+ 273 0170 232B      		or r18,r19
+ 274 0172 AC01      		movw r20,r24
+ 275 0174 0584      		ldd r0,Z+13
+ 276 0176 00C0      		rjmp 2f
+ 277               		1:
+ 278 0178 440F      		lsl r20
+ 279 017a 551F      		rol r21
+ 280               		2:
+ 281 017c 0A94      		dec r0
+ 282 017e 02F4      		brpl 1b
+ 283 0180 422B      		or r20,r18
+ 284 0182 9C01      		movw r18,r24
+ 285 0184 0288      		ldd r0,Z+18
+ 286 0186 00C0      		rjmp 2f
+ 287               		1:
+ 288 0188 220F      		lsl r18
+ 289 018a 331F      		rol r19
+ 290               		2:
+ 291 018c 0A94      		dec r0
+ 292 018e 02F4      		brpl 1b
+ 293               	.L16:
+ 294 0190 242B      		or r18,r20
+ 295 0192 0388      		ldd r0,Z+19
+ 296 0194 00C0      		rjmp 2f
+ 297               		1:
+ 298 0196 880F      		lsl r24
+ 299 0198 991F      		rol r25
+ 300               		2:
+ 301 019a 0A94      		dec r0
+ 302 019c 02F4      		brpl 1b
+ 303               	.L17:
+ 304 019e 822B      		or r24,r18
+ 305 01a0 8C93      		st X,r24
+  50:src/Pin.c     **** 					case PIN_66KHz:
+ 306               		.loc 1 50 0
+ 307 01a2 00C0      		rjmp .L5
+ 308               	.LVL14:
+ 309               	.L9:
+  53:src/Pin.c     **** 						(1 << pin->timer->WGMn0) |
+  54:src/Pin.c     **** 						(1 << pin->timer->WGMn1) |
+  55:src/Pin.c     **** 						(1 << pin->timer->COMnA1) |
+  56:src/Pin.c     **** 						(1 << pin->timer->CSn0);
+  57:src/Pin.c     **** 					break;
+  58:src/Pin.c     **** 				}
+  59:src/Pin.c     **** 				break;
+  60:src/Pin.c     **** 
+  61:src/Pin.c     **** 			// Configuration for 16bit timers
+  62:src/Pin.c     **** 			case 16:
+  63:src/Pin.c     **** 				switch (frequency) {
+ 310               		.loc 1 63 0
+ 311 01a4 6230      		cpi r22,lo8(2)
+ 312 01a6 01F4      		brne .+2
+ 313 01a8 00C0      		rjmp .L13
+ 314 01aa 6330      		cpi r22,lo8(3)
+ 315 01ac 01F4      		brne .+2
+ 316 01ae 00C0      		rjmp .L14
+ 317 01b0 6111      		cpse r22,__zero_reg__
+ 318 01b2 00C0      		rjmp .L5
+  64:src/Pin.c     **** 					case PIN_66KHz:
+  65:src/Pin.c     **** 						*(pin->timer->TCCRnA) |=
+  66:src/Pin.c     **** 							(1 << pin->timer->WGMn0) |
+  67:src/Pin.c     **** 							(1 << pin->timer->COMnA1) |
+  68:src/Pin.c     **** 							(1 << pin->timer->COMnB1);
+  69:src/Pin.c     **** 
+  70:src/Pin.c     **** 						*(pin->timer->TCCRnB) |=
+  71:src/Pin.c     **** 							(1 << pin->timer->CSn0) |
+  72:src/Pin.c     **** 							(1 << pin->timer->WGMn2);
+  73:src/Pin.c     **** 
+  74:src/Pin.c     **** 						clear_bit(*(pin->timer->TCCRnB), pin->timer->CSn1);
+  75:src/Pin.c     **** 					break;
+  76:src/Pin.c     **** 
+  77:src/Pin.c     **** 					case PIN_1KHz:
+  78:src/Pin.c     **** 						*(pin->timer->TCCRnA) |=
+ 319               		.loc 1 78 0
+ 320 01b4 C081      		ld r28,Z
+ 321 01b6 D181      		ldd r29,Z+1
+ 322 01b8 9881      		ld r25,Y
+ 323 01ba 21E0      		ldi r18,lo8(1)
+ 324 01bc 30E0      		ldi r19,0
+ 325 01be B901      		movw r22,r18
+ 326               	.LVL15:
+ 327 01c0 0084      		ldd r0,Z+8
+ 328 01c2 00C0      		rjmp 2f
+ 329               		1:
+ 330 01c4 660F      		lsl r22
+ 331 01c6 771F      		rol r23
+ 332               		2:
+ 333 01c8 0A94      		dec r0
+ 334 01ca 02F4      		brpl 1b
+ 335 01cc A901      		movw r20,r18
+ 336 01ce 0584      		ldd r0,Z+13
+ 337 01d0 00C0      		rjmp 2f
+ 338               		1:
+ 339 01d2 440F      		lsl r20
+ 340 01d4 551F      		rol r21
+ 341               		2:
+ 342 01d6 0A94      		dec r0
+ 343 01d8 02F4      		brpl 1b
+ 344 01da 462B      		or r20,r22
+ 345 01dc 492B      		or r20,r25
+ 346 01de C901      		movw r24,r18
+ 347 01e0 0784      		ldd r0,Z+15
+ 348 01e2 00C0      		rjmp 2f
+ 349               		1:
+ 350 01e4 880F      		lsl r24
+ 351 01e6 991F      		rol r25
+ 352               		2:
+ 353 01e8 0A94      		dec r0
+ 354 01ea 02F4      		brpl 1b
+ 355 01ec 842B      		or r24,r20
+ 356 01ee 8883      		st Y,r24
+  79:src/Pin.c     **** 							(1 << pin->timer->WGMn0) |
+  80:src/Pin.c     **** 							(1 << pin->timer->COMnA1) |
+  81:src/Pin.c     **** 							(1 << pin->timer->COMnB1);
+  82:src/Pin.c     **** 
+  83:src/Pin.c     **** 						*(pin->timer->TCCRnB) |=
+ 357               		.loc 1 83 0
+ 358 01f0 1796      		adiw r26,7
+ 359 01f2 ED91      		ld r30,X+
+ 360 01f4 FC91      		ld r31,X
+ 361 01f6 1897      		sbiw r26,7+1
+ 362 01f8 A281      		ldd r26,Z+2
+ 363 01fa B381      		ldd r27,Z+3
+ 364               	.LVL16:
+ 365 01fc 9C91      		ld r25,X
+ 366 01fe B901      		movw r22,r18
+ 367 0200 0288      		ldd r0,Z+18
+ 368 0202 00C0      		rjmp 2f
+ 369               		1:
+ 370 0204 660F      		lsl r22
+ 371 0206 771F      		rol r23
+ 372               		2:
+ 373 0208 0A94      		dec r0
+ 374 020a 02F4      		brpl 1b
+ 375 020c A901      		movw r20,r18
+ 376 020e 0388      		ldd r0,Z+19
+ 377 0210 00C0      		rjmp 2f
+ 378               		1:
+ 379 0212 440F      		lsl r20
+ 380 0214 551F      		rol r21
+ 381               		2:
+ 382 0216 0A94      		dec r0
+ 383 0218 02F4      		brpl 1b
+ 384 021a 862F      		mov r24,r22
+ 385 021c 842B      		or r24,r20
+ 386 021e 892B      		or r24,r25
+ 387 0220 0284      		ldd r0,Z+10
+ 388 0222 00C0      		rjmp 2f
+ 389               		1:
+ 390 0224 220F      		lsl r18
+ 391 0226 331F      		rol r19
+ 392               		2:
+ 393 0228 0A94      		dec r0
+ 394 022a 02F4      		brpl 1b
+ 395 022c 282B      		or r18,r24
+ 396 022e 2C93      		st X,r18
+  84:src/Pin.c     **** 							(1 << pin->timer->CSn0) |
+  85:src/Pin.c     **** 							(1 << pin->timer->CSn1) |
+  86:src/Pin.c     **** 							(1 << pin->timer->WGMn2);
+  87:src/Pin.c     **** 					break;
+ 397               		.loc 1 87 0
+ 398 0230 00C0      		rjmp .L5
+ 399               	.LVL17:
+ 400               	.L14:
+  65:src/Pin.c     **** 							(1 << pin->timer->WGMn0) |
+ 401               		.loc 1 65 0
+ 402 0232 C081      		ld r28,Z
+ 403 0234 D181      		ldd r29,Z+1
+ 404 0236 9881      		ld r25,Y
+ 405 0238 21E0      		ldi r18,lo8(1)
+ 406 023a 30E0      		ldi r19,0
+ 407 023c B901      		movw r22,r18
+ 408               	.LVL18:
+ 409 023e 0084      		ldd r0,Z+8
+ 410 0240 00C0      		rjmp 2f
+ 411               		1:
+ 412 0242 660F      		lsl r22
+ 413 0244 771F      		rol r23
+ 414               		2:
+ 415 0246 0A94      		dec r0
+ 416 0248 02F4      		brpl 1b
+ 417 024a A901      		movw r20,r18
+ 418 024c 0584      		ldd r0,Z+13
+ 419 024e 00C0      		rjmp 2f
+ 420               		1:
+ 421 0250 440F      		lsl r20
+ 422 0252 551F      		rol r21
+ 423               		2:
+ 424 0254 0A94      		dec r0
+ 425 0256 02F4      		brpl 1b
+ 426 0258 462B      		or r20,r22
+ 427 025a 492B      		or r20,r25
+ 428 025c C901      		movw r24,r18
+ 429 025e 0784      		ldd r0,Z+15
+ 430 0260 00C0      		rjmp 2f
+ 431               		1:
+ 432 0262 880F      		lsl r24
+ 433 0264 991F      		rol r25
+ 434               		2:
+ 435 0266 0A94      		dec r0
+ 436 0268 02F4      		brpl 1b
+ 437 026a 842B      		or r24,r20
+ 438 026c 8883      		st Y,r24
+  70:src/Pin.c     **** 							(1 << pin->timer->CSn0) |
+ 439               		.loc 1 70 0
+ 440 026e 1796      		adiw r26,7
+ 441 0270 ED91      		ld r30,X+
+ 442 0272 FC91      		ld r31,X
+ 443 0274 1897      		sbiw r26,7+1
+ 444 0276 C281      		ldd r28,Z+2
+ 445 0278 D381      		ldd r29,Z+3
+ 446 027a 9881      		ld r25,Y
+ 447 027c B901      		movw r22,r18
+ 448 027e 0288      		ldd r0,Z+18
+ 449 0280 00C0      		rjmp 2f
+ 450               		1:
+ 451 0282 660F      		lsl r22
+ 452 0284 771F      		rol r23
+ 453               		2:
+ 454 0286 0A94      		dec r0
+ 455 0288 02F4      		brpl 1b
+ 456 028a A901      		movw r20,r18
+ 457 028c 0284      		ldd r0,Z+10
+ 458 028e 00C0      		rjmp 2f
+ 459               		1:
+ 460 0290 440F      		lsl r20
+ 461 0292 551F      		rol r21
+ 462               		2:
+ 463 0294 0A94      		dec r0
+ 464 0296 02F4      		brpl 1b
+ 465 0298 862F      		mov r24,r22
+ 466 029a 842B      		or r24,r20
+ 467 029c 892B      		or r24,r25
+ 468 029e 8883      		st Y,r24
+  74:src/Pin.c     **** 					break;
+ 469               		.loc 1 74 0
+ 470 02a0 1796      		adiw r26,7
+ 471 02a2 0D90      		ld __tmp_reg__,X+
+ 472 02a4 BC91      		ld r27,X
+ 473 02a6 A02D      		mov r26,__tmp_reg__
+ 474               	.LVL19:
+ 475 02a8 1296      		adiw r26,2
+ 476 02aa ED91      		ld r30,X+
+ 477 02ac FC91      		ld r31,X
+ 478 02ae 1397      		sbiw r26,2+1
+ 479 02b0 8081      		ld r24,Z
+ 480 02b2 5396      		adiw r26,19
+ 481 02b4 0C90      		ld r0,X
+ 482 02b6 00C0      		rjmp 2f
+ 483               		1:
+ 484 02b8 220F      		lsl r18
+ 485 02ba 331F      		rol r19
+ 486               		2:
+ 487 02bc 0A94      		dec r0
+ 488 02be 02F4      		brpl 1b
+ 489 02c0 2095      		com r18
+ 490 02c2 2823      		and r18,r24
+ 491 02c4 2083      		st Z,r18
+  75:src/Pin.c     **** 
+ 492               		.loc 1 75 0
+ 493 02c6 00C0      		rjmp .L5
+ 494               	.LVL20:
+ 495               	.L13:
+  88:src/Pin.c     **** 
+  89:src/Pin.c     **** 					case PIN_20KHz:
+  90:src/Pin.c     **** 						*(pin->timer->TCCRnA) |=
+ 496               		.loc 1 90 0
+ 497 02c8 C081      		ld r28,Z
+ 498 02ca D181      		ldd r29,Z+1
+ 499 02cc 9881      		ld r25,Y
+ 500 02ce 21E0      		ldi r18,lo8(1)
+ 501 02d0 30E0      		ldi r19,0
+ 502 02d2 B901      		movw r22,r18
+ 503               	.LVL21:
+ 504 02d4 0184      		ldd r0,Z+9
+ 505 02d6 00C0      		rjmp 2f
+ 506               		1:
+ 507 02d8 660F      		lsl r22
+ 508 02da 771F      		rol r23
+ 509               		2:
+ 510 02dc 0A94      		dec r0
+ 511 02de 02F4      		brpl 1b
+ 512 02e0 A901      		movw r20,r18
+ 513 02e2 0584      		ldd r0,Z+13
+ 514 02e4 00C0      		rjmp 2f
+ 515               		1:
+ 516 02e6 440F      		lsl r20
+ 517 02e8 551F      		rol r21
+ 518               		2:
+ 519 02ea 0A94      		dec r0
+ 520 02ec 02F4      		brpl 1b
+ 521 02ee 462B      		or r20,r22
+ 522 02f0 492B      		or r20,r25
+ 523 02f2 C901      		movw r24,r18
+ 524 02f4 0784      		ldd r0,Z+15
+ 525 02f6 00C0      		rjmp 2f
+ 526               		1:
+ 527 02f8 880F      		lsl r24
+ 528 02fa 991F      		rol r25
+ 529               		2:
+ 530 02fc 0A94      		dec r0
+ 531 02fe 02F4      		brpl 1b
+ 532 0300 842B      		or r24,r20
+ 533 0302 8883      		st Y,r24
+  91:src/Pin.c     **** 							(1 << pin->timer->WGMn1) |
+  92:src/Pin.c     **** 							(1 << pin->timer->COMnA1) |
+  93:src/Pin.c     **** 							(1 << pin->timer->COMnB1);
+  94:src/Pin.c     **** 
+  95:src/Pin.c     **** 						*(pin->timer->TCCRnB) |=
+ 534               		.loc 1 95 0
+ 535 0304 1796      		adiw r26,7
+ 536 0306 ED91      		ld r30,X+
+ 537 0308 FC91      		ld r31,X
+ 538 030a 1897      		sbiw r26,7+1
+ 539 030c C281      		ldd r28,Z+2
+ 540 030e D381      		ldd r29,Z+3
+ 541 0310 9881      		ld r25,Y
+ 542 0312 B901      		movw r22,r18
+ 543 0314 0388      		ldd r0,Z+19
+ 544 0316 00C0      		rjmp 2f
+ 545               		1:
+ 546 0318 660F      		lsl r22
+ 547 031a 771F      		rol r23
+ 548               		2:
+ 549 031c 0A94      		dec r0
+ 550 031e 02F4      		brpl 1b
+ 551 0320 A901      		movw r20,r18
+ 552 0322 0284      		ldd r0,Z+10
+ 553 0324 00C0      		rjmp 2f
+ 554               		1:
+ 555 0326 440F      		lsl r20
+ 556 0328 551F      		rol r21
+ 557               		2:
+ 558 032a 0A94      		dec r0
+ 559 032c 02F4      		brpl 1b
+ 560 032e 862F      		mov r24,r22
+ 561 0330 842B      		or r24,r20
+ 562 0332 892B      		or r24,r25
+ 563 0334 0384      		ldd r0,Z+11
+ 564 0336 00C0      		rjmp 2f
+ 565               		1:
+ 566 0338 220F      		lsl r18
+ 567 033a 331F      		rol r19
+ 568               		2:
+ 569 033c 0A94      		dec r0
+ 570 033e 02F4      		brpl 1b
+ 571 0340 282B      		or r18,r24
+ 572 0342 2883      		st Y,r18
+  96:src/Pin.c     **** 							(1 << pin->timer->CSn1) |
+  97:src/Pin.c     **** 							(1 << pin->timer->WGMn2) |
+  98:src/Pin.c     **** 							(1 << pin->timer->WGMn3);
+  99:src/Pin.c     **** 
+ 100:src/Pin.c     **** 						*(pin->timer->ICRn) = 100;
+ 573               		.loc 1 100 0
+ 574 0344 1796      		adiw r26,7
+ 575 0346 ED91      		ld r30,X+
+ 576 0348 FC91      		ld r31,X
+ 577 034a 1897      		sbiw r26,7+1
+ 578 034c 0680      		ldd __tmp_reg__,Z+6
+ 579 034e F781      		ldd r31,Z+7
+ 580 0350 E02D      		mov r30,__tmp_reg__
+ 581 0352 84E6      		ldi r24,lo8(100)
+ 582 0354 90E0      		ldi r25,0
+ 583 0356 9183      		std Z+1,r25
+ 584 0358 8083      		st Z,r24
+ 585               	.LVL22:
+ 586               	.L5:
+ 587               	/* epilogue start */
+ 101:src/Pin.c     **** 					break;
+ 102:src/Pin.c     **** 				}
+ 103:src/Pin.c     **** 				break;
+ 104:src/Pin.c     **** 		}
+ 105:src/Pin.c     **** 	}
+ 106:src/Pin.c     **** }
+ 588               		.loc 1 106 0
+ 589 035a DF91      		pop r29
+ 590 035c CF91      		pop r28
+ 591 035e 0895      		ret
+ 592               		.cfi_endproc
+ 593               	.LFE5:
+ 595               	.global	Pin_WriteAnalog
+ 597               	Pin_WriteAnalog:
+ 598               	.LFB6:
+ 107:src/Pin.c     **** 
+ 108:src/Pin.c     **** void Pin_WriteAnalog(Pin* pin, uint16_t value) {
+ 599               		.loc 1 108 0
+ 600               		.cfi_startproc
+ 601               	.LVL23:
+ 602               	/* prologue: function */
+ 603               	/* frame size = 0 */
+ 604               	/* stack size = 0 */
+ 605               	.L__stack_usage = 0
+ 109:src/Pin.c     **** 
+ 110:src/Pin.c     **** 	*(pin->timer->OCRn) = value;
+ 606               		.loc 1 110 0
+ 607 0360 DC01      		movw r26,r24
+ 608 0362 1796      		adiw r26,7
+ 609 0364 ED91      		ld r30,X+
+ 610 0366 FC91      		ld r31,X
+ 611 0368 1897      		sbiw r26,7+1
+ 612 036a 0480      		ldd __tmp_reg__,Z+4
+ 613 036c F581      		ldd r31,Z+5
+ 614 036e E02D      		mov r30,__tmp_reg__
+ 615 0370 7183      		std Z+1,r23
+ 616 0372 6083      		st Z,r22
+ 617 0374 0895      		ret
+ 618               		.cfi_endproc
+ 619               	.LFE6:
+ 621               	.global	Pin_WriteDigital
+ 623               	Pin_WriteDigital:
+ 624               	.LFB7:
+ 111:src/Pin.c     **** 	
+ 112:src/Pin.c     **** }
+ 113:src/Pin.c     **** 
+ 114:src/Pin.c     **** void Pin_WriteDigital(Pin* pin, PinValue value) {
+ 625               		.loc 1 114 0
+ 626               		.cfi_startproc
+ 627               	.LVL24:
+ 628               	/* prologue: function */
+ 629               	/* frame size = 0 */
+ 630               	/* stack size = 0 */
+ 631               	.L__stack_usage = 0
+ 632 0376 DC01      		movw r26,r24
+ 633 0378 1296      		adiw r26,2
+ 634 037a ED91      		ld r30,X+
+ 635 037c FC91      		ld r31,X
+ 636 037e 1397      		sbiw r26,2+1
+ 637 0380 1696      		adiw r26,6
+ 638 0382 3C91      		ld r19,X
+ 115:src/Pin.c     **** 	// TODO: Implement without condition
+ 116:src/Pin.c     **** 	if (value == PIN_HIGH) {
+ 117:src/Pin.c     **** 		set_bit(*(pin->PORTx), pin->Pxn);
+ 639               		.loc 1 117 0
+ 640 0384 2081      		ld r18,Z
+ 641 0386 81E0      		ldi r24,lo8(1)
+ 642 0388 90E0      		ldi r25,0
+ 643               	.LVL25:
+ 644 038a 00C0      		rjmp 2f
+ 645               		1:
+ 646 038c 880F      		lsl r24
+ 647               		2:
+ 648 038e 3A95      		dec r19
+ 649 0390 02F4      		brpl 1b
+ 116:src/Pin.c     **** 		set_bit(*(pin->PORTx), pin->Pxn);
+ 650               		.loc 1 116 0
+ 651 0392 6130      		cpi r22,lo8(1)
+ 652 0394 01F4      		brne .L20
+ 653               		.loc 1 117 0
+ 654 0396 822B      		or r24,r18
+ 655 0398 00C0      		rjmp .L22
+ 656               	.L20:
+ 118:src/Pin.c     **** 	} else {
+ 119:src/Pin.c     **** 		clear_bit(*(pin->PORTx), pin->Pxn);
+ 657               		.loc 1 119 0
+ 658 039a 8095      		com r24
+ 659 039c 8223      		and r24,r18
+ 660               	.L22:
+ 661 039e 8083      		st Z,r24
+ 662 03a0 0895      		ret
+ 663               		.cfi_endproc
+ 664               	.LFE7:
+ 666               	.global	Pin_ReadDigital
+ 668               	Pin_ReadDigital:
+ 669               	.LFB8:
+ 120:src/Pin.c     **** 	}
+ 121:src/Pin.c     **** }
+ 122:src/Pin.c     **** 
+ 123:src/Pin.c     **** PinValue Pin_ReadDigital(Pin* pin) {
+ 670               		.loc 1 123 0
+ 671               		.cfi_startproc
+ 672               	.LVL26:
+ 673               	/* prologue: function */
+ 674               	/* frame size = 0 */
+ 675               	/* stack size = 0 */
+ 676               	.L__stack_usage = 0
+ 124:src/Pin.c     **** 	if (bit_is_set(*(pin->PINx), pin->Pxn)) {
+ 677               		.loc 1 124 0
+ 678 03a2 DC01      		movw r26,r24
+ 679 03a4 1496      		adiw r26,4
+ 680 03a6 ED91      		ld r30,X+
+ 681 03a8 FC91      		ld r31,X
+ 682 03aa 1597      		sbiw r26,4+1
+ 683 03ac 2081      		ld r18,Z
+ 684 03ae 30E0      		ldi r19,0
+ 685 03b0 F901      		movw r30,r18
+ 686 03b2 1696      		adiw r26,6
+ 687 03b4 0C90      		ld r0,X
+ 688 03b6 00C0      		rjmp 2f
+ 689               		1:
+ 690 03b8 F595      		asr r31
+ 691 03ba E795      		ror r30
+ 692               		2:
+ 693 03bc 0A94      		dec r0
+ 694 03be 02F4      		brpl 1b
+ 695 03c0 CF01      		movw r24,r30
+ 696               	.LVL27:
+ 125:src/Pin.c     **** 		return PIN_HIGH;
+ 126:src/Pin.c     **** 	} else {
+ 127:src/Pin.c     **** 		return PIN_LOW;
+ 128:src/Pin.c     **** 	}
+ 129:src/Pin.c     **** }
+ 697               		.loc 1 129 0
+ 698 03c2 8170      		andi r24,lo8(1)
+ 699 03c4 0895      		ret
+ 700               		.cfi_endproc
+ 701               	.LFE8:
+ 703               	.global	Pin_G2
+ 704               		.data
+ 707               	Pin_G2:
+ 708 0000 3300      		.word	51
+ 709 0002 3400      		.word	52
+ 710 0004 3200      		.word	50
+ 711 0006 02        		.byte	2
+ 712 0007 0000      		.word	0
+ 713               	.global	Pin_F3
+ 716               	Pin_F3:
+ 717 0009 3000      		.word	48
+ 718 000b 3100      		.word	49
+ 719 000d 2F00      		.word	47
+ 720 000f 03        		.byte	3
+ 721 0010 0000      		.word	0
+ 722               	.global	Pin_F2
+ 725               	Pin_F2:
+ 726 0012 3000      		.word	48
+ 727 0014 3100      		.word	49
+ 728 0016 2F00      		.word	47
+ 729 0018 04        		.byte	4
+ 730 0019 0000      		.word	0
+ 731               	.global	Pin_E7
+ 734               	Pin_E7:
+ 735 001b 2D00      		.word	45
+ 736 001d 2E00      		.word	46
+ 737 001f 2C00      		.word	44
+ 738 0021 07        		.byte	7
+ 739 0022 0000      		.word	0
+ 740               	.global	Pin_E6
+ 743               	Pin_E6:
+ 744 0024 2D00      		.word	45
+ 745 0026 2E00      		.word	46
+ 746 0028 2C00      		.word	44
+ 747 002a 06        		.byte	6
+ 748 002b 0000      		.word	0
+ 749               	.global	Pin_E5
+ 752               	Pin_E5:
+ 753 002d 2D00      		.word	45
+ 754 002f 2E00      		.word	46
+ 755 0031 2C00      		.word	44
+ 756 0033 05        		.byte	5
+ 757 0034 0000      		.word	Timer_3C
+ 758               	.global	Pin_E4
+ 761               	Pin_E4:
+ 762 0036 2D00      		.word	45
+ 763 0038 2E00      		.word	46
+ 764 003a 2C00      		.word	44
+ 765 003c 04        		.byte	4
+ 766 003d 0000      		.word	Timer_3B
+ 767               	.global	Pin_E3
+ 770               	Pin_E3:
+ 771 003f 2D00      		.word	45
+ 772 0041 2E00      		.word	46
+ 773 0043 2C00      		.word	44
+ 774 0045 03        		.byte	3
+ 775 0046 0000      		.word	0
+ 776               	.global	Pin_E2
+ 779               	Pin_E2:
+ 780 0048 2D00      		.word	45
+ 781 004a 2E00      		.word	46
+ 782 004c 2C00      		.word	44
+ 783 004e 02        		.byte	2
+ 784 004f 0000      		.word	0
+ 785               	.global	Pin_D3
+ 788               	Pin_D3:
+ 789 0051 2A00      		.word	42
+ 790 0053 2B00      		.word	43
+ 791 0055 2900      		.word	41
+ 792 0057 03        		.byte	3
+ 793 0058 0000      		.word	0
+ 794               	.global	Pin_D2
+ 797               	Pin_D2:
+ 798 005a 2A00      		.word	42
+ 799 005c 2B00      		.word	43
+ 800 005e 2900      		.word	41
+ 801 0060 02        		.byte	2
+ 802 0061 0000      		.word	0
+ 803               	.global	Pin_C7
+ 806               	Pin_C7:
+ 807 0063 2700      		.word	39
+ 808 0065 2800      		.word	40
+ 809 0067 2600      		.word	38
+ 810 0069 07        		.byte	7
+ 811 006a 0000      		.word	0
+ 812               	.global	Pin_C6
+ 815               	Pin_C6:
+ 816 006c 2700      		.word	39
+ 817 006e 2800      		.word	40
+ 818 0070 2600      		.word	38
+ 819 0072 06        		.byte	6
+ 820 0073 0000      		.word	0
+ 821               	.global	Pin_C5
+ 824               	Pin_C5:
+ 825 0075 2700      		.word	39
+ 826 0077 2800      		.word	40
+ 827 0079 2600      		.word	38
+ 828 007b 05        		.byte	5
+ 829 007c 0000      		.word	0
+ 830               	.global	Pin_C4
+ 833               	Pin_C4:
+ 834 007e 2700      		.word	39
+ 835 0080 2800      		.word	40
+ 836 0082 2600      		.word	38
+ 837 0084 04        		.byte	4
+ 838 0085 0000      		.word	0
+ 839               	.global	Pin_C3
+ 842               	Pin_C3:
+ 843 0087 2700      		.word	39
+ 844 0089 2800      		.word	40
+ 845 008b 2600      		.word	38
+ 846 008d 03        		.byte	3
+ 847 008e 0000      		.word	0
+ 848               	.global	Pin_C2
+ 851               	Pin_C2:
+ 852 0090 2700      		.word	39
+ 853 0092 2800      		.word	40
+ 854 0094 2600      		.word	38
+ 855 0096 02        		.byte	2
+ 856 0097 0000      		.word	0
+ 857               	.global	Pin_C1
+ 860               	Pin_C1:
+ 861 0099 2700      		.word	39
+ 862 009b 2800      		.word	40
+ 863 009d 2600      		.word	38
+ 864 009f 01        		.byte	1
+ 865 00a0 0000      		.word	0
+ 866               	.global	Pin_C0
+ 869               	Pin_C0:
+ 870 00a2 2700      		.word	39
+ 871 00a4 2800      		.word	40
+ 872 00a6 2600      		.word	38
+ 873 00a8 00        		.byte	0
+ 874 00a9 0000      		.word	0
+ 875               	.global	Pin_B7
+ 878               	Pin_B7:
+ 879 00ab 2400      		.word	36
+ 880 00ad 2500      		.word	37
+ 881 00af 2300      		.word	35
+ 882 00b1 07        		.byte	7
+ 883 00b2 0000      		.word	Timer_0A
+ 884               	.global	Pin_B6
+ 887               	Pin_B6:
+ 888 00b4 2400      		.word	36
+ 889 00b6 2500      		.word	37
+ 890 00b8 2300      		.word	35
+ 891 00ba 06        		.byte	6
+ 892 00bb 0000      		.word	Timer_1B
+ 893               	.global	Pin_B5
+ 896               	Pin_B5:
+ 897 00bd 2400      		.word	36
+ 898 00bf 2500      		.word	37
+ 899 00c1 2300      		.word	35
+ 900 00c3 05        		.byte	5
+ 901 00c4 0000      		.word	Timer_1A
+ 902               	.global	Pin_B4
+ 905               	Pin_B4:
+ 906 00c6 2400      		.word	36
+ 907 00c8 2500      		.word	37
+ 908 00ca 2300      		.word	35
+ 909 00cc 04        		.byte	4
+ 910 00cd 0000      		.word	Timer_2A
+ 911               	.global	Pin_B3
+ 914               	Pin_B3:
+ 915 00cf 2400      		.word	36
+ 916 00d1 2500      		.word	37
+ 917 00d3 2300      		.word	35
+ 918 00d5 03        		.byte	3
+ 919 00d6 0000      		.word	0
+ 920               	.global	Pin_B2
+ 923               	Pin_B2:
+ 924 00d8 2400      		.word	36
+ 925 00da 2500      		.word	37
+ 926 00dc 2300      		.word	35
+ 927 00de 02        		.byte	2
+ 928 00df 0000      		.word	0
+ 929               	.global	Pin_B0
+ 932               	Pin_B0:
+ 933 00e1 2400      		.word	36
+ 934 00e3 2500      		.word	37
+ 935 00e5 2300      		.word	35
+ 936 00e7 00        		.byte	0
+ 937 00e8 0000      		.word	0
+ 938               	.global	Pin_A7
+ 941               	Pin_A7:
+ 942 00ea 2100      		.word	33
+ 943 00ec 2200      		.word	34
+ 944 00ee 2000      		.word	32
+ 945 00f0 07        		.byte	7
+ 946 00f1 0000      		.word	0
+ 947               	.global	Pin_A6
+ 950               	Pin_A6:
+ 951 00f3 2100      		.word	33
+ 952 00f5 2200      		.word	34
+ 953 00f7 2000      		.word	32
+ 954 00f9 06        		.byte	6
+ 955 00fa 0000      		.word	0
+ 956               	.global	Pin_A5
+ 959               	Pin_A5:
+ 960 00fc 2100      		.word	33
+ 961 00fe 2200      		.word	34
+ 962 0100 2000      		.word	32
+ 963 0102 05        		.byte	5
+ 964 0103 0000      		.word	0
+ 965               	.global	Pin_A4
+ 968               	Pin_A4:
+ 969 0105 2100      		.word	33
+ 970 0107 2200      		.word	34
+ 971 0109 2000      		.word	32
+ 972 010b 04        		.byte	4
+ 973 010c 0000      		.word	0
+ 974               	.global	Pin_A3
+ 977               	Pin_A3:
+ 978 010e 2100      		.word	33
+ 979 0110 2200      		.word	34
+ 980 0112 2000      		.word	32
+ 981 0114 03        		.byte	3
+ 982 0115 0000      		.word	0
+ 983               	.global	Pin_A2
+ 986               	Pin_A2:
+ 987 0117 2100      		.word	33
+ 988 0119 2200      		.word	34
+ 989 011b 2000      		.word	32
+ 990 011d 02        		.byte	2
+ 991 011e 0000      		.word	0
+ 992               	.global	Pin_A1
+ 995               	Pin_A1:
+ 996 0120 2100      		.word	33
+ 997 0122 2200      		.word	34
+ 998 0124 2000      		.word	32
+ 999 0126 01        		.byte	1
+ 1000 0127 0000      		.word	0
+ 1001               	.global	Pin_A0
+ 1004               	Pin_A0:
+ 1005 0129 2100      		.word	33
+ 1006 012b 2200      		.word	34
+ 1007 012d 2000      		.word	32
+ 1008 012f 00        		.byte	0
+ 1009 0130 0000      		.word	0
+ 1010               	.global	Timer_3C
+ 1013               	Timer_3C:
+ 1014 0132 0000 0000 		.zero	4
+ 1015 0136 9C00      		.word	156
+ 1016 0138 0000 0000 		.zero	15
+ 1016      0000 0000 
+ 1016      0000 0000 
+ 1016      0000 00
+ 1017               	.global	Timer_3B
+ 1020               	Timer_3B:
+ 1021 0147 0000 0000 		.zero	4
+ 1022 014b 9A00      		.word	154
+ 1023 014d 0000 0000 		.zero	15
+ 1023      0000 0000 
+ 1023      0000 0000 
+ 1023      0000 00
+ 1024               	.global	Timer_2A
+ 1027               	Timer_2A:
+ 1028 015c B000      		.word	176
+ 1029 015e 0000      		.zero	2
+ 1030 0160 B300      		.word	179
+ 1031 0162 0000      		.word	0
+ 1032 0164 06        		.byte	6
+ 1033 0165 03        		.byte	3
+ 1034 0166 00        		.byte	0
+ 1035 0167 00        		.byte	0
+ 1036 0168 04        		.byte	4
+ 1037 0169 05        		.byte	5
+ 1038 016a 0000 0000 		.zero	4
+ 1039 016e 00        		.byte	0
+ 1040 016f 01        		.byte	1
+ 1041 0170 08        		.byte	8
+ 1042               	.global	Timer_1B
+ 1045               	Timer_1B:
+ 1046 0171 8000      		.word	128
+ 1047 0173 8100      		.word	129
+ 1048 0175 8A00      		.word	138
+ 1049 0177 8600      		.word	134
+ 1050 0179 00        		.byte	0
+ 1051 017a 01        		.byte	1
+ 1052 017b 03        		.byte	3
+ 1053 017c 04        		.byte	4
+ 1054 017d 06        		.byte	6
+ 1055 017e 07        		.byte	7
+ 1056 017f 04        		.byte	4
+ 1057 0180 05        		.byte	5
+ 1058 0181 02        		.byte	2
+ 1059 0182 03        		.byte	3
+ 1060 0183 00        		.byte	0
+ 1061 0184 01        		.byte	1
+ 1062 0185 10        		.byte	16
+ 1063               	.global	Timer_1A
+ 1066               	Timer_1A:
+ 1067 0186 8000      		.word	128
+ 1068 0188 8100      		.word	129
+ 1069 018a 8800      		.word	136
+ 1070 018c 8600      		.word	134
+ 1071 018e 00        		.byte	0
+ 1072 018f 01        		.byte	1
+ 1073 0190 03        		.byte	3
+ 1074 0191 04        		.byte	4
+ 1075 0192 06        		.byte	6
+ 1076 0193 07        		.byte	7
+ 1077 0194 04        		.byte	4
+ 1078 0195 05        		.byte	5
+ 1079 0196 02        		.byte	2
+ 1080 0197 03        		.byte	3
+ 1081 0198 00        		.byte	0
+ 1082 0199 01        		.byte	1
+ 1083 019a 10        		.byte	16
+ 1084               	.global	Timer_0A
+ 1087               	Timer_0A:
+ 1088 019b 4400      		.word	68
+ 1089 019d 0000      		.zero	2
+ 1090 019f 4700      		.word	71
+ 1091 01a1 0000      		.word	0
+ 1092 01a3 06        		.byte	6
+ 1093 01a4 03        		.byte	3
+ 1094 01a5 00        		.byte	0
+ 1095 01a6 00        		.byte	0
+ 1096 01a7 00        		.zero	1
+ 1097 01a8 05        		.byte	5
+ 1098 01a9 0000 0000 		.zero	4
+ 1099 01ad 00        		.byte	0
+ 1100 01ae 01        		.byte	1
+ 1101 01af 08        		.byte	8
+ 1102               		.text
+ 1103               	.Letext0:
+ 1104               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 1105               		.file 3 "src/Pin.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 Pin.c
+     /tmp/ccHRreew.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccHRreew.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccHRreew.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccHRreew.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/ccHRreew.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccHRreew.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccHRreew.s:13     .text:0000000000000000 Pin_SetMode
+     /tmp/ccHRreew.s:84     .text:0000000000000054 Pin_EnableAnalog
+     /tmp/ccHRreew.s:597    .text:0000000000000360 Pin_WriteAnalog
+     /tmp/ccHRreew.s:623    .text:0000000000000376 Pin_WriteDigital
+     /tmp/ccHRreew.s:668    .text:00000000000003a2 Pin_ReadDigital
+     /tmp/ccHRreew.s:707    .data:0000000000000000 Pin_G2
+     /tmp/ccHRreew.s:716    .data:0000000000000009 Pin_F3
+     /tmp/ccHRreew.s:725    .data:0000000000000012 Pin_F2
+     /tmp/ccHRreew.s:734    .data:000000000000001b Pin_E7
+     /tmp/ccHRreew.s:743    .data:0000000000000024 Pin_E6
+     /tmp/ccHRreew.s:752    .data:000000000000002d Pin_E5
+     /tmp/ccHRreew.s:1013   .data:0000000000000132 Timer_3C
+     /tmp/ccHRreew.s:761    .data:0000000000000036 Pin_E4
+     /tmp/ccHRreew.s:1020   .data:0000000000000147 Timer_3B
+     /tmp/ccHRreew.s:770    .data:000000000000003f Pin_E3
+     /tmp/ccHRreew.s:779    .data:0000000000000048 Pin_E2
+     /tmp/ccHRreew.s:788    .data:0000000000000051 Pin_D3
+     /tmp/ccHRreew.s:797    .data:000000000000005a Pin_D2
+     /tmp/ccHRreew.s:806    .data:0000000000000063 Pin_C7
+     /tmp/ccHRreew.s:815    .data:000000000000006c Pin_C6
+     /tmp/ccHRreew.s:824    .data:0000000000000075 Pin_C5
+     /tmp/ccHRreew.s:833    .data:000000000000007e Pin_C4
+     /tmp/ccHRreew.s:842    .data:0000000000000087 Pin_C3
+     /tmp/ccHRreew.s:851    .data:0000000000000090 Pin_C2
+     /tmp/ccHRreew.s:860    .data:0000000000000099 Pin_C1
+     /tmp/ccHRreew.s:869    .data:00000000000000a2 Pin_C0
+     /tmp/ccHRreew.s:878    .data:00000000000000ab Pin_B7
+     /tmp/ccHRreew.s:1087   .data:000000000000019b Timer_0A
+     /tmp/ccHRreew.s:887    .data:00000000000000b4 Pin_B6
+     /tmp/ccHRreew.s:1045   .data:0000000000000171 Timer_1B
+     /tmp/ccHRreew.s:896    .data:00000000000000bd Pin_B5
+     /tmp/ccHRreew.s:1066   .data:0000000000000186 Timer_1A
+     /tmp/ccHRreew.s:905    .data:00000000000000c6 Pin_B4
+     /tmp/ccHRreew.s:1027   .data:000000000000015c Timer_2A
+     /tmp/ccHRreew.s:914    .data:00000000000000cf Pin_B3
+     /tmp/ccHRreew.s:923    .data:00000000000000d8 Pin_B2
+     /tmp/ccHRreew.s:932    .data:00000000000000e1 Pin_B0
+     /tmp/ccHRreew.s:941    .data:00000000000000ea Pin_A7
+     /tmp/ccHRreew.s:950    .data:00000000000000f3 Pin_A6
+     /tmp/ccHRreew.s:959    .data:00000000000000fc Pin_A5
+     /tmp/ccHRreew.s:968    .data:0000000000000105 Pin_A4
+     /tmp/ccHRreew.s:977    .data:000000000000010e Pin_A3
+     /tmp/ccHRreew.s:986    .data:0000000000000117 Pin_A2
+     /tmp/ccHRreew.s:995    .data:0000000000000120 Pin_A1
+     /tmp/ccHRreew.s:1004   .data:0000000000000129 Pin_A0
+
+UNDEFINED SYMBOLS
+__do_copy_data

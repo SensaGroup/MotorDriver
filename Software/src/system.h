@@ -2,7 +2,7 @@
 #define _SYSTEM_H_
 
 #ifndef F_CPU
-    #define F_CPU 10000000UL
+    #define F_CPU 16000000UL
 #endif
 
 #include <avr/interrupt.h>
@@ -47,12 +47,10 @@
 void system_init(void);
 
 void delay(int ms);
+uint8_t read_switch(uint8_t num);
 
 #define PIN_LED1                    48 // PG0
 #define PIN_LED2                    49 // PG1
 
-unsigned char init_led(void);
-void flip_led(uint8_t num);
-void blink_led(uint8_t num);
 
 #endif

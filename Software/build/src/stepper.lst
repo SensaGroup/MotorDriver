@@ -1,0 +1,405 @@
+   1               		.file	"stepper.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               	.global	init_stepper
+  13               	init_stepper:
+  14               	.LFB22:
+  15               		.file 1 "src/stepper.c"
+   1:src/stepper.c **** #include "stepper.h"
+   2:src/stepper.c **** 
+   3:src/stepper.c **** static unsigned int stepper_rpm[2] = {60, 60};
+   4:src/stepper.c **** 
+   5:src/stepper.c **** #define PIN_STEPPER1_DIR            16  // PC0
+   6:src/stepper.c **** #define PIN_STEPPER1_STEP           17  // PC1
+   7:src/stepper.c **** #define PIN_STEPPER1_EN             18  // PC2
+   8:src/stepper.c **** 
+   9:src/stepper.c **** #define PIN_STEPPER2_DIR            19  // PC3
+  10:src/stepper.c **** #define PIN_STEPPER2_STEP           20  // PC4
+  11:src/stepper.c **** #define PIN_STEPPER2_EN             21  // PC5
+  12:src/stepper.c **** 
+  13:src/stepper.c **** #define rtn_dir(num) (num == 1)? PIN_STEPPER1_DIR: PIN_STEPPER2_DIR
+  14:src/stepper.c **** #define rtn_step(num) (num == 1)? PIN_STEPPER1_STEP: PIN_STEPPER2_STEP
+  15:src/stepper.c **** #define rtn_en(num) (num == 1)? PIN_STEPPER1_EN: PIN_STEPPER2_EN
+  16:src/stepper.c **** 
+  17:src/stepper.c **** /*
+  18:src/stepper.c ****  * Function:    unsigned char init_stepper()
+  19:src/stepper.c ****  * Description: init the stepper pins
+  20:src/stepper.c ****  */
+  21:src/stepper.c **** unsigned char init_stepper(void) {
+  16               		.loc 1 21 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  22:src/stepper.c ****     
+  23:src/stepper.c ****     gpio_register_pin(PIN_STEPPER1_DIR, GPIO_DIRECTION_OUTPUT, false);
+  22               		.loc 1 23 0
+  23 0000 40E0      		ldi r20,0
+  24 0002 61E0      		ldi r22,lo8(1)
+  25 0004 80E1      		ldi r24,lo8(16)
+  26 0006 0E94 0000 		call gpio_register_pin
+  27               	.LVL0:
+  24:src/stepper.c ****     gpio_register_pin(PIN_STEPPER1_STEP, GPIO_DIRECTION_OUTPUT, false);
+  28               		.loc 1 24 0
+  29 000a 40E0      		ldi r20,0
+  30 000c 61E0      		ldi r22,lo8(1)
+  31 000e 81E1      		ldi r24,lo8(17)
+  32 0010 0E94 0000 		call gpio_register_pin
+  33               	.LVL1:
+  25:src/stepper.c ****     gpio_register_pin(PIN_STEPPER1_EN, GPIO_DIRECTION_OUTPUT, false);
+  34               		.loc 1 25 0
+  35 0014 40E0      		ldi r20,0
+  36 0016 61E0      		ldi r22,lo8(1)
+  37 0018 82E1      		ldi r24,lo8(18)
+  38 001a 0E94 0000 		call gpio_register_pin
+  39               	.LVL2:
+  26:src/stepper.c **** 
+  27:src/stepper.c ****     gpio_register_pin(PIN_STEPPER2_DIR, GPIO_DIRECTION_OUTPUT, false);
+  40               		.loc 1 27 0
+  41 001e 40E0      		ldi r20,0
+  42 0020 61E0      		ldi r22,lo8(1)
+  43 0022 83E1      		ldi r24,lo8(19)
+  44 0024 0E94 0000 		call gpio_register_pin
+  45               	.LVL3:
+  28:src/stepper.c ****     gpio_register_pin(PIN_STEPPER2_STEP, GPIO_DIRECTION_OUTPUT, false);
+  46               		.loc 1 28 0
+  47 0028 40E0      		ldi r20,0
+  48 002a 61E0      		ldi r22,lo8(1)
+  49 002c 84E1      		ldi r24,lo8(20)
+  50 002e 0E94 0000 		call gpio_register_pin
+  51               	.LVL4:
+  29:src/stepper.c ****     gpio_register_pin(PIN_STEPPER2_EN, GPIO_DIRECTION_OUTPUT, false);
+  52               		.loc 1 29 0
+  53 0032 40E0      		ldi r20,0
+  54 0034 61E0      		ldi r22,lo8(1)
+  55 0036 85E1      		ldi r24,lo8(21)
+  56 0038 0E94 0000 		call gpio_register_pin
+  57               	.LVL5:
+  30:src/stepper.c **** 
+  31:src/stepper.c ****     // disable drivers
+  32:src/stepper.c ****     /*enable_stepper(HIGH, 1);
+  33:src/stepper.c ****     enable_stepper(HIGH, 2);*/
+  34:src/stepper.c **** 
+  35:src/stepper.c ****     return 1;
+  36:src/stepper.c **** 
+  37:src/stepper.c **** } // end of init_stepper()
+  58               		.loc 1 37 0
+  59 003c 81E0      		ldi r24,lo8(1)
+  60 003e 0895      		ret
+  61               		.cfi_endproc
+  62               	.LFE22:
+  64               	.global	enable_stepper
+  66               	enable_stepper:
+  67               	.LFB23:
+  38:src/stepper.c **** 
+  39:src/stepper.c **** /*
+  40:src/stepper.c ****  *  Function:       void enable_stepper(uint8_t state, uint8_t num)
+  41:src/stepper.c ****  *  Description:    enable or disable the stepper driver
+  42:src/stepper.c ****  */
+  43:src/stepper.c **** void enable_stepper(uint8_t state, uint8_t num) {
+  68               		.loc 1 43 0
+  69               		.cfi_startproc
+  70               	.LVL6:
+  71               	/* prologue: function */
+  72               	/* frame size = 0 */
+  73               	/* stack size = 0 */
+  74               	.L__stack_usage = 0
+  44:src/stepper.c **** 
+  45:src/stepper.c ****     gpio_write_pin(rtn_en(num), state);
+  75               		.loc 1 45 0
+  76 0040 91E0      		ldi r25,lo8(1)
+  77 0042 8111      		cpse r24,__zero_reg__
+  78 0044 00C0      		rjmp .L3
+  79 0046 90E0      		ldi r25,0
+  80               	.L3:
+  81 0048 6130      		cpi r22,lo8(1)
+  82 004a 01F0      		breq .L5
+  83 004c 85E1      		ldi r24,lo8(21)
+  84               	.LVL7:
+  85 004e 00C0      		rjmp .L4
+  86               	.LVL8:
+  87               	.L5:
+  88 0050 82E1      		ldi r24,lo8(18)
+  89               	.LVL9:
+  90               	.L4:
+  91               		.loc 1 45 0 is_stmt 0 discriminator 4
+  92 0052 692F      		mov r22,r25
+  93               	.LVL10:
+  94 0054 0C94 0000 		jmp gpio_write_pin
+  95               	.LVL11:
+  96               		.cfi_endproc
+  97               	.LFE23:
+  99               	.global	set_rpm_stepper
+ 101               	set_rpm_stepper:
+ 102               	.LFB24:
+  46:src/stepper.c **** 
+  47:src/stepper.c **** } // end of enable_stepper()
+  48:src/stepper.c **** 
+  49:src/stepper.c **** /*
+  50:src/stepper.c ****  * Function:        void set_rpm_stepper(unsigned int rpm, uint8_t num)
+  51:src/stepper.c ****  * Description:     set the rpm of the stepper
+  52:src/stepper.c ****  */
+  53:src/stepper.c **** void set_rpm_stepper(unsigned int rpm, uint8_t num) {
+ 103               		.loc 1 53 0 is_stmt 1
+ 104               		.cfi_startproc
+ 105               	.LVL12:
+ 106               	/* prologue: function */
+ 107               	/* frame size = 0 */
+ 108               	/* stack size = 0 */
+ 109               	.L__stack_usage = 0
+  54:src/stepper.c **** 
+  55:src/stepper.c ****     stepper_rpm[num-1] = rpm;
+ 110               		.loc 1 55 0
+ 111 0058 E62F      		mov r30,r22
+ 112 005a F0E0      		ldi r31,0
+ 113 005c EE0F      		lsl r30
+ 114 005e FF1F      		rol r31
+ 115 0060 E050      		subi r30,lo8(-(stepper_rpm-2))
+ 116 0062 F040      		sbci r31,hi8(-(stepper_rpm-2))
+ 117 0064 9183      		std Z+1,r25
+ 118 0066 8083      		st Z,r24
+ 119 0068 0895      		ret
+ 120               		.cfi_endproc
+ 121               	.LFE24:
+ 123               	.global	move_stepper
+ 125               	move_stepper:
+ 126               	.LFB25:
+  56:src/stepper.c **** 
+  57:src/stepper.c **** } // end of set_rpm_stepper()
+  58:src/stepper.c **** 
+  59:src/stepper.c **** /*
+  60:src/stepper.c ****  * Function:        void move_stepper(unsigned int steps, unsigned char dir, uint8_t num)
+  61:src/stepper.c ****  * Description:     move the stepper for steps at a certain direction 
+  62:src/stepper.c ****  */
+  63:src/stepper.c **** void move_stepper(unsigned int steps, unsigned char dir, uint8_t num) {
+ 127               		.loc 1 63 0
+ 128               		.cfi_startproc
+ 129               	.LVL13:
+ 130 006a 8F92      		push r8
+ 131               	.LCFI0:
+ 132               		.cfi_def_cfa_offset 3
+ 133               		.cfi_offset 8, -2
+ 134 006c 9F92      		push r9
+ 135               	.LCFI1:
+ 136               		.cfi_def_cfa_offset 4
+ 137               		.cfi_offset 9, -3
+ 138 006e AF92      		push r10
+ 139               	.LCFI2:
+ 140               		.cfi_def_cfa_offset 5
+ 141               		.cfi_offset 10, -4
+ 142 0070 BF92      		push r11
+ 143               	.LCFI3:
+ 144               		.cfi_def_cfa_offset 6
+ 145               		.cfi_offset 11, -5
+ 146 0072 DF92      		push r13
+ 147               	.LCFI4:
+ 148               		.cfi_def_cfa_offset 7
+ 149               		.cfi_offset 13, -6
+ 150 0074 EF92      		push r14
+ 151               	.LCFI5:
+ 152               		.cfi_def_cfa_offset 8
+ 153               		.cfi_offset 14, -7
+ 154 0076 FF92      		push r15
+ 155               	.LCFI6:
+ 156               		.cfi_def_cfa_offset 9
+ 157               		.cfi_offset 15, -8
+ 158 0078 0F93      		push r16
+ 159               	.LCFI7:
+ 160               		.cfi_def_cfa_offset 10
+ 161               		.cfi_offset 16, -9
+ 162 007a 1F93      		push r17
+ 163               	.LCFI8:
+ 164               		.cfi_def_cfa_offset 11
+ 165               		.cfi_offset 17, -10
+ 166 007c CF93      		push r28
+ 167               	.LCFI9:
+ 168               		.cfi_def_cfa_offset 12
+ 169               		.cfi_offset 28, -11
+ 170 007e DF93      		push r29
+ 171               	.LCFI10:
+ 172               		.cfi_def_cfa_offset 13
+ 173               		.cfi_offset 29, -12
+ 174               	/* prologue: function */
+ 175               	/* frame size = 0 */
+ 176               	/* stack size = 11 */
+ 177               	.L__stack_usage = 11
+ 178 0080 8C01      		movw r16,r24
+ 179 0082 D62F      		mov r29,r22
+ 180 0084 C42F      		mov r28,r20
+  64:src/stepper.c ****     /*
+  65:src/stepper.c **** 
+  66:src/stepper.c ****     Delay between each step for the rpm and step:
+  67:src/stepper.c ****     60000/(RPM*STEP) = x, where x is the time between each step
+  68:src/stepper.c **** 
+  69:src/stepper.c ****     */
+  70:src/stepper.c ****     int time_calculate = 60000 / (stepper_rpm[num-1] * steps);
+ 181               		.loc 1 70 0
+ 182 0086 E42F      		mov r30,r20
+ 183 0088 F0E0      		ldi r31,0
+ 184 008a EE0F      		lsl r30
+ 185 008c FF1F      		rol r31
+ 186 008e E050      		subi r30,lo8(-(stepper_rpm-2))
+ 187 0090 F040      		sbci r31,hi8(-(stepper_rpm-2))
+ 188 0092 8081      		ld r24,Z
+ 189 0094 9181      		ldd r25,Z+1
+ 190               	.LVL14:
+ 191 0096 089F      		mul r16,r24
+ 192 0098 9001      		movw r18,r0
+ 193 009a 099F      		mul r16,r25
+ 194 009c 300D      		add r19,r0
+ 195 009e 189F      		mul r17,r24
+ 196 00a0 300D      		add r19,r0
+ 197 00a2 1124      		clr r1
+ 198 00a4 40E0      		ldi r20,0
+ 199 00a6 50E0      		ldi r21,0
+ 200               	.LVL15:
+ 201 00a8 60E6      		ldi r22,lo8(96)
+ 202 00aa 7AEE      		ldi r23,lo8(-22)
+ 203 00ac 80E0      		ldi r24,0
+ 204 00ae 90E0      		ldi r25,0
+ 205               	.LVL16:
+ 206 00b0 0E94 0000 		call __divmodsi4
+ 207 00b4 4901      		movw r8,r18
+ 208 00b6 5A01      		movw r10,r20
+ 209               	.LVL17:
+  71:src/stepper.c **** 
+  72:src/stepper.c ****     gpio_write_pin(rtn_dir(num), dir);
+ 210               		.loc 1 72 0
+ 211 00b8 61E0      		ldi r22,lo8(1)
+ 212 00ba D111      		cpse r29,__zero_reg__
+ 213 00bc 00C0      		rjmp .L9
+ 214 00be 60E0      		ldi r22,0
+ 215               	.L9:
+ 216 00c0 C130      		cpi r28,lo8(1)
+ 217 00c2 01F0      		breq .L16
+ 218 00c4 83E1      		ldi r24,lo8(19)
+ 219 00c6 00C0      		rjmp .L10
+ 220               	.L16:
+ 221 00c8 80E1      		ldi r24,lo8(16)
+ 222               	.L10:
+ 223               		.loc 1 72 0 is_stmt 0 discriminator 4
+ 224 00ca 0E94 0000 		call gpio_write_pin
+ 225               	.LVL18:
+ 226 00ce C130      		cpi r28,lo8(1)
+ 227 00d0 01F4      		brne .L11
+ 228 00d2 21E1      		ldi r18,lo8(17)
+ 229 00d4 D22E      		mov r13,r18
+ 230 00d6 00C0      		rjmp .L12
+ 231               	.L11:
+ 232 00d8 94E1      		ldi r25,lo8(20)
+ 233 00da D92E      		mov r13,r25
+ 234               	.L12:
+ 235               	.LBB2:
+  73:src/stepper.c **** 
+  74:src/stepper.c ****     for(unsigned int i=0; i<steps; i++) {
+  75:src/stepper.c ****         gpio_write_pin(rtn_step(num), ON);
+  76:src/stepper.c ****         delay(time_calculate/2);
+ 236               		.loc 1 76 0 is_stmt 1 discriminator 4
+ 237 00dc C401      		movw r24,r8
+ 238 00de 97FC      		sbrc r9,7
+ 239 00e0 0196      		adiw r24,1
+ 240               	.L13:
+ 241 00e2 EC01      		movw r28,r24
+ 242               	.LVL19:
+ 243 00e4 D595      		asr r29
+ 244 00e6 C795      		ror r28
+  74:src/stepper.c ****         gpio_write_pin(rtn_step(num), ON);
+ 245               		.loc 1 74 0 discriminator 4
+ 246 00e8 E12C      		mov r14,__zero_reg__
+ 247 00ea F12C      		mov r15,__zero_reg__
+ 248               	.LVL20:
+ 249               	.L14:
+  74:src/stepper.c ****         gpio_write_pin(rtn_step(num), ON);
+ 250               		.loc 1 74 0 is_stmt 0 discriminator 2
+ 251 00ec E016      		cp r14,r16
+ 252 00ee F106      		cpc r15,r17
+ 253 00f0 01F0      		breq .L17
+  75:src/stepper.c ****         delay(time_calculate/2);
+ 254               		.loc 1 75 0 is_stmt 1 discriminator 4
+ 255 00f2 61E0      		ldi r22,lo8(1)
+ 256 00f4 8D2D      		mov r24,r13
+ 257 00f6 0E94 0000 		call gpio_write_pin
+ 258               	.LVL21:
+ 259               		.loc 1 76 0 discriminator 4
+ 260 00fa CE01      		movw r24,r28
+ 261 00fc 0E94 0000 		call delay
+ 262               	.LVL22:
+  77:src/stepper.c ****         gpio_write_pin(rtn_step(num), OFF);
+ 263               		.loc 1 77 0 discriminator 4
+ 264 0100 60E0      		ldi r22,0
+ 265 0102 8D2D      		mov r24,r13
+ 266 0104 0E94 0000 		call gpio_write_pin
+ 267               	.LVL23:
+  78:src/stepper.c ****         delay(time_calculate/2);
+ 268               		.loc 1 78 0 discriminator 4
+ 269 0108 CE01      		movw r24,r28
+ 270 010a 0E94 0000 		call delay
+ 271               	.LVL24:
+  74:src/stepper.c ****         gpio_write_pin(rtn_step(num), ON);
+ 272               		.loc 1 74 0 discriminator 4
+ 273 010e 8FEF      		ldi r24,-1
+ 274 0110 E81A      		sub r14,r24
+ 275 0112 F80A      		sbc r15,r24
+ 276               	.LVL25:
+ 277 0114 00C0      		rjmp .L14
+ 278               	.L17:
+ 279               	/* epilogue start */
+ 280               	.LBE2:
+  79:src/stepper.c ****     }
+  80:src/stepper.c **** } // end of move_stepper()
+ 281               		.loc 1 80 0
+ 282 0116 DF91      		pop r29
+ 283               	.LVL26:
+ 284 0118 CF91      		pop r28
+ 285 011a 1F91      		pop r17
+ 286 011c 0F91      		pop r16
+ 287               	.LVL27:
+ 288 011e FF90      		pop r15
+ 289 0120 EF90      		pop r14
+ 290               	.LVL28:
+ 291 0122 DF90      		pop r13
+ 292 0124 BF90      		pop r11
+ 293 0126 AF90      		pop r10
+ 294 0128 9F90      		pop r9
+ 295 012a 8F90      		pop r8
+ 296               	.LVL29:
+ 297 012c 0895      		ret
+ 298               		.cfi_endproc
+ 299               	.LFE25:
+ 301               		.data
+ 304               	stepper_rpm:
+ 305 0000 3C00      		.word	60
+ 306 0002 3C00      		.word	60
+ 307               		.text
+ 308               	.Letext0:
+ 309               		.file 2 "src/gpio.h"
+ 310               		.file 3 "src/system.h"
+ 311               		.file 4 "/usr/lib/avr/include/stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stepper.c
+     /tmp/ccyATNSr.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccyATNSr.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccyATNSr.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccyATNSr.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/ccyATNSr.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccyATNSr.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccyATNSr.s:13     .text:0000000000000000 init_stepper
+     /tmp/ccyATNSr.s:66     .text:0000000000000040 enable_stepper
+     /tmp/ccyATNSr.s:101    .text:0000000000000058 set_rpm_stepper
+     /tmp/ccyATNSr.s:304    .data:0000000000000000 stepper_rpm
+     /tmp/ccyATNSr.s:125    .text:000000000000006a move_stepper
+
+UNDEFINED SYMBOLS
+gpio_register_pin
+gpio_write_pin
+__divmodsi4
+delay
+__do_copy_data
