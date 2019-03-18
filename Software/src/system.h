@@ -18,7 +18,6 @@
 #include "hbridge.h"
 #include "can.h"
 #include "stepper.h"
-#include "gpio.h"
 
 /*
  * 0 PA0 		8  PB0 		16 PC0 		24 PD0 		32 PE0 		40 PF0		48 PG0

@@ -14,7 +14,7 @@
   15               		.file 1 "src/stepper.c"
    1:src/stepper.c **** #include "stepper.h"
    2:src/stepper.c **** 
-   3:src/stepper.c **** static unsigned int stepper_rpm[2] = {60, 60};
+   3:src/stepper.c **** static int stepper_rpm[2] = {60, 60};
    4:src/stepper.c **** 
    5:src/stepper.c **** #define PIN_STEPPER1_DIR            16  // PC0
    6:src/stepper.c **** #define PIN_STEPPER1_STEP           17  // PC1
@@ -148,8 +148,8 @@
   50:src/stepper.c ****  * Function:        void set_rpm_stepper(unsigned int rpm, uint8_t num)
   51:src/stepper.c ****  * Description:     set the rpm of the stepper
   52:src/stepper.c ****  */
-  53:src/stepper.c **** void set_rpm_stepper(unsigned int rpm, uint8_t num) {
- 104               		.loc 1 53 53 is_stmt 1 view -0
+  53:src/stepper.c **** void set_rpm_stepper(int rpm, uint8_t num) {
+ 104               		.loc 1 53 44 is_stmt 1 view -0
  105               		.cfi_startproc
  106               	/* prologue: function */
  107               	/* frame size = 0 */
@@ -411,17 +411,17 @@
  333               		.file 7 "src/system.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stepper.c
-/var/tmp//ccDbnwfo.s:2      *ABS*:000000000000003e __SP_H__
-/var/tmp//ccDbnwfo.s:3      *ABS*:000000000000003d __SP_L__
-/var/tmp//ccDbnwfo.s:4      *ABS*:000000000000003f __SREG__
-/var/tmp//ccDbnwfo.s:5      *ABS*:000000000000003b __RAMPZ__
-/var/tmp//ccDbnwfo.s:6      *ABS*:0000000000000000 __tmp_reg__
-/var/tmp//ccDbnwfo.s:7      *ABS*:0000000000000001 __zero_reg__
-/var/tmp//ccDbnwfo.s:13     .text:0000000000000000 init_stepper
-/var/tmp//ccDbnwfo.s:68     .text:0000000000000040 enable_stepper
-/var/tmp//ccDbnwfo.s:101    .text:0000000000000056 set_rpm_stepper
-/var/tmp//ccDbnwfo.s:323    .data:0000000000000000 stepper_rpm
-/var/tmp//ccDbnwfo.s:130    .text:000000000000006c move_stepper
+/var/tmp//ccf8JBZM.s:2      *ABS*:000000000000003e __SP_H__
+/var/tmp//ccf8JBZM.s:3      *ABS*:000000000000003d __SP_L__
+/var/tmp//ccf8JBZM.s:4      *ABS*:000000000000003f __SREG__
+/var/tmp//ccf8JBZM.s:5      *ABS*:000000000000003b __RAMPZ__
+/var/tmp//ccf8JBZM.s:6      *ABS*:0000000000000000 __tmp_reg__
+/var/tmp//ccf8JBZM.s:7      *ABS*:0000000000000001 __zero_reg__
+/var/tmp//ccf8JBZM.s:13     .text:0000000000000000 init_stepper
+/var/tmp//ccf8JBZM.s:68     .text:0000000000000040 enable_stepper
+/var/tmp//ccf8JBZM.s:101    .text:0000000000000056 set_rpm_stepper
+/var/tmp//ccf8JBZM.s:323    .data:0000000000000000 stepper_rpm
+/var/tmp//ccf8JBZM.s:130    .text:000000000000006c move_stepper
 
 UNDEFINED SYMBOLS
 gpio_register_pin

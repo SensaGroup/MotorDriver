@@ -818,20 +818,20 @@
  440               		.file 11 "src/hbridge.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 system.c
-/var/tmp//ccdXVWnC.s:2      *ABS*:000000000000003e __SP_H__
-/var/tmp//ccdXVWnC.s:3      *ABS*:000000000000003d __SP_L__
-/var/tmp//ccdXVWnC.s:4      *ABS*:000000000000003f __SREG__
-/var/tmp//ccdXVWnC.s:5      *ABS*:000000000000003b __RAMPZ__
-/var/tmp//ccdXVWnC.s:6      *ABS*:0000000000000000 __tmp_reg__
-/var/tmp//ccdXVWnC.s:7      *ABS*:0000000000000001 __zero_reg__
-/var/tmp//ccdXVWnC.s:13     .text:0000000000000000 timer_register_callback
+/var/tmp//ccpT7a0S.s:2      *ABS*:000000000000003e __SP_H__
+/var/tmp//ccpT7a0S.s:3      *ABS*:000000000000003d __SP_L__
+/var/tmp//ccpT7a0S.s:4      *ABS*:000000000000003f __SREG__
+/var/tmp//ccpT7a0S.s:5      *ABS*:000000000000003b __RAMPZ__
+/var/tmp//ccpT7a0S.s:6      *ABS*:0000000000000000 __tmp_reg__
+/var/tmp//ccpT7a0S.s:7      *ABS*:0000000000000001 __zero_reg__
+/var/tmp//ccpT7a0S.s:13     .text:0000000000000000 timer_register_callback
                              .bss:0000000000000000 timer_callback
-/var/tmp//ccdXVWnC.s:35     .text:000000000000000a __vector_12
-/var/tmp//ccdXVWnC.s:427    .bss:0000000000000002 sys_time
-/var/tmp//ccdXVWnC.s:162    .text:000000000000008a system_init
-/var/tmp//ccdXVWnC.s:417    .data:0000000000000000 switches_pin
-/var/tmp//ccdXVWnC.s:336    .text:0000000000000142 delay
-/var/tmp//ccdXVWnC.s:388    .text:000000000000015a read_switch
+/var/tmp//ccpT7a0S.s:35     .text:000000000000000a __vector_12
+/var/tmp//ccpT7a0S.s:427    .bss:0000000000000002 sys_time
+/var/tmp//ccpT7a0S.s:162    .text:000000000000008a system_init
+/var/tmp//ccpT7a0S.s:417    .data:0000000000000000 switches_pin
+/var/tmp//ccpT7a0S.s:336    .text:0000000000000142 delay
+/var/tmp//ccpT7a0S.s:388    .text:000000000000015a read_switch
 
 UNDEFINED SYMBOLS
 USART0_init

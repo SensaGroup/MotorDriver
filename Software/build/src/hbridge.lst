@@ -1054,20 +1054,20 @@
  722               		.file 8 "src/gpio.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hbridge.c
-/var/tmp//ccjvwv9H.s:2      *ABS*:000000000000003e __SP_H__
-/var/tmp//ccjvwv9H.s:3      *ABS*:000000000000003d __SP_L__
-/var/tmp//ccjvwv9H.s:4      *ABS*:000000000000003f __SREG__
-/var/tmp//ccjvwv9H.s:5      *ABS*:000000000000003b __RAMPZ__
-/var/tmp//ccjvwv9H.s:6      *ABS*:0000000000000000 __tmp_reg__
-/var/tmp//ccjvwv9H.s:7      *ABS*:0000000000000001 __zero_reg__
-/var/tmp//ccjvwv9H.s:21     .text:0000000000000000 hbridge_move
+/var/tmp//ccivOJIG.s:2      *ABS*:000000000000003e __SP_H__
+/var/tmp//ccivOJIG.s:3      *ABS*:000000000000003d __SP_L__
+/var/tmp//ccivOJIG.s:4      *ABS*:000000000000003f __SREG__
+/var/tmp//ccivOJIG.s:5      *ABS*:000000000000003b __RAMPZ__
+/var/tmp//ccivOJIG.s:6      *ABS*:0000000000000000 __tmp_reg__
+/var/tmp//ccivOJIG.s:7      *ABS*:0000000000000001 __zero_reg__
+/var/tmp//ccivOJIG.s:21     .text:0000000000000000 hbridge_move
                             *COM*:0000000000000002 current_A_2
                             *COM*:0000000000000002 current_B_2
                             *COM*:0000000000000002 current_A_1
                             *COM*:0000000000000002 current_B_1
-/var/tmp//ccjvwv9H.s:254    .text:0000000000000132 init_hbridge
-/var/tmp//ccjvwv9H.s:350    .text:00000000000001ba hbridge_break
-/var/tmp//ccjvwv9H.s:375    .text:00000000000001c8 hbridge_time
+/var/tmp//ccivOJIG.s:254    .text:0000000000000132 init_hbridge
+/var/tmp//ccivOJIG.s:350    .text:00000000000001ba hbridge_break
+/var/tmp//ccivOJIG.s:375    .text:00000000000001c8 hbridge_time
 
 UNDEFINED SYMBOLS
 debug_printf

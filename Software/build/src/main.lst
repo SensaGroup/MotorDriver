@@ -8,101 +8,766 @@
    8               		.text
    9               	.Ltext0:
   10               		.cfi_sections	.debug_frame
-  11               		.section	.text.startup,"ax",@progbits
-  12               	.global	main
-  14               	main:
-  15               	.LFB22:
-  16               		.file 1 "src/main.c"
+  12               	can_send_done:
+  13               	.LFB22:
+  14               		.file 1 "src/main.c"
    1:src/main.c    **** #include <avr/io.h>
    2:src/main.c    **** #include <util/delay.h>
    3:src/main.c    **** #include <avr/interrupt.h>
-   4:src/main.c    **** #include <string.h>
-   5:src/main.c    **** #include "system.h"
-   6:src/main.c    **** 
-   7:src/main.c    **** int main(void) {
-  17               		.loc 1 7 16 view -0
-  18               		.cfi_startproc
-  19 0000 CDB7      		in r28,__SP_L__
-  20 0002 DEB7      		in r29,__SP_H__
-  21               	.LCFI0:
-  22               		.cfi_def_cfa_register 28
-  23 0004 2A97      		sbiw r28,10
-  24               	.LCFI1:
-  25               		.cfi_def_cfa_offset 12
-  26 0006 0FB6      		in __tmp_reg__,__SREG__
-  27 0008 F894      		cli
-  28 000a DEBF      		out __SP_H__,r29
-  29 000c 0FBE      		out __SREG__,__tmp_reg__
-  30 000e CDBF      		out __SP_L__,r28
-  31               	/* prologue: function */
-  32               	/* frame size = 10 */
-  33               	/* stack size = 10 */
-  34               	.L__stack_usage = 10
+   4:src/main.c    **** #include <stdlib.h>
+   5:src/main.c    **** #include <string.h>
+   6:src/main.c    **** #include "system.h"
+   7:src/main.c    **** #include "can.h"
    8:src/main.c    **** 
-   9:src/main.c    **** 	system_init();
-  35               		.loc 1 9 2 view .LVU1
-  36 0010 0E94 0000 		call system_init
-  37               	.LVL0:
-  38               	.L3:
-  10:src/main.c    **** 	 
-  11:src/main.c    **** 	canMsg message;
-  39               		.loc 1 11 2 view .LVU2
-  12:src/main.c    **** 
-  13:src/main.c    **** 	while(1) {
-  40               		.loc 1 13 2 view .LVU3
-  14:src/main.c    **** 		CAN_read(&message);
-  41               		.loc 1 14 3 view .LVU4
-  42 0014 CE01      		movw r24,r28
-  43 0016 0196      		adiw r24,1
-  44 0018 0E94 0000 		call CAN_read
-  45               	.LVL1:
-  15:src/main.c    **** 		if(message.data[0] == 'A') {
-  46               		.loc 1 15 3 view .LVU5
-  47               		.loc 1 15 5 is_stmt 0 view .LVU6
-  48 001c 8981      		ldd r24,Y+1
-  49 001e 8134      		cpi r24,lo8(65)
-  50 0020 01F4      		brne .L3
-  16:src/main.c    **** 			if(message.data[1] == 0) {
-  51               		.loc 1 16 4 is_stmt 1 view .LVU7
-  52               		.loc 1 16 6 is_stmt 0 view .LVU8
-  53 0022 8A81      		ldd r24,Y+2
-  17:src/main.c    **** 				gpio_write_pin(PIN_LED2, false);
-  54               		.loc 1 17 5 view .LVU9
-  55 0024 60E0      		ldi r22,0
-  16:src/main.c    **** 			if(message.data[1] == 0) {
-  56               		.loc 1 16 6 view .LVU10
-  57 0026 8111      		cpse r24,__zero_reg__
-  18:src/main.c    **** 			} else {
-  19:src/main.c    **** 				gpio_write_pin(PIN_LED2, true);
-  58               		.loc 1 19 5 is_stmt 1 view .LVU11
-  59 0028 61E0      		ldi r22,lo8(1)
-  60               	.L7:
-  61 002a 81E3      		ldi r24,lo8(49)
-  62 002c 0E94 0000 		call gpio_write_pin
-  63               	.LVL2:
-  64 0030 00C0      		rjmp .L3
-  65               		.cfi_endproc
-  66               	.LFE22:
-  68               		.text
-  69               	.Letext0:
-  70               		.file 2 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdint.h"
-  71               		.file 3 "/usr/local/Cellar/avr-gcc/8.3.0/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
-  72               		.file 4 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdio.h"
-  73               		.file 5 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdlib.h"
-  74               		.file 6 "src/can.h"
-  75               		.file 7 "src/system.h"
-  76               		.file 8 "src/gpio.h"
+   9:src/main.c    **** canMsg message;
+  10:src/main.c    **** canMsg snd_message;
+  11:src/main.c    **** 
+  12:src/main.c    **** unsigned char dummy_data[8] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+  13:src/main.c    **** unsigned char first_byte, second_byte;
+  14:src/main.c    **** 
+  15:src/main.c    **** static void can_send_done(void) {
+  15               		.loc 1 15 33 view -0
+  16               		.cfi_startproc
+  17 0000 0F93      		push r16
+  18               	.LCFI0:
+  19               		.cfi_def_cfa_offset 3
+  20               		.cfi_offset 16, -2
+  21 0002 1F93      		push r17
+  22               	.LCFI1:
+  23               		.cfi_def_cfa_offset 4
+  24               		.cfi_offset 17, -3
+  25 0004 CF93      		push r28
+  26               	.LCFI2:
+  27               		.cfi_def_cfa_offset 5
+  28               		.cfi_offset 28, -4
+  29 0006 DF93      		push r29
+  30               	.LCFI3:
+  31               		.cfi_def_cfa_offset 6
+  32               		.cfi_offset 29, -5
+  33 0008 CDB7      		in r28,__SP_L__
+  34 000a DEB7      		in r29,__SP_H__
+  35               	.LCFI4:
+  36               		.cfi_def_cfa_register 28
+  37 000c 2897      		sbiw r28,8
+  38               	.LCFI5:
+  39               		.cfi_def_cfa_offset 14
+  40 000e 0FB6      		in __tmp_reg__,__SREG__
+  41 0010 F894      		cli
+  42 0012 DEBF      		out __SP_H__,r29
+  43 0014 0FBE      		out __SREG__,__tmp_reg__
+  44 0016 CDBF      		out __SP_L__,r28
+  45               	/* prologue: function */
+  46               	/* frame size = 8 */
+  47               	/* stack size = 12 */
+  48               	.L__stack_usage = 12
+  16:src/main.c    **** 	
+  17:src/main.c    **** 	unsigned char ready_data[8];
+  49               		.loc 1 17 2 view .LVU1
+  18:src/main.c    **** 
+  19:src/main.c    **** 	ready_data[0] = 1;
+  50               		.loc 1 19 2 view .LVU2
+  51               	.LVL0:
+  20:src/main.c    **** 			 
+  21:src/main.c    **** 	memcpy(snd_message.data, ready_data, 8);
+  52               		.loc 1 21 2 view .LVU3
+  53               		.loc 1 21 2 is_stmt 0 view .LVU4
+  54 0018 81E0      		ldi r24,lo8(1)
+  55 001a 8983      		std Y+1,r24
+  56 001c 88E0      		ldi r24,lo8(8)
+  57 001e FE01      		movw r30,r28
+  58 0020 3196      		adiw r30,1
+  59 0022 A0E0      		ldi r26,lo8(snd_message)
+  60 0024 B0E0      		ldi r27,hi8(snd_message)
+  61               		0:
+  62 0026 0190      		ld r0,Z+
+  63 0028 0D92      		st X+,r0
+  64 002a 8A95      		dec r24
+  65 002c 01F4      		brne 0b
+  22:src/main.c    **** 	snd_message.msgIde = MAIN_BOARD_CAN_ID;
+  66               		.loc 1 22 2 is_stmt 1 view .LVU5
+  67               		.loc 1 22 21 is_stmt 0 view .LVU6
+  68 002e 84E0      		ldi r24,lo8(4)
+  69 0030 8093 0000 		sts snd_message+8,r24
+  70 0034 1092 0000 		sts snd_message+9,__zero_reg__
+  23:src/main.c    **** 
+  24:src/main.c    **** 	if(CAN_write(snd_message) == 1) {
+  71               		.loc 1 24 2 is_stmt 1 view .LVU7
+  72               		.loc 1 24 5 is_stmt 0 view .LVU8
+  73 0038 0091 0000 		lds r16,snd_message
+  74 003c 1091 0000 		lds r17,snd_message+1
+  75 0040 2091 0000 		lds r18,snd_message+2
+  76 0044 3091 0000 		lds r19,snd_message+3
+  77 0048 4091 0000 		lds r20,snd_message+4
+  78 004c 5091 0000 		lds r21,snd_message+5
+  79 0050 6091 0000 		lds r22,snd_message+6
+  80 0054 7091 0000 		lds r23,snd_message+7
+  81 0058 90E0      		ldi r25,0
+  82 005a 0E94 0000 		call CAN_write
+  83               	.LVL1:
+  25:src/main.c    **** 		// success
+  26:src/main.c    **** 	}
+  84               		.loc 1 26 2 is_stmt 1 view .LVU9
+  85               	/* epilogue start */
+  27:src/main.c    **** } 
+  86               		.loc 1 27 1 is_stmt 0 view .LVU10
+  87 005e 2896      		adiw r28,8
+  88 0060 0FB6      		in __tmp_reg__,__SREG__
+  89 0062 F894      		cli
+  90 0064 DEBF      		out __SP_H__,r29
+  91 0066 0FBE      		out __SREG__,__tmp_reg__
+  92 0068 CDBF      		out __SP_L__,r28
+  93 006a DF91      		pop r29
+  94 006c CF91      		pop r28
+  95 006e 1F91      		pop r17
+  96 0070 0F91      		pop r16
+  97 0072 0895      		ret
+  98               		.cfi_endproc
+  99               	.LFE22:
+ 101               		.section	.text.startup,"ax",@progbits
+ 102               	.global	main
+ 104               	main:
+ 105               	.LFB23:
+  28:src/main.c    **** 
+  29:src/main.c    **** int main(void) {
+ 106               		.loc 1 29 16 is_stmt 1 view -0
+ 107               		.cfi_startproc
+ 108 0000 CDB7      		in r28,__SP_L__
+ 109 0002 DEB7      		in r29,__SP_H__
+ 110               	.LCFI6:
+ 111               		.cfi_def_cfa_register 28
+ 112 0004 2897      		sbiw r28,8
+ 113               	.LCFI7:
+ 114               		.cfi_def_cfa_offset 10
+ 115 0006 0FB6      		in __tmp_reg__,__SREG__
+ 116 0008 F894      		cli
+ 117 000a DEBF      		out __SP_H__,r29
+ 118 000c 0FBE      		out __SREG__,__tmp_reg__
+ 119 000e CDBF      		out __SP_L__,r28
+ 120               	/* prologue: function */
+ 121               	/* frame size = 8 */
+ 122               	/* stack size = 8 */
+ 123               	.L__stack_usage = 8
+  30:src/main.c    **** 
+  31:src/main.c    **** 	system_init();
+ 124               		.loc 1 31 2 view .LVU12
+ 125 0010 0E94 0000 		call system_init
+ 126               	.LVL2:
+ 127               	.LBB2:
+  32:src/main.c    **** 
+  33:src/main.c    **** 	while(1) {
+  34:src/main.c    **** 
+  35:src/main.c    **** 		if(CAN_checkRX() == 1) {
+  36:src/main.c    **** 			CAN_read(&message);
+  37:src/main.c    **** 
+  38:src/main.c    **** 			first_byte 		= message.data[0];
+  39:src/main.c    **** 			second_byte 	= message.data[1];
+  40:src/main.c    **** 
+  41:src/main.c    **** 			if(first_byte == 'P') {
+  42:src/main.c    **** 					
+  43:src/main.c    **** 				// SUB-ACTION: LED flash {'P', 0}
+  44:src/main.c    **** 				if(second_byte == 0) {
+  45:src/main.c    **** 							
+  46:src/main.c    **** 					gpio_write_pin(PIN_LED2, true);
+  47:src/main.c    **** 					delay(500);
+  48:src/main.c    **** 					gpio_write_pin(PIN_LED2, false);
+  49:src/main.c    **** 							
+  50:src/main.c    **** 				} // end of SUB-ACTION: LED flash
+  51:src/main.c    **** 
+  52:src/main.c    **** 				// SUB-ACTION: WITH REPLY {'P', 1}
+  53:src/main.c    **** 				else if(second_byte == 1) {
+  54:src/main.c    **** 
+  55:src/main.c    **** 					gpio_write_pin(PIN_LED2, true);
+  56:src/main.c    **** 					delay(500);
+  57:src/main.c    **** 
+  58:src/main.c    **** 					memcpy(snd_message.data, dummy_data, 8);
+  59:src/main.c    **** 					snd_message.msgIde = MAIN_BOARD_CAN_ID;
+  60:src/main.c    **** 
+  61:src/main.c    **** 					if(CAN_write(snd_message) == 1) {
+  62:src/main.c    **** 						// success
+  63:src/main.c    **** 						gpio_write_pin(PIN_LED2, false);
+  64:src/main.c    **** 					}
+  65:src/main.c    **** 
+  66:src/main.c    **** 				} // end of SUB-ACTION: WITH REPLY
+  67:src/main.c    **** 			} // end of PING
+  68:src/main.c    **** 
+  69:src/main.c    **** 			// ACTION: switches {'S'}
+  70:src/main.c    **** 			else if(first_byte == 'S') {
+  71:src/main.c    **** 				
+  72:src/main.c    **** 				unsigned char switch_data[8];
+  73:src/main.c    **** 
+  74:src/main.c    **** 				switch_data[0] = read_switch((uint8_t)(second_byte));
+  75:src/main.c    **** 				
+  76:src/main.c    **** 				memcpy(snd_message.data, switch_data, 8);
+  77:src/main.c    **** 				snd_message.msgIde = MAIN_BOARD_CAN_ID;
+ 128               		.loc 1 77 24 is_stmt 0 view .LVU13
+ 129 0014 84E0      		ldi r24,lo8(4)
+ 130 0016 F82E      		mov r15,r24
+ 131 0018 E12C      		mov r14,__zero_reg__
+ 132               	.L4:
+ 133               	.LBE2:
+  33:src/main.c    **** 
+ 134               		.loc 1 33 2 is_stmt 1 view .LVU14
+  35:src/main.c    **** 			CAN_read(&message);
+ 135               		.loc 1 35 3 view .LVU15
+  35:src/main.c    **** 			CAN_read(&message);
+ 136               		.loc 1 35 6 is_stmt 0 view .LVU16
+ 137 001a 0E94 0000 		call CAN_checkRX
+ 138               	.LVL3:
+  35:src/main.c    **** 			CAN_read(&message);
+ 139               		.loc 1 35 5 view .LVU17
+ 140 001e 8130      		cpi r24,lo8(1)
+ 141 0020 01F4      		brne .L4
+  36:src/main.c    **** 
+ 142               		.loc 1 36 4 is_stmt 1 view .LVU18
+ 143 0022 80E0      		ldi r24,lo8(message)
+ 144 0024 90E0      		ldi r25,hi8(message)
+ 145 0026 0E94 0000 		call CAN_read
+ 146               	.LVL4:
+  38:src/main.c    **** 			second_byte 	= message.data[1];
+ 147               		.loc 1 38 4 view .LVU19
+  38:src/main.c    **** 			second_byte 	= message.data[1];
+ 148               		.loc 1 38 31 is_stmt 0 view .LVU20
+ 149 002a 9091 0000 		lds r25,message
+  38:src/main.c    **** 			second_byte 	= message.data[1];
+ 150               		.loc 1 38 17 view .LVU21
+ 151 002e 9093 0000 		sts first_byte,r25
+  39:src/main.c    **** 
+ 152               		.loc 1 39 4 is_stmt 1 view .LVU22
+  39:src/main.c    **** 
+ 153               		.loc 1 39 31 is_stmt 0 view .LVU23
+ 154 0032 8091 0000 		lds r24,message+1
+  39:src/main.c    **** 
+ 155               		.loc 1 39 17 view .LVU24
+ 156 0036 8093 0000 		sts second_byte,r24
+  41:src/main.c    **** 					
+ 157               		.loc 1 41 4 is_stmt 1 view .LVU25
+  41:src/main.c    **** 					
+ 158               		.loc 1 41 6 is_stmt 0 view .LVU26
+ 159 003a 9035      		cpi r25,lo8(80)
+ 160 003c 01F4      		brne .L5
+  44:src/main.c    **** 							
+ 161               		.loc 1 44 5 is_stmt 1 view .LVU27
+  44:src/main.c    **** 							
+ 162               		.loc 1 44 7 is_stmt 0 view .LVU28
+ 163 003e 8111      		cpse r24,__zero_reg__
+ 164 0040 00C0      		rjmp .L6
+  46:src/main.c    **** 					delay(500);
+ 165               		.loc 1 46 6 is_stmt 1 view .LVU29
+ 166 0042 61E0      		ldi r22,lo8(1)
+ 167 0044 81E3      		ldi r24,lo8(49)
+ 168 0046 0E94 0000 		call gpio_write_pin
+ 169               	.LVL5:
+  47:src/main.c    **** 					gpio_write_pin(PIN_LED2, false);
+ 170               		.loc 1 47 6 view .LVU30
+ 171 004a 84EF      		ldi r24,lo8(-12)
+ 172 004c 91E0      		ldi r25,lo8(1)
+ 173 004e 0E94 0000 		call delay
+ 174               	.LVL6:
+  48:src/main.c    **** 							
+ 175               		.loc 1 48 6 view .LVU31
+ 176               	.L18:
+  63:src/main.c    **** 					}
+ 177               		.loc 1 63 7 view .LVU32
+ 178 0052 60E0      		ldi r22,0
+ 179 0054 81E3      		ldi r24,lo8(49)
+ 180 0056 0E94 0000 		call gpio_write_pin
+ 181               	.LVL7:
+ 182 005a 00C0      		rjmp .L4
+ 183               	.L6:
+  53:src/main.c    **** 
+ 184               		.loc 1 53 10 view .LVU33
+  53:src/main.c    **** 
+ 185               		.loc 1 53 12 is_stmt 0 view .LVU34
+ 186 005c 8130      		cpi r24,lo8(1)
+ 187 005e 01F4      		brne .L4
+  55:src/main.c    **** 					delay(500);
+ 188               		.loc 1 55 6 is_stmt 1 view .LVU35
+ 189 0060 61E0      		ldi r22,lo8(1)
+ 190 0062 81E3      		ldi r24,lo8(49)
+ 191 0064 0E94 0000 		call gpio_write_pin
+ 192               	.LVL8:
+  56:src/main.c    **** 
+ 193               		.loc 1 56 6 view .LVU36
+ 194 0068 84EF      		ldi r24,lo8(-12)
+ 195 006a 91E0      		ldi r25,lo8(1)
+ 196 006c 0E94 0000 		call delay
+ 197               	.LVL9:
+  58:src/main.c    **** 					snd_message.msgIde = MAIN_BOARD_CAN_ID;
+ 198               		.loc 1 58 6 view .LVU37
+ 199 0070 88E0      		ldi r24,lo8(8)
+ 200 0072 E0E0      		ldi r30,lo8(dummy_data)
+ 201 0074 F0E0      		ldi r31,hi8(dummy_data)
+ 202 0076 A0E0      		ldi r26,lo8(snd_message)
+ 203 0078 B0E0      		ldi r27,hi8(snd_message)
+ 204               		0:
+ 205 007a 0190      		ld r0,Z+
+ 206 007c 0D92      		st X+,r0
+ 207 007e 8A95      		dec r24
+ 208 0080 01F4      		brne 0b
+  59:src/main.c    **** 
+ 209               		.loc 1 59 6 view .LVU38
+  59:src/main.c    **** 
+ 210               		.loc 1 59 25 is_stmt 0 view .LVU39
+ 211 0082 F092 0000 		sts snd_message+8,r15
+ 212 0086 E092 0000 		sts snd_message+9,r14
+  61:src/main.c    **** 						// success
+ 213               		.loc 1 61 6 is_stmt 1 view .LVU40
+  61:src/main.c    **** 						// success
+ 214               		.loc 1 61 9 is_stmt 0 view .LVU41
+ 215 008a 0091 0000 		lds r16,snd_message
+ 216 008e 1091 0000 		lds r17,snd_message+1
+ 217 0092 2091 0000 		lds r18,snd_message+2
+ 218 0096 3091 0000 		lds r19,snd_message+3
+ 219 009a 4091 0000 		lds r20,snd_message+4
+ 220 009e 5091 0000 		lds r21,snd_message+5
+ 221 00a2 6091 0000 		lds r22,snd_message+6
+ 222 00a6 7091 0000 		lds r23,snd_message+7
+ 223 00aa 8F2D      		mov r24,r15
+ 224 00ac 9E2D      		mov r25,r14
+ 225 00ae 0E94 0000 		call CAN_write
+ 226               	.LVL10:
+  61:src/main.c    **** 						// success
+ 227               		.loc 1 61 8 view .LVU42
+ 228 00b2 8130      		cpi r24,lo8(1)
+ 229 00b4 01F0      		breq .+2
+ 230 00b6 00C0      		rjmp .L4
+ 231 00b8 00C0      		rjmp .L18
+ 232               	.L5:
+  70:src/main.c    **** 				
+ 233               		.loc 1 70 9 is_stmt 1 view .LVU43
+  70:src/main.c    **** 				
+ 234               		.loc 1 70 11 is_stmt 0 view .LVU44
+ 235 00ba 9335      		cpi r25,lo8(83)
+ 236 00bc 01F4      		brne .L9
+ 237               	.LBB3:
+  72:src/main.c    **** 
+ 238               		.loc 1 72 5 is_stmt 1 view .LVU45
+  74:src/main.c    **** 				
+ 239               		.loc 1 74 5 view .LVU46
+  74:src/main.c    **** 				
+ 240               		.loc 1 74 22 is_stmt 0 view .LVU47
+ 241 00be 0E94 0000 		call read_switch
+ 242               	.LVL11:
+  76:src/main.c    **** 				snd_message.msgIde = MAIN_BOARD_CAN_ID;
+ 243               		.loc 1 76 5 is_stmt 1 view .LVU48
+  76:src/main.c    **** 				snd_message.msgIde = MAIN_BOARD_CAN_ID;
+ 244               		.loc 1 76 5 is_stmt 0 view .LVU49
+ 245 00c2 8983      		std Y+1,r24
+ 246 00c4 88E0      		ldi r24,lo8(8)
+ 247               	.LVL12:
+  76:src/main.c    **** 				snd_message.msgIde = MAIN_BOARD_CAN_ID;
+ 248               		.loc 1 76 5 view .LVU50
+ 249 00c6 FE01      		movw r30,r28
+ 250 00c8 3196      		adiw r30,1
+ 251 00ca A0E0      		ldi r26,lo8(snd_message)
+ 252 00cc B0E0      		ldi r27,hi8(snd_message)
+ 253               		0:
+ 254 00ce 0190      		ld r0,Z+
+ 255 00d0 0D92      		st X+,r0
+ 256 00d2 8A95      		dec r24
+ 257 00d4 01F4      		brne 0b
+ 258               		.loc 1 77 5 is_stmt 1 view .LVU51
+ 259               		.loc 1 77 24 is_stmt 0 view .LVU52
+ 260 00d6 F092 0000 		sts snd_message+8,r15
+ 261 00da E092 0000 		sts snd_message+9,r14
+  78:src/main.c    **** 
+  79:src/main.c    **** 				if(CAN_write(snd_message) == 1) {
+ 262               		.loc 1 79 5 is_stmt 1 view .LVU53
+ 263               		.loc 1 79 8 is_stmt 0 view .LVU54
+ 264 00de 0091 0000 		lds r16,snd_message
+ 265 00e2 1091 0000 		lds r17,snd_message+1
+ 266 00e6 2091 0000 		lds r18,snd_message+2
+ 267 00ea 3091 0000 		lds r19,snd_message+3
+ 268 00ee 4091 0000 		lds r20,snd_message+4
+ 269 00f2 5091 0000 		lds r21,snd_message+5
+ 270 00f6 6091 0000 		lds r22,snd_message+6
+ 271 00fa 7091 0000 		lds r23,snd_message+7
+ 272 00fe 8F2D      		mov r24,r15
+ 273 0100 9E2D      		mov r25,r14
+ 274 0102 0E94 0000 		call CAN_write
+ 275               	.LVL13:
+  80:src/main.c    **** 					// success
+  81:src/main.c    **** 				}
+ 276               		.loc 1 81 5 is_stmt 1 view .LVU55
+ 277               		.loc 1 81 5 is_stmt 0 view .LVU56
+ 278               	.LBE3:
+ 279 0106 00C0      		rjmp .L4
+ 280               	.L9:
+  82:src/main.c    **** 
+  83:src/main.c    **** 			} // end of switches
+  84:src/main.c    **** 
+  85:src/main.c    **** 			// ACTION: h-bridge
+  86:src/main.c    **** 			else if(first_byte == 'H') {
+ 281               		.loc 1 86 9 is_stmt 1 view .LVU57
+ 282               		.loc 1 86 11 is_stmt 0 view .LVU58
+ 283 0108 9834      		cpi r25,lo8(72)
+ 284 010a 01F0      		breq .+2
+ 285 010c 00C0      		rjmp .L10
+  87:src/main.c    **** 
+  88:src/main.c    **** 				// SUB-ACTION: move {'H', 'M', a >> 8, a & 0xFF, b >> 8, b & 0xFF, num}
+  89:src/main.c    **** 				if(second_byte == 'M') {
+ 286               		.loc 1 89 5 is_stmt 1 view .LVU59
+ 287               		.loc 1 89 7 is_stmt 0 view .LVU60
+ 288 010e 8D34      		cpi r24,lo8(77)
+ 289 0110 01F4      		brne .L11
+ 290               	.LBB4:
+  90:src/main.c    **** 
+  91:src/main.c    **** 					int _a, _b; unsigned char num;
+ 291               		.loc 1 91 6 is_stmt 1 view .LVU61
+ 292               		.loc 1 91 18 view .LVU62
+  92:src/main.c    **** 
+  93:src/main.c    **** 					_a 	= (message.data[2] << 8) | message.data[3];
+ 293               		.loc 1 93 6 view .LVU63
+ 294               	.LVL14:
+  94:src/main.c    **** 					_b 	= (message.data[4] << 8) | message.data[5];
+ 295               		.loc 1 94 6 view .LVU64
+  95:src/main.c    **** 					num = message.data[6];
+ 296               		.loc 1 95 6 view .LVU65
+  96:src/main.c    **** 
+  97:src/main.c    **** 					hbridge_move(_a, _b, (uint8_t)(num));
+ 297               		.loc 1 97 6 view .LVU66
+ 298 0112 6091 0000 		lds r22,message+4
+ 299 0116 7091 0000 		lds r23,message+4+1
+ 300 011a 7627      		eor r23,r22
+ 301 011c 6727      		eor r22,r23
+ 302 011e 7627      		eor r23,r22
+ 303 0120 8091 0000 		lds r24,message+2
+ 304 0124 9091 0000 		lds r25,message+2+1
+ 305 0128 4091 0000 		lds r20,message+6
+ 306 012c 9827      		eor r25,r24
+ 307 012e 8927      		eor r24,r25
+ 308 0130 9827      		eor r25,r24
+ 309 0132 0E94 0000 		call hbridge_move
+ 310               	.LVL15:
+  98:src/main.c    **** 
+  99:src/main.c    **** 					can_send_done();
+ 311               		.loc 1 99 6 view .LVU67
+ 312               	.L17:
+ 313               		.loc 1 99 6 is_stmt 0 view .LVU68
+ 314               	.LBE4:
+ 315               	.LBB5:
+ 100:src/main.c    **** 
+ 101:src/main.c    **** 				} // end of move
+ 102:src/main.c    **** 
+ 103:src/main.c    **** 				// SUB-ACTION: break {'H','B', num}
+ 104:src/main.c    **** 				else if(second_byte == 'B') {
+ 105:src/main.c    **** 					
+ 106:src/main.c    **** 					hbridge_break((uint8_t)(message.data[2]));
+ 107:src/main.c    **** 
+ 108:src/main.c    **** 					can_send_done();
+ 109:src/main.c    **** 
+ 110:src/main.c    **** 				} // end of break
+ 111:src/main.c    **** 
+ 112:src/main.c    **** 				// SUB-ACTION: time {'H', 'T/t', num, dir >> 8, dir & 0xFF, achieve >> 8, achieve & 0xFF, time 
+ 113:src/main.c    **** 				else if(second_byte == 'T' || second_byte == 't') {
+ 114:src/main.c    **** 
+ 115:src/main.c    **** 					unsigned char _num; int _dir, _achieve, _time;
+ 116:src/main.c    **** 					
+ 117:src/main.c    **** 					if(second_byte == 'T') {
+ 118:src/main.c    **** 						_num = 0;
+ 119:src/main.c    **** 					} else {
+ 120:src/main.c    **** 						_num = 1;
+ 121:src/main.c    **** 					}
+ 122:src/main.c    **** 					
+ 123:src/main.c    **** 					_dir 		= (message.data[2] << 8) | message.data[3];
+ 124:src/main.c    **** 					_achieve 	= (message.data[4] << 8) | message.data[5];
+ 125:src/main.c    **** 					_time 		= (message.data[6] << 8) | message.data[7];
+ 126:src/main.c    **** 
+ 127:src/main.c    **** 					hbridge_time((int)(_num), _dir, _achieve, _time);
+ 128:src/main.c    **** 
+ 129:src/main.c    **** 					can_send_done();
+ 130:src/main.c    **** 
+ 131:src/main.c    **** 				} // end of time
+ 132:src/main.c    **** 			} // end of h-bridge
+ 133:src/main.c    **** 
+ 134:src/main.c    **** 			// ACTION: stepper motor
+ 135:src/main.c    **** 			else if(first_byte == 's') {
+ 136:src/main.c    **** 				
+ 137:src/main.c    **** 				// SUB-ACTION: enable {'s', 'E', state, num}
+ 138:src/main.c    **** 				if(second_byte == 'E') {
+ 139:src/main.c    **** 					
+ 140:src/main.c    **** 					uint8_t state, num;
+ 141:src/main.c    **** 
+ 142:src/main.c    **** 					state 	= (uint8_t)(message.data[2]);
+ 143:src/main.c    **** 					num 	= (uint8_t)(message.data[3]);
+ 144:src/main.c    **** 
+ 145:src/main.c    **** 					enable_stepper(state, num);
+ 146:src/main.c    **** 
+ 147:src/main.c    **** 					can_send_done();
+ 148:src/main.c    **** 
+ 149:src/main.c    **** 				} // end of enable
+ 150:src/main.c    **** 
+ 151:src/main.c    **** 				// SUB-ACTION: rpm {'s', 'R', rpm >> 8, rpm & 0xFF, num}
+ 152:src/main.c    **** 				else if(second_byte == 'R') {
+ 153:src/main.c    **** 
+ 154:src/main.c    **** 					int _rpm; uint8_t num;
+ 155:src/main.c    **** 
+ 156:src/main.c    **** 					_rpm = (message.data[2] << 8) | message.data[3];
+ 157:src/main.c    **** 					num = (uint8_t)(message.data[4]);
+ 158:src/main.c    **** 
+ 159:src/main.c    **** 					set_rpm_stepper(_rpm, num);
+ 160:src/main.c    **** 
+ 161:src/main.c    **** 					can_send_done();
+ 162:src/main.c    **** 
+ 163:src/main.c    **** 				} // end of rpm
+ 164:src/main.c    **** 
+ 165:src/main.c    **** 				// SUB-ACTION: move {'s', 'M', steps >> 8, rpm & 0xFF, dir, num}
+ 166:src/main.c    **** 				else if(second_byte == 'M') {
+ 167:src/main.c    **** 
+ 168:src/main.c    **** 					int steps; unsigned char dir; uint8_t num;
+ 169:src/main.c    **** 
+ 170:src/main.c    **** 					steps = (message.data[2] << 8) | message.data[3];
+ 171:src/main.c    **** 					dir = message.data[4];
+ 172:src/main.c    **** 					num = (uint8_t)(message.data[5]);
+ 173:src/main.c    **** 
+ 174:src/main.c    **** 					move_stepper(steps, dir, num);
+ 175:src/main.c    **** 
+ 176:src/main.c    **** 					can_send_done();
+ 316               		.loc 1 176 6 is_stmt 1 view .LVU69
+ 317 0136 0E94 0000 		call can_send_done
+ 318               	.LVL16:
+ 319 013a 00C0      		rjmp .L4
+ 320               	.L11:
+ 321               	.LBE5:
+ 104:src/main.c    **** 					
+ 322               		.loc 1 104 10 view .LVU70
+ 104:src/main.c    **** 					
+ 323               		.loc 1 104 12 is_stmt 0 view .LVU71
+ 324 013c 8234      		cpi r24,lo8(66)
+ 325 013e 01F4      		brne .L12
+ 106:src/main.c    **** 
+ 326               		.loc 1 106 6 is_stmt 1 view .LVU72
+ 327 0140 8091 0000 		lds r24,message+2
+ 328 0144 0E94 0000 		call hbridge_break
+ 329               	.LVL17:
+ 108:src/main.c    **** 
+ 330               		.loc 1 108 6 view .LVU73
+ 331 0148 00C0      		rjmp .L17
+ 332               	.L12:
+ 113:src/main.c    **** 
+ 333               		.loc 1 113 10 view .LVU74
+ 113:src/main.c    **** 
+ 334               		.loc 1 113 12 is_stmt 0 view .LVU75
+ 335 014a 982F      		mov r25,r24
+ 336 014c 9F7D      		andi r25,lo8(-33)
+ 337 014e 9435      		cpi r25,lo8(84)
+ 338 0150 01F0      		breq .+2
+ 339 0152 00C0      		rjmp .L4
+ 340               	.LBB6:
+ 115:src/main.c    **** 					
+ 341               		.loc 1 115 6 is_stmt 1 view .LVU76
+ 115:src/main.c    **** 					
+ 342               		.loc 1 115 26 view .LVU77
+ 117:src/main.c    **** 						_num = 0;
+ 343               		.loc 1 117 6 view .LVU78
+ 344               	.LVL18:
+ 123:src/main.c    **** 					_achieve 	= (message.data[4] << 8) | message.data[5];
+ 345               		.loc 1 123 6 view .LVU79
+ 124:src/main.c    **** 					_time 		= (message.data[6] << 8) | message.data[7];
+ 346               		.loc 1 124 6 view .LVU80
+ 125:src/main.c    **** 
+ 347               		.loc 1 125 6 view .LVU81
+ 127:src/main.c    **** 
+ 348               		.loc 1 127 6 view .LVU82
+ 349 0154 2091 0000 		lds r18,message+6
+ 350 0158 3091 0000 		lds r19,message+6+1
+ 351 015c 3227      		eor r19,r18
+ 352 015e 2327      		eor r18,r19
+ 353 0160 3227      		eor r19,r18
+ 354 0162 4091 0000 		lds r20,message+4
+ 355 0166 5091 0000 		lds r21,message+4+1
+ 356 016a 5427      		eor r21,r20
+ 357 016c 4527      		eor r20,r21
+ 358 016e 5427      		eor r21,r20
+ 359 0170 6091 0000 		lds r22,message+2
+ 360 0174 7091 0000 		lds r23,message+2+1
+ 361 0178 7627      		eor r23,r22
+ 362 017a 6727      		eor r22,r23
+ 363 017c 7627      		eor r23,r22
+ 117:src/main.c    **** 						_num = 0;
+ 364               		.loc 1 117 8 is_stmt 0 view .LVU83
+ 365 017e E1E0      		ldi r30,lo8(1)
+ 366 0180 F0E0      		ldi r31,0
+ 367 0182 8435      		cpi r24,lo8(84)
+ 368 0184 01F4      		brne .L13
+ 369 0186 F0E0      		ldi r31,0
+ 370 0188 E0E0      		ldi r30,0
+ 371               	.L13:
+ 127:src/main.c    **** 
+ 372               		.loc 1 127 6 view .LVU84
+ 373 018a CF01      		movw r24,r30
+ 374               	.LVL19:
+ 127:src/main.c    **** 
+ 375               		.loc 1 127 6 view .LVU85
+ 376 018c 0E94 0000 		call hbridge_time
+ 377               	.LVL20:
+ 129:src/main.c    **** 
+ 378               		.loc 1 129 6 is_stmt 1 view .LVU86
+ 379 0190 00C0      		rjmp .L17
+ 380               	.L10:
+ 129:src/main.c    **** 
+ 381               		.loc 1 129 6 is_stmt 0 view .LVU87
+ 382               	.LBE6:
+ 135:src/main.c    **** 				
+ 383               		.loc 1 135 9 is_stmt 1 view .LVU88
+ 135:src/main.c    **** 				
+ 384               		.loc 1 135 11 is_stmt 0 view .LVU89
+ 385 0192 9337      		cpi r25,lo8(115)
+ 386 0194 01F0      		breq .+2
+ 387 0196 00C0      		rjmp .L4
+ 138:src/main.c    **** 					
+ 388               		.loc 1 138 5 is_stmt 1 view .LVU90
+ 138:src/main.c    **** 					
+ 389               		.loc 1 138 7 is_stmt 0 view .LVU91
+ 390 0198 8534      		cpi r24,lo8(69)
+ 391 019a 01F4      		brne .L14
+ 392               	.LBB7:
+ 140:src/main.c    **** 
+ 393               		.loc 1 140 6 is_stmt 1 view .LVU92
+ 142:src/main.c    **** 					num 	= (uint8_t)(message.data[3]);
+ 394               		.loc 1 142 6 view .LVU93
+ 395               	.LVL21:
+ 143:src/main.c    **** 
+ 396               		.loc 1 143 6 view .LVU94
+ 145:src/main.c    **** 
+ 397               		.loc 1 145 6 view .LVU95
+ 398 019c 6091 0000 		lds r22,message+3
+ 399 01a0 8091 0000 		lds r24,message+2
+ 400 01a4 0E94 0000 		call enable_stepper
+ 401               	.LVL22:
+ 147:src/main.c    **** 
+ 402               		.loc 1 147 6 view .LVU96
+ 403 01a8 00C0      		rjmp .L17
+ 404               	.L14:
+ 147:src/main.c    **** 
+ 405               		.loc 1 147 6 is_stmt 0 view .LVU97
+ 406               	.LBE7:
+ 152:src/main.c    **** 
+ 407               		.loc 1 152 10 is_stmt 1 view .LVU98
+ 152:src/main.c    **** 
+ 408               		.loc 1 152 12 is_stmt 0 view .LVU99
+ 409 01aa 8235      		cpi r24,lo8(82)
+ 410 01ac 01F4      		brne .L15
+ 411               	.LBB8:
+ 154:src/main.c    **** 
+ 412               		.loc 1 154 6 is_stmt 1 view .LVU100
+ 154:src/main.c    **** 
+ 413               		.loc 1 154 16 view .LVU101
+ 156:src/main.c    **** 					num = (uint8_t)(message.data[4]);
+ 414               		.loc 1 156 6 view .LVU102
+ 415               	.LVL23:
+ 157:src/main.c    **** 
+ 416               		.loc 1 157 6 view .LVU103
+ 159:src/main.c    **** 
+ 417               		.loc 1 159 6 view .LVU104
+ 418 01ae 8091 0000 		lds r24,message+2
+ 419 01b2 9091 0000 		lds r25,message+2+1
+ 420 01b6 6091 0000 		lds r22,message+4
+ 421 01ba 9827      		eor r25,r24
+ 422 01bc 8927      		eor r24,r25
+ 423 01be 9827      		eor r25,r24
+ 424 01c0 0E94 0000 		call set_rpm_stepper
+ 425               	.LVL24:
+ 161:src/main.c    **** 
+ 426               		.loc 1 161 6 view .LVU105
+ 427 01c4 00C0      		rjmp .L17
+ 428               	.L15:
+ 161:src/main.c    **** 
+ 429               		.loc 1 161 6 is_stmt 0 view .LVU106
+ 430               	.LBE8:
+ 166:src/main.c    **** 
+ 431               		.loc 1 166 10 is_stmt 1 view .LVU107
+ 166:src/main.c    **** 
+ 432               		.loc 1 166 12 is_stmt 0 view .LVU108
+ 433 01c6 8D34      		cpi r24,lo8(77)
+ 434 01c8 01F0      		breq .+2
+ 435 01ca 00C0      		rjmp .L4
+ 436               	.LBB9:
+ 168:src/main.c    **** 
+ 437               		.loc 1 168 6 is_stmt 1 view .LVU109
+ 168:src/main.c    **** 
+ 438               		.loc 1 168 17 view .LVU110
+ 168:src/main.c    **** 
+ 439               		.loc 1 168 36 view .LVU111
+ 170:src/main.c    **** 					dir = message.data[4];
+ 440               		.loc 1 170 6 view .LVU112
+ 441               	.LVL25:
+ 171:src/main.c    **** 					num = (uint8_t)(message.data[5]);
+ 442               		.loc 1 171 6 view .LVU113
+ 172:src/main.c    **** 
+ 443               		.loc 1 172 6 view .LVU114
+ 174:src/main.c    **** 
+ 444               		.loc 1 174 6 view .LVU115
+ 445 01cc 8091 0000 		lds r24,message+2
+ 446 01d0 9091 0000 		lds r25,message+2+1
+ 447 01d4 4091 0000 		lds r20,message+5
+ 448 01d8 6091 0000 		lds r22,message+4
+ 449 01dc 9827      		eor r25,r24
+ 450 01de 8927      		eor r24,r25
+ 451 01e0 9827      		eor r25,r24
+ 452 01e2 0E94 0000 		call move_stepper
+ 453               	.LVL26:
+ 174:src/main.c    **** 
+ 454               		.loc 1 174 6 is_stmt 0 view .LVU116
+ 455 01e6 00C0      		rjmp .L17
+ 456               	.LBE9:
+ 457               		.cfi_endproc
+ 458               	.LFE23:
+ 460               		.comm	second_byte,1,1
+ 461               		.comm	first_byte,1,1
+ 462               	.global	dummy_data
+ 463               		.data
+ 466               	dummy_data:
+ 467 0000 FF        		.byte	-1
+ 468 0001 FF        		.byte	-1
+ 469 0002 FF        		.byte	-1
+ 470 0003 FF        		.byte	-1
+ 471 0004 FF        		.byte	-1
+ 472 0005 FF        		.byte	-1
+ 473 0006 FF        		.byte	-1
+ 474 0007 FF        		.byte	-1
+ 475               		.comm	snd_message,10,1
+ 476               		.comm	message,10,1
+ 477               		.text
+ 478               	.Letext0:
+ 479               		.file 2 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdint.h"
+ 480               		.file 3 "/usr/local/Cellar/avr-gcc/8.3.0/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
+ 481               		.file 4 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdlib.h"
+ 482               		.file 5 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdio.h"
+ 483               		.file 6 "src/can.h"
+ 484               		.file 7 "src/system.h"
+ 485               		.file 8 "src/hbridge.h"
+ 486               		.file 9 "src/stepper.h"
+ 487               		.file 10 "src/gpio.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-/var/tmp//cciBredX.s:2      *ABS*:000000000000003e __SP_H__
-/var/tmp//cciBredX.s:3      *ABS*:000000000000003d __SP_L__
-/var/tmp//cciBredX.s:4      *ABS*:000000000000003f __SREG__
-/var/tmp//cciBredX.s:5      *ABS*:000000000000003b __RAMPZ__
-/var/tmp//cciBredX.s:6      *ABS*:0000000000000000 __tmp_reg__
-/var/tmp//cciBredX.s:7      *ABS*:0000000000000001 __zero_reg__
-/var/tmp//cciBredX.s:14     .text.startup:0000000000000000 main
+/var/tmp//cch6xmIr.s:2      *ABS*:000000000000003e __SP_H__
+/var/tmp//cch6xmIr.s:3      *ABS*:000000000000003d __SP_L__
+/var/tmp//cch6xmIr.s:4      *ABS*:000000000000003f __SREG__
+/var/tmp//cch6xmIr.s:5      *ABS*:000000000000003b __RAMPZ__
+/var/tmp//cch6xmIr.s:6      *ABS*:0000000000000000 __tmp_reg__
+/var/tmp//cch6xmIr.s:7      *ABS*:0000000000000001 __zero_reg__
+/var/tmp//cch6xmIr.s:12     .text:0000000000000000 can_send_done
+                            *COM*:000000000000000a snd_message
+/var/tmp//cch6xmIr.s:104    .text.startup:0000000000000000 main
+                            *COM*:000000000000000a message
+                            *COM*:0000000000000001 first_byte
+                            *COM*:0000000000000001 second_byte
+/var/tmp//cch6xmIr.s:466    .data:0000000000000000 dummy_data
 
 UNDEFINED SYMBOLS
+CAN_write
 system_init
+CAN_checkRX
 CAN_read
 gpio_write_pin
+delay
+read_switch
+hbridge_move
+hbridge_break
+hbridge_time
+enable_stepper
+set_rpm_stepper
+move_stepper
+__do_copy_data
+__do_clear_bss

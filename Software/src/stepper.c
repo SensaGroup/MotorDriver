@@ -1,6 +1,6 @@
 #include "stepper.h"
 
-static unsigned int stepper_rpm[2] = {60, 60};
+static int stepper_rpm[2] = {60, 60};
 
 #define PIN_STEPPER1_DIR            16  // PC0
 #define PIN_STEPPER1_STEP           17  // PC1
@@ -50,7 +50,7 @@ void enable_stepper(uint8_t state, uint8_t num) {
  * Function:        void set_rpm_stepper(unsigned int rpm, uint8_t num)
  * Description:     set the rpm of the stepper
  */
-void set_rpm_stepper(unsigned int rpm, uint8_t num) {
+void set_rpm_stepper(int rpm, uint8_t num) {
 
     stepper_rpm[num-1] = rpm;
 
