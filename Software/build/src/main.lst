@@ -20,58 +20,89 @@
    5:src/main.c    **** #include "system.h"
    6:src/main.c    **** 
    7:src/main.c    **** int main(void) {
-  17               		.loc 1 7 0
+  17               		.loc 1 7 16 view -0
   18               		.cfi_startproc
-  19               	/* prologue: function */
-  20               	/* frame size = 0 */
-  21               	/* stack size = 0 */
-  22               	.L__stack_usage = 0
+  19 0000 CDB7      		in r28,__SP_L__
+  20 0002 DEB7      		in r29,__SP_H__
+  21               	.LCFI0:
+  22               		.cfi_def_cfa_register 28
+  23 0004 2A97      		sbiw r28,10
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 12
+  26 0006 0FB6      		in __tmp_reg__,__SREG__
+  27 0008 F894      		cli
+  28 000a DEBF      		out __SP_H__,r29
+  29 000c 0FBE      		out __SREG__,__tmp_reg__
+  30 000e CDBF      		out __SP_L__,r28
+  31               	/* prologue: function */
+  32               	/* frame size = 10 */
+  33               	/* stack size = 10 */
+  34               	.L__stack_usage = 10
    8:src/main.c    **** 
    9:src/main.c    **** 	system_init();
-  23               		.loc 1 9 0
-  24 0000 0E94 0000 		call system_init
-  25               	.LVL0:
-  26               	.L3:
+  35               		.loc 1 9 2 view .LVU1
+  36 0010 0E94 0000 		call system_init
+  37               	.LVL0:
+  38               	.L3:
   10:src/main.c    **** 	 
-  11:src/main.c    **** 	while(1) {
-  12:src/main.c    **** 		gpio_write_pin(PIN_LED1, read_switch(1));
-  27               		.loc 1 12 0 discriminator 1
-  28 0004 81E0      		ldi r24,lo8(1)
-  29 0006 0E94 0000 		call read_switch
-  30               	.LVL1:
-  31 000a 61E0      		ldi r22,lo8(1)
-  32 000c 8111      		cpse r24,__zero_reg__
-  33 000e 00C0      		rjmp .L2
-  34 0010 60E0      		ldi r22,0
-  35               	.L2:
-  36 0012 80E3      		ldi r24,lo8(48)
-  37 0014 0E94 0000 		call gpio_write_pin
-  38               	.LVL2:
-  13:src/main.c    **** 		delay(10);
-  39               		.loc 1 13 0 discriminator 1
-  40 0018 8AE0      		ldi r24,lo8(10)
-  41 001a 90E0      		ldi r25,0
-  42 001c 0E94 0000 		call delay
-  43               	.LVL3:
-  44 0020 00C0      		rjmp .L3
-  45               		.cfi_endproc
-  46               	.LFE22:
-  48               		.text
-  49               	.Letext0:
-  50               		.file 2 "src/system.h"
-  51               		.file 3 "src/gpio.h"
+  11:src/main.c    **** 	canMsg message;
+  39               		.loc 1 11 2 view .LVU2
+  12:src/main.c    **** 
+  13:src/main.c    **** 	while(1) {
+  40               		.loc 1 13 2 view .LVU3
+  14:src/main.c    **** 		CAN_read(&message);
+  41               		.loc 1 14 3 view .LVU4
+  42 0014 CE01      		movw r24,r28
+  43 0016 0196      		adiw r24,1
+  44 0018 0E94 0000 		call CAN_read
+  45               	.LVL1:
+  15:src/main.c    **** 		if(message.data[0] == 'A') {
+  46               		.loc 1 15 3 view .LVU5
+  47               		.loc 1 15 5 is_stmt 0 view .LVU6
+  48 001c 8981      		ldd r24,Y+1
+  49 001e 8134      		cpi r24,lo8(65)
+  50 0020 01F4      		brne .L3
+  16:src/main.c    **** 			if(message.data[1] == 0) {
+  51               		.loc 1 16 4 is_stmt 1 view .LVU7
+  52               		.loc 1 16 6 is_stmt 0 view .LVU8
+  53 0022 8A81      		ldd r24,Y+2
+  17:src/main.c    **** 				gpio_write_pin(PIN_LED2, false);
+  54               		.loc 1 17 5 view .LVU9
+  55 0024 60E0      		ldi r22,0
+  16:src/main.c    **** 			if(message.data[1] == 0) {
+  56               		.loc 1 16 6 view .LVU10
+  57 0026 8111      		cpse r24,__zero_reg__
+  18:src/main.c    **** 			} else {
+  19:src/main.c    **** 				gpio_write_pin(PIN_LED2, true);
+  58               		.loc 1 19 5 is_stmt 1 view .LVU11
+  59 0028 61E0      		ldi r22,lo8(1)
+  60               	.L7:
+  61 002a 81E3      		ldi r24,lo8(49)
+  62 002c 0E94 0000 		call gpio_write_pin
+  63               	.LVL2:
+  64 0030 00C0      		rjmp .L3
+  65               		.cfi_endproc
+  66               	.LFE22:
+  68               		.text
+  69               	.Letext0:
+  70               		.file 2 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdint.h"
+  71               		.file 3 "/usr/local/Cellar/avr-gcc/8.3.0/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
+  72               		.file 4 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdio.h"
+  73               		.file 5 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdlib.h"
+  74               		.file 6 "src/can.h"
+  75               		.file 7 "src/system.h"
+  76               		.file 8 "src/gpio.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-     /tmp/ccGPGgFp.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccGPGgFp.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccGPGgFp.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccGPGgFp.s:5      *ABS*:000000000000003b __RAMPZ__
-     /tmp/ccGPGgFp.s:6      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccGPGgFp.s:7      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccGPGgFp.s:14     .text.startup:0000000000000000 main
+/var/tmp//cciBredX.s:2      *ABS*:000000000000003e __SP_H__
+/var/tmp//cciBredX.s:3      *ABS*:000000000000003d __SP_L__
+/var/tmp//cciBredX.s:4      *ABS*:000000000000003f __SREG__
+/var/tmp//cciBredX.s:5      *ABS*:000000000000003b __RAMPZ__
+/var/tmp//cciBredX.s:6      *ABS*:0000000000000000 __tmp_reg__
+/var/tmp//cciBredX.s:7      *ABS*:0000000000000001 __zero_reg__
+/var/tmp//cciBredX.s:14     .text.startup:0000000000000000 main
 
 UNDEFINED SYMBOLS
 system_init
-read_switch
+CAN_read
 gpio_write_pin
-delay

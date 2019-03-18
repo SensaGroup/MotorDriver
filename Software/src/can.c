@@ -107,9 +107,23 @@ void CAN_Init(void)
 	/************ BIT TAJMING PODESAVANJA -> BAUD RATE = 100kbps  **********************************/
 
 	//CANBT1 = 0x08; // Fcan = 2Mhz-> Tq = 0.5us
-	CANBT1 = 0x01;
-	CANBT2 = (1 << PRS2) | (1 << PRS0); // Propagation Time Segment-> 6xTq-> BILO 5
-	CANBT3 = (1 << PHS22) | (1 << PHS21) /*| (1 << PHS20) */| (1 << PHS10) | (1 << PHS11) | (1 << PHS12); // Phase Segment 2-> 7xTq, Phase Segment 1-> 8xTq
+	//CANBT1 = 0x01;
+	//CANBT2 = (1 << PRS2) | (1 << PRS0); // Propagation Time Segment-> 6xTq-> BILO 5
+	//CANBT3 = (1 << PHS22) | (1 << PHS21) /*| (1 << PHS20) */| (1 << PHS10) | (1 << PHS11) | (1 << PHS12); // Phase Segment 2-> 7xTq, Phase Segment 1-> 8xTq
+
+	/*
+	#if F_CPU == 16000000                 //< Fclkio = 16 MHz, Tclkio = 62.5 ns
+        {0x12, 0x0C, 0x37},                //< -- 100Kb/s, 16x Tscl, sampling at 75%
+        {0x0E, 0x0C, 0x37},                //< -- 125Kb/s, 16x Tscl, sampling at 75%
+        {0X08, 0x0C, 0x37},                //< -- 200Kb/s, 16x Tscl, sampling at 75%
+        {0x06, 0x0C, 0x37},                //< -- 250Kb/s, 16x Tscl, sampling at 75%
+        {0x06, 0x04, 0x13},                //< -- 500Kb/s,  8x Tscl, sampling at 75%
+        {0x02, 0x04, 0x13}                 //< --  1 Mb/s,  8x Tscl, sampling at 75% 
+	*/
+
+	CANBT1 = 0x12;
+	CANBT2 = 0x0C;
+	CANBT3 = 0x37;
 
 	/// Sjw je podesen na 1... 1 + 5 + 6 + 8 = 20
 	/************ BIT TAJMING PODESAVANJA -> BAUD RATE = 100kbps  **********************************/

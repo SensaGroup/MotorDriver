@@ -45,7 +45,7 @@ typedef struct msg
 {
 	unsigned char data[8];
 	unsigned int msgIde;
-} canMsg;
+}canMsg;
 
 
 /*********************************************************************************

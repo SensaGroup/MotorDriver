@@ -10,8 +10,9 @@
   10               		.cfi_sections	.debug_frame
   11               	.global	timer_register_callback
   13               	timer_register_callback:
-  14               	.LFB22:
-  15               		.file 1 "src/system.c"
+  14               	.LVL0:
+  15               	.LFB22:
+  16               		.file 1 "src/system.c"
    1:src/system.c  **** #include "system.h"
    2:src/system.c  **** 
    3:src/system.c  **** static volatile unsigned long sys_time;
@@ -21,771 +22,825 @@
    7:src/system.c  **** static void init_led(void);
    8:src/system.c  **** static void timer_init(unsigned int freq);
    9:src/system.c  **** 
-  10:src/system.c  **** void timer_register_callback(void (*callback)(void))
-  11:src/system.c  **** {
-  16               		.loc 1 11 0
-  17               		.cfi_startproc
-  18               	.LVL0:
+  10:src/system.c  **** /*
+  11:src/system.c  ****  * Function:        void timer_register_callback(void (*callback)(void))
+  12:src/system.c  ****  * Description:     assign function to timer callback
+  13:src/system.c  ****  */
+  14:src/system.c  **** void timer_register_callback(void (*callback)(void))
+  15:src/system.c  **** {
+  17               		.loc 1 15 1 view -0
+  18               		.cfi_startproc
   19               	/* prologue: function */
   20               	/* frame size = 0 */
   21               	/* stack size = 0 */
   22               	.L__stack_usage = 0
-  12:src/system.c  ****     timer_callback = callback;
-  23               		.loc 1 12 0
-  24 0000 9093 0000 		sts timer_callback+1,r25
-  25 0004 8093 0000 		sts timer_callback,r24
-  26 0008 0895      		ret
-  27               		.cfi_endproc
-  28               	.LFE22:
-  30               	.global	__vector_12
-  32               	__vector_12:
-  33               	.LFB24:
-  13:src/system.c  **** }
-  14:src/system.c  **** 
-  15:src/system.c  **** static void timer_init(unsigned int freq)
-  16:src/system.c  **** {
-  17:src/system.c  ****     TCCR1A = 0;
-  18:src/system.c  **** 	TCCR1B = (1 << WGM12) | (1 << CS10);
-  19:src/system.c  **** 	OCR1A = (double)F_CPU / (double)freq + 0.5;
-  20:src/system.c  **** 	TIMSK1 = 1 << OCIE1A;
-  21:src/system.c  **** 
-  22:src/system.c  **** 	SREG |= 0x80;
-  23:src/system.c  **** }
-  24:src/system.c  **** 
-  25:src/system.c  **** ISR(TIMER1_COMPA_vect)
-  26:src/system.c  **** {
-  34               		.loc 1 26 0
-  35               		.cfi_startproc
-  36 000a 1F92      		push r1
-  37               	.LCFI0:
-  38               		.cfi_def_cfa_offset 3
-  39               		.cfi_offset 1, -2
-  40 000c 0F92      		push r0
-  41               	.LCFI1:
-  42               		.cfi_def_cfa_offset 4
-  43               		.cfi_offset 0, -3
-  44 000e 0FB6      		in r0,__SREG__
-  45 0010 0F92      		push r0
-  46 0012 1124      		clr __zero_reg__
-  47 0014 0BB6      		in r0,__RAMPZ__
-  48 0016 0F92      		push r0
-  49 0018 2F93      		push r18
-  50               	.LCFI2:
-  51               		.cfi_def_cfa_offset 5
-  52               		.cfi_offset 18, -4
-  53 001a 3F93      		push r19
-  54               	.LCFI3:
-  55               		.cfi_def_cfa_offset 6
-  56               		.cfi_offset 19, -5
-  57 001c 4F93      		push r20
-  58               	.LCFI4:
-  59               		.cfi_def_cfa_offset 7
-  60               		.cfi_offset 20, -6
-  61 001e 5F93      		push r21
-  62               	.LCFI5:
-  63               		.cfi_def_cfa_offset 8
-  64               		.cfi_offset 21, -7
-  65 0020 6F93      		push r22
-  66               	.LCFI6:
-  67               		.cfi_def_cfa_offset 9
-  68               		.cfi_offset 22, -8
-  69 0022 7F93      		push r23
-  70               	.LCFI7:
-  71               		.cfi_def_cfa_offset 10
-  72               		.cfi_offset 23, -9
-  73 0024 8F93      		push r24
-  74               	.LCFI8:
-  75               		.cfi_def_cfa_offset 11
-  76               		.cfi_offset 24, -10
-  77 0026 9F93      		push r25
-  78               	.LCFI9:
-  79               		.cfi_def_cfa_offset 12
-  80               		.cfi_offset 25, -11
-  81 0028 AF93      		push r26
-  82               	.LCFI10:
-  83               		.cfi_def_cfa_offset 13
-  84               		.cfi_offset 26, -12
-  85 002a BF93      		push r27
-  86               	.LCFI11:
-  87               		.cfi_def_cfa_offset 14
-  88               		.cfi_offset 27, -13
-  89 002c EF93      		push r30
-  90               	.LCFI12:
-  91               		.cfi_def_cfa_offset 15
-  92               		.cfi_offset 30, -14
-  93 002e FF93      		push r31
-  94               	.LCFI13:
-  95               		.cfi_def_cfa_offset 16
-  96               		.cfi_offset 31, -15
-  97               	/* prologue: Signal */
-  98               	/* frame size = 0 */
-  99               	/* stack size = 16 */
- 100               	.L__stack_usage = 16
-  27:src/system.c  **** 
-  28:src/system.c  ****     if(timer_callback != NULL)
- 101               		.loc 1 28 0
- 102 0030 E091 0000 		lds r30,timer_callback
- 103 0034 F091 0000 		lds r31,timer_callback+1
- 104 0038 3097      		sbiw r30,0
- 105 003a 01F0      		breq .L3
-  29:src/system.c  ****         timer_callback();
- 106               		.loc 1 29 0
- 107 003c 0995      		icall
- 108               	.LVL1:
- 109               	.L3:
-  30:src/system.c  **** 
-  31:src/system.c  ****     sys_time++;
- 110               		.loc 1 31 0
- 111 003e 8091 0000 		lds r24,sys_time
- 112 0042 9091 0000 		lds r25,sys_time+1
- 113 0046 A091 0000 		lds r26,sys_time+2
- 114 004a B091 0000 		lds r27,sys_time+3
- 115 004e 0196      		adiw r24,1
- 116 0050 A11D      		adc r26,__zero_reg__
- 117 0052 B11D      		adc r27,__zero_reg__
- 118 0054 8093 0000 		sts sys_time,r24
- 119 0058 9093 0000 		sts sys_time+1,r25
- 120 005c A093 0000 		sts sys_time+2,r26
- 121 0060 B093 0000 		sts sys_time+3,r27
- 122               	/* epilogue start */
+  16:src/system.c  ****     timer_callback = callback;
+  23               		.loc 1 16 5 view .LVU1
+  24               		.loc 1 16 20 is_stmt 0 view .LVU2
+  25 0000 9093 0000 		sts timer_callback+1,r25
+  26 0004 8093 0000 		sts timer_callback,r24
+  27               	/* epilogue start */
+  17:src/system.c  **** } // end of timer_register_callback()
+  28               		.loc 1 17 1 view .LVU3
+  29 0008 0895      		ret
+  30               		.cfi_endproc
+  31               	.LFE22:
+  33               	.global	__vector_12
+  35               	__vector_12:
+  36               	.LFB24:
+  18:src/system.c  **** 
+  19:src/system.c  **** /*
+  20:src/system.c  ****  * Function:        static void timer_init(unsigned int freq)
+  21:src/system.c  ****  * Description:     setup the timer by `freq`
+  22:src/system.c  ****  */
+  23:src/system.c  **** static void timer_init(unsigned int freq)
+  24:src/system.c  **** {
+  25:src/system.c  ****     TCCR1A = 0;
+  26:src/system.c  **** 	TCCR1B = (1 << WGM12) | (1 << CS10);
+  27:src/system.c  **** 	OCR1A = (double)F_CPU / (double)freq + 0.5;
+  28:src/system.c  **** 	TIMSK1 = 1 << OCIE1A;
+  29:src/system.c  **** 
+  30:src/system.c  **** 	SREG |= 0x80;
+  31:src/system.c  **** } // end of timer_init()
   32:src/system.c  **** 
-  33:src/system.c  **** }
- 123               		.loc 1 33 0
- 124 0064 FF91      		pop r31
- 125 0066 EF91      		pop r30
- 126 0068 BF91      		pop r27
- 127 006a AF91      		pop r26
- 128 006c 9F91      		pop r25
- 129 006e 8F91      		pop r24
- 130 0070 7F91      		pop r23
- 131 0072 6F91      		pop r22
- 132 0074 5F91      		pop r21
- 133 0076 4F91      		pop r20
- 134 0078 3F91      		pop r19
- 135 007a 2F91      		pop r18
- 136 007c 0F90      		pop r0
- 137 007e 0BBE      		out __RAMPZ__,r0
- 138 0080 0F90      		pop r0
- 139 0082 0FBE      		out __SREG__,r0
- 140 0084 0F90      		pop r0
- 141 0086 1F90      		pop r1
- 142 0088 1895      		reti
- 143               		.cfi_endproc
- 144               	.LFE24:
- 146               	.global	delay
- 148               	delay:
- 149               	.LFB26:
-  34:src/system.c  **** /*
-  35:src/system.c  ****  * Function:        void system_init(void)
-  36:src/system.c  ****  * Description:     init everything that is needed
-  37:src/system.c  ****  */
-  38:src/system.c  **** void system_init(void) {
-  39:src/system.c  **** 
-  40:src/system.c  ****     #ifdef DEBUG
-  41:src/system.c  ****         USART0_init(9600);
-  42:src/system.c  ****     #endif
-  43:src/system.c  ****     debug_printf("SENSA - Motor control board - DEBUG \n\n");
-  44:src/system.c  ****     debug_printf("Starting init... ");
-  45:src/system.c  ****     
-  46:src/system.c  ****     init_led();
-  47:src/system.c  **** 
-  48:src/system.c  ****     // indicate the beginning of the init
-  49:src/system.c  ****     gpio_write_pin(PIN_LED1, HIGH);                       
-  50:src/system.c  **** 
-  51:src/system.c  ****     timer_register_callback(gpio_debouncer);
-  52:src/system.c  **** 
-  53:src/system.c  ****     timer_init(1000);
-  54:src/system.c  **** 
-  55:src/system.c  ****     // CAN Bus init
-  56:src/system.c  ****     CAN_Init();
-  57:src/system.c  **** 	if( CAN_InitRxMob(MOTOR_CONTROL_CAN_ID) == NOTINITED ) {
-  58:src/system.c  ****         debug_printf("ERROR! void system_init(void) - CAN Rx Mob not inited... halting system");
-  59:src/system.c  ****         while(1) {
-  60:src/system.c  ****             delay(100);
-  61:src/system.c  ****         }
-  62:src/system.c  ****     }
-  63:src/system.c  **** 
-  64:src/system.c  ****     // Stepper Init
-  65:src/system.c  ****     init_stepper();
-  66:src/system.c  **** 
-  67:src/system.c  ****     // DC Motor Init
-  68:src/system.c  ****     init_hbridge();
-  69:src/system.c  **** 
-  70:src/system.c  ****     // Encoder Init
-  71:src/system.c  **** 
-  72:src/system.c  ****     // Switches Init
-  73:src/system.c  ****     init_switches();
-  74:src/system.c  **** 
-  75:src/system.c  ****     // end of init
-  76:src/system.c  ****     gpio_write_pin(PIN_LED1, LOW); 
-  77:src/system.c  **** 
-  78:src/system.c  ****     debug_printf("finished... \n\n");
-  79:src/system.c  **** }
-  80:src/system.c  **** 
-  81:src/system.c  **** 
-  82:src/system.c  **** /************************************************************/
-  83:src/system.c  **** /*                   Helper functions                       */
-  84:src/system.c  **** /************************************************************/
-  85:src/system.c  **** 
-  86:src/system.c  **** /*
-  87:src/system.c  ****  * Function:   void delay(int ms)
-  88:src/system.c  ****  * Parameter:  int ms - the amount of miliseconds we need to delay
-  89:src/system.c  ****  */
-  90:src/system.c  **** void delay(int ms)
-  91:src/system.c  **** {
- 150               		.loc 1 91 0
- 151               		.cfi_startproc
- 152               	.LVL2:
- 153               	/* prologue: function */
- 154               	/* frame size = 0 */
- 155               	/* stack size = 0 */
- 156               	.L__stack_usage = 0
- 157               	.L9:
-  92:src/system.c  ****   while (0 < ms)
- 158               		.loc 1 92 0
- 159 008a 1816      		cp __zero_reg__,r24
- 160 008c 1906      		cpc __zero_reg__,r25
- 161 008e 04F4      		brge .L11
- 162               	.LVL3:
- 163               	.LBB6:
- 164               	.LBB7:
- 165               		.file 2 "/usr/lib/avr/include/util/delay.h"
-   1:/usr/lib/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
-   2:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
-   3:/usr/lib/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
-   4:/usr/lib/avr/include/util/delay.h ****    All rights reserved.
-   5:/usr/lib/avr/include/util/delay.h **** 
-   6:/usr/lib/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
-   7:/usr/lib/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
-   8:/usr/lib/avr/include/util/delay.h **** 
-   9:/usr/lib/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
-  10:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
-  11:/usr/lib/avr/include/util/delay.h **** 
-  12:/usr/lib/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
-  13:/usr/lib/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
-  14:/usr/lib/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
-  15:/usr/lib/avr/include/util/delay.h ****      distribution.
-  16:/usr/lib/avr/include/util/delay.h **** 
-  17:/usr/lib/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
-  18:/usr/lib/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
-  19:/usr/lib/avr/include/util/delay.h ****      from this software without specific prior written permission.
-  20:/usr/lib/avr/include/util/delay.h **** 
-  21:/usr/lib/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  22:/usr/lib/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  23:/usr/lib/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-  24:/usr/lib/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-  25:/usr/lib/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-  26:/usr/lib/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-  27:/usr/lib/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-  28:/usr/lib/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-  29:/usr/lib/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-  30:/usr/lib/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-  31:/usr/lib/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
-  32:/usr/lib/avr/include/util/delay.h **** 
-  33:/usr/lib/avr/include/util/delay.h **** /* $Id$ */
-  34:/usr/lib/avr/include/util/delay.h **** 
-  35:/usr/lib/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
-  36:/usr/lib/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
-  37:/usr/lib/avr/include/util/delay.h **** 
-  38:/usr/lib/avr/include/util/delay.h **** #ifndef __DOXYGEN__
-  39:/usr/lib/avr/include/util/delay.h **** #  ifndef __HAS_DELAY_CYCLES
-  40:/usr/lib/avr/include/util/delay.h **** #    define __HAS_DELAY_CYCLES 1
-  41:/usr/lib/avr/include/util/delay.h **** #  endif
-  42:/usr/lib/avr/include/util/delay.h **** #endif  /* __DOXYGEN__ */
-  43:/usr/lib/avr/include/util/delay.h **** 
-  44:/usr/lib/avr/include/util/delay.h **** #include <inttypes.h>
-  45:/usr/lib/avr/include/util/delay.h **** #include <util/delay_basic.h>
-  46:/usr/lib/avr/include/util/delay.h **** #include <math.h>
-  47:/usr/lib/avr/include/util/delay.h **** 
-  48:/usr/lib/avr/include/util/delay.h **** /** \file */
-  49:/usr/lib/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
-  50:/usr/lib/avr/include/util/delay.h ****     \code
-  51:/usr/lib/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
-  52:/usr/lib/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
-  53:/usr/lib/avr/include/util/delay.h ****     #include <util/delay.h>
-  54:/usr/lib/avr/include/util/delay.h ****     \endcode
-  55:/usr/lib/avr/include/util/delay.h **** 
-  56:/usr/lib/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
-  57:/usr/lib/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
-  58:/usr/lib/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
-  59:/usr/lib/avr/include/util/delay.h ****     used.
-  60:/usr/lib/avr/include/util/delay.h **** 
-  61:/usr/lib/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
-  62:/usr/lib/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
-  63:/usr/lib/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
-  64:/usr/lib/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
-  65:/usr/lib/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
-  66:/usr/lib/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
-  67:/usr/lib/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
-  68:/usr/lib/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
-  69:/usr/lib/avr/include/util/delay.h **** 
-  70:/usr/lib/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
-  71:/usr/lib/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
-  72:/usr/lib/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
-  73:/usr/lib/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
-  74:/usr/lib/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
-  75:/usr/lib/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
-  76:/usr/lib/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
-  77:/usr/lib/avr/include/util/delay.h ****     routines linked into the application.
-  78:/usr/lib/avr/include/util/delay.h **** 
-  79:/usr/lib/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
-  80:/usr/lib/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
-  81:/usr/lib/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
-  82:/usr/lib/avr/include/util/delay.h **** 
-  83:/usr/lib/avr/include/util/delay.h **** */
-  84:/usr/lib/avr/include/util/delay.h **** 
-  85:/usr/lib/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
-  86:/usr/lib/avr/include/util/delay.h **** static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
-  87:/usr/lib/avr/include/util/delay.h **** static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
-  88:/usr/lib/avr/include/util/delay.h **** #endif
-  89:/usr/lib/avr/include/util/delay.h **** 
-  90:/usr/lib/avr/include/util/delay.h **** #ifndef F_CPU
-  91:/usr/lib/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
-  92:/usr/lib/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
-  93:/usr/lib/avr/include/util/delay.h **** /** \ingroup util_delay
-  94:/usr/lib/avr/include/util/delay.h ****     \def F_CPU
-  95:/usr/lib/avr/include/util/delay.h ****     \brief CPU frequency in Hz
-  96:/usr/lib/avr/include/util/delay.h **** 
-  97:/usr/lib/avr/include/util/delay.h ****     The macro F_CPU specifies the CPU frequency to be considered by
-  98:/usr/lib/avr/include/util/delay.h ****     the delay macros.  This macro is normally supplied by the
-  99:/usr/lib/avr/include/util/delay.h ****     environment (e.g. from within a project header, or the project's
- 100:/usr/lib/avr/include/util/delay.h ****     Makefile).  The value 1 MHz here is only provided as a "vanilla"
- 101:/usr/lib/avr/include/util/delay.h ****     fallback if no such user-provided definition could be found.
- 102:/usr/lib/avr/include/util/delay.h **** 
- 103:/usr/lib/avr/include/util/delay.h ****     In terms of the delay functions, the CPU frequency can be given as
- 104:/usr/lib/avr/include/util/delay.h ****     a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
- 105:/usr/lib/avr/include/util/delay.h ****     However, the macros in <util/setbaud.h> require it to be an
- 106:/usr/lib/avr/include/util/delay.h ****     integer value.
- 107:/usr/lib/avr/include/util/delay.h ****  */
- 108:/usr/lib/avr/include/util/delay.h **** # define F_CPU 1000000UL
- 109:/usr/lib/avr/include/util/delay.h **** #endif
- 110:/usr/lib/avr/include/util/delay.h **** 
- 111:/usr/lib/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
- 112:/usr/lib/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
- 113:/usr/lib/avr/include/util/delay.h **** #endif
- 114:/usr/lib/avr/include/util/delay.h **** 
- 115:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
- 116:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
- 117:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
- 118:/usr/lib/avr/include/util/delay.h **** #  include <math.h>
- 119:/usr/lib/avr/include/util/delay.h **** #endif
- 120:/usr/lib/avr/include/util/delay.h **** 
- 121:/usr/lib/avr/include/util/delay.h **** /**
- 122:/usr/lib/avr/include/util/delay.h ****    \ingroup util_delay
- 123:/usr/lib/avr/include/util/delay.h **** 
- 124:/usr/lib/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
- 125:/usr/lib/avr/include/util/delay.h **** 
- 126:/usr/lib/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
- 127:/usr/lib/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
- 128:/usr/lib/avr/include/util/delay.h **** 
- 129:/usr/lib/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
- 130:/usr/lib/avr/include/util/delay.h **** 
- 131:/usr/lib/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
- 132:/usr/lib/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
- 133:/usr/lib/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
- 134:/usr/lib/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
- 135:/usr/lib/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
- 136:/usr/lib/avr/include/util/delay.h **** 
- 137:/usr/lib/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
- 138:/usr/lib/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
- 139:/usr/lib/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
- 140:/usr/lib/avr/include/util/delay.h ****    no delay i.e., 0ms.
- 141:/usr/lib/avr/include/util/delay.h **** 
- 142:/usr/lib/avr/include/util/delay.h ****    Conversion of \c __ms into clock cycles may not always result in
- 143:/usr/lib/avr/include/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
- 144:/usr/lib/avr/include/util/delay.h ****    integer. This ensures that the user gets at least \c __ms
- 145:/usr/lib/avr/include/util/delay.h ****    microseconds of delay.
- 146:/usr/lib/avr/include/util/delay.h **** 
- 147:/usr/lib/avr/include/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
- 148:/usr/lib/avr/include/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
- 149:/usr/lib/avr/include/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
- 150:/usr/lib/avr/include/util/delay.h ****    respectively.
- 151:/usr/lib/avr/include/util/delay.h **** 
- 152:/usr/lib/avr/include/util/delay.h ****    \note
- 153:/usr/lib/avr/include/util/delay.h **** 
- 154:/usr/lib/avr/include/util/delay.h ****    The implementation of _delay_ms() based on
- 155:/usr/lib/avr/include/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
- 156:/usr/lib/avr/include/util/delay.h ****    implementations.  In order to get functionality backward compatible
- 157:/usr/lib/avr/include/util/delay.h ****    with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
- 158:/usr/lib/avr/include/util/delay.h ****    must be defined before including this header file. Also, the
- 159:/usr/lib/avr/include/util/delay.h ****    backward compatible algorithm will be chosen if the code is
- 160:/usr/lib/avr/include/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
- 161:/usr/lib/avr/include/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
- 162:/usr/lib/avr/include/util/delay.h ****    not available to the compiler then.
- 163:/usr/lib/avr/include/util/delay.h **** 
- 164:/usr/lib/avr/include/util/delay.h ****  */
- 165:/usr/lib/avr/include/util/delay.h **** void
- 166:/usr/lib/avr/include/util/delay.h **** _delay_ms(double __ms)
- 167:/usr/lib/avr/include/util/delay.h **** {
- 168:/usr/lib/avr/include/util/delay.h **** 	double __tmp ;
- 169:/usr/lib/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
- 170:/usr/lib/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
- 171:/usr/lib/avr/include/util/delay.h ****   __STDC_HOSTED__
- 172:/usr/lib/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
- 173:/usr/lib/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
- 174:/usr/lib/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
- 175:/usr/lib/avr/include/util/delay.h **** 
- 176:/usr/lib/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
- 177:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
- 178:/usr/lib/avr/include/util/delay.h **** 
- 179:/usr/lib/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
- 180:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
- 181:/usr/lib/avr/include/util/delay.h **** 
- 182:/usr/lib/avr/include/util/delay.h **** 	#else
- 183:/usr/lib/avr/include/util/delay.h **** 		//round up by default
- 184:/usr/lib/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
- 185:/usr/lib/avr/include/util/delay.h **** 	#endif
- 186:/usr/lib/avr/include/util/delay.h **** 
- 187:/usr/lib/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
- 166               		.loc 2 187 0
- 167 0090 EFE9      		ldi r30,lo8(3999)
- 168 0092 FFE0      		ldi r31,hi8(3999)
- 169 0094 3197      	1:	sbiw r30,1
- 170 0096 01F4      		brne 1b
- 171 0098 00C0      		rjmp .
- 172 009a 0000      		nop
- 173               	.LVL4:
- 174               	.LBE7:
- 175               	.LBE6:
-  93:src/system.c  ****   {  
-  94:src/system.c  ****     _delay_ms(1);
-  95:src/system.c  ****     --ms;
- 176               		.loc 1 95 0
- 177 009c 0197      		sbiw r24,1
- 178               	.LVL5:
- 179 009e 00C0      		rjmp .L9
- 180               	.L11:
- 181               	/* epilogue start */
-  96:src/system.c  ****   }
-  97:src/system.c  **** } // end of delay(int ms)
- 182               		.loc 1 97 0
- 183 00a0 0895      		ret
- 184               		.cfi_endproc
- 185               	.LFE26:
- 187               		.section	.rodata.str1.1,"aMS",@progbits,1
- 188               	.LC0:
- 189 0000 5345 4E53 		.string	"SENSA - Motor control board - DEBUG \n\n"
- 189      4120 2D20 
- 189      4D6F 746F 
- 189      7220 636F 
- 189      6E74 726F 
- 190               	.LC1:
- 191 0027 5374 6172 		.string	"Starting init... "
- 191      7469 6E67 
- 191      2069 6E69 
- 191      742E 2E2E 
- 191      2000 
- 192               	.LC2:
- 193 0039 4552 524F 		.string	"ERROR! void system_init(void) - CAN Rx Mob not inited... halting system"
- 193      5221 2076 
- 193      6F69 6420 
- 193      7379 7374 
- 193      656D 5F69 
- 194               	.LC3:
- 195 0081 6669 6E69 		.string	"finished... \n\n"
- 195      7368 6564 
- 195      2E2E 2E20 
- 195      0A0A 00
- 196               		.text
- 197               	.global	system_init
- 199               	system_init:
- 200               	.LFB25:
+  33:src/system.c  **** ISR(TIMER1_COMPA_vect)
+  34:src/system.c  **** {
+  37               		.loc 1 34 1 is_stmt 1 view -0
+  38               		.cfi_startproc
+  39 000a 1F92      		push r1
+  40               	.LCFI0:
+  41               		.cfi_def_cfa_offset 3
+  42               		.cfi_offset 1, -2
+  43 000c 0F92      		push r0
+  44               	.LCFI1:
+  45               		.cfi_def_cfa_offset 4
+  46               		.cfi_offset 0, -3
+  47 000e 0FB6      		in r0,__SREG__
+  48 0010 0F92      		push r0
+  49 0012 1124      		clr __zero_reg__
+  50 0014 0BB6      		in r0,__RAMPZ__
+  51 0016 0F92      		push r0
+  52 0018 2F93      		push r18
+  53               	.LCFI2:
+  54               		.cfi_def_cfa_offset 5
+  55               		.cfi_offset 18, -4
+  56 001a 3F93      		push r19
+  57               	.LCFI3:
+  58               		.cfi_def_cfa_offset 6
+  59               		.cfi_offset 19, -5
+  60 001c 4F93      		push r20
+  61               	.LCFI4:
+  62               		.cfi_def_cfa_offset 7
+  63               		.cfi_offset 20, -6
+  64 001e 5F93      		push r21
+  65               	.LCFI5:
+  66               		.cfi_def_cfa_offset 8
+  67               		.cfi_offset 21, -7
+  68 0020 6F93      		push r22
+  69               	.LCFI6:
+  70               		.cfi_def_cfa_offset 9
+  71               		.cfi_offset 22, -8
+  72 0022 7F93      		push r23
+  73               	.LCFI7:
+  74               		.cfi_def_cfa_offset 10
+  75               		.cfi_offset 23, -9
+  76 0024 8F93      		push r24
+  77               	.LCFI8:
+  78               		.cfi_def_cfa_offset 11
+  79               		.cfi_offset 24, -10
+  80 0026 9F93      		push r25
+  81               	.LCFI9:
+  82               		.cfi_def_cfa_offset 12
+  83               		.cfi_offset 25, -11
+  84 0028 AF93      		push r26
+  85               	.LCFI10:
+  86               		.cfi_def_cfa_offset 13
+  87               		.cfi_offset 26, -12
+  88 002a BF93      		push r27
+  89               	.LCFI11:
+  90               		.cfi_def_cfa_offset 14
+  91               		.cfi_offset 27, -13
+  92 002c EF93      		push r30
+  93               	.LCFI12:
+  94               		.cfi_def_cfa_offset 15
+  95               		.cfi_offset 30, -14
+  96 002e FF93      		push r31
+  97               	.LCFI13:
+  98               		.cfi_def_cfa_offset 16
+  99               		.cfi_offset 31, -15
+ 100               	/* prologue: Signal */
+ 101               	/* frame size = 0 */
+ 102               	/* stack size = 16 */
+ 103               	.L__stack_usage = 16
+  35:src/system.c  ****     // if timer_callback function is set, execute it
+  36:src/system.c  ****     if(timer_callback != NULL)
+ 104               		.loc 1 36 5 view .LVU5
+ 105               		.loc 1 36 23 is_stmt 0 view .LVU6
+ 106 0030 E091 0000 		lds r30,timer_callback
+ 107 0034 F091 0000 		lds r31,timer_callback+1
+ 108               		.loc 1 36 7 view .LVU7
+ 109 0038 3097      		sbiw r30,0
+ 110 003a 01F0      		breq .L3
+  37:src/system.c  ****         timer_callback();
+ 111               		.loc 1 37 9 is_stmt 1 view .LVU8
+ 112 003c 0995      		icall
+ 113               	.LVL1:
+ 114               	.L3:
   38:src/system.c  **** 
- 201               		.loc 1 38 0
- 202               		.cfi_startproc
- 203 00a2 CF93      		push r28
- 204               	.LCFI14:
- 205               		.cfi_def_cfa_offset 3
- 206               		.cfi_offset 28, -2
- 207 00a4 DF93      		push r29
- 208               	.LCFI15:
- 209               		.cfi_def_cfa_offset 4
- 210               		.cfi_offset 29, -3
- 211               	/* prologue: function */
- 212               	/* frame size = 0 */
- 213               	/* stack size = 2 */
- 214               	.L__stack_usage = 2
-  41:src/system.c  ****     #endif
- 215               		.loc 1 41 0
- 216 00a6 60E8      		ldi r22,lo8(-128)
- 217 00a8 75E2      		ldi r23,lo8(37)
- 218 00aa 80E0      		ldi r24,0
- 219 00ac 90E0      		ldi r25,0
- 220 00ae 0E94 0000 		call USART0_init
- 221               	.LVL6:
-  43:src/system.c  ****     debug_printf("Starting init... ");
- 222               		.loc 1 43 0
- 223 00b2 80E0      		ldi r24,lo8(.LC0)
- 224 00b4 90E0      		ldi r25,hi8(.LC0)
- 225 00b6 0E94 0000 		call debug_printf
- 226               	.LVL7:
-  44:src/system.c  ****     
- 227               		.loc 1 44 0
- 228 00ba 80E0      		ldi r24,lo8(.LC1)
- 229 00bc 90E0      		ldi r25,hi8(.LC1)
- 230 00be 0E94 0000 		call debug_printf
- 231               	.LVL8:
- 232               	.LBB17:
- 233               	.LBB18:
-  98:src/system.c  **** 
-  99:src/system.c  **** /************************************************************/
- 100:src/system.c  **** /*                  LED debug section                       */
- 101:src/system.c  **** /************************************************************/
- 102:src/system.c  **** 
- 103:src/system.c  **** /*
- 104:src/system.c  ****  * Function:   void init_led(void)
- 105:src/system.c  ****  * Parameter:  init the pins for the LEDs
- 106:src/system.c  ****  */
- 107:src/system.c  **** static void init_led(void) {
- 108:src/system.c  **** 
- 109:src/system.c  ****     gpio_register_pin(PIN_LED1, GPIO_DIRECTION_OUTPUT, true);      // set led1 as output
- 234               		.loc 1 109 0
- 235 00c2 41E0      		ldi r20,lo8(1)
- 236 00c4 61E0      		ldi r22,lo8(1)
- 237 00c6 80E3      		ldi r24,lo8(48)
- 238 00c8 0E94 0000 		call gpio_register_pin
- 239               	.LVL9:
- 110:src/system.c  ****     gpio_register_pin(PIN_LED2, GPIO_DIRECTION_OUTPUT, true);      // set led2 as output
- 240               		.loc 1 110 0
- 241 00cc 41E0      		ldi r20,lo8(1)
- 242 00ce 61E0      		ldi r22,lo8(1)
- 243 00d0 81E3      		ldi r24,lo8(49)
- 244 00d2 0E94 0000 		call gpio_register_pin
- 245               	.LVL10:
- 111:src/system.c  **** 
- 112:src/system.c  ****     gpio_write_pin(PIN_LED1, LOW);                                  // set led1 low
- 246               		.loc 1 112 0
- 247 00d6 60E0      		ldi r22,0
- 248 00d8 80E3      		ldi r24,lo8(48)
- 249 00da 0E94 0000 		call gpio_write_pin
- 250               	.LVL11:
- 113:src/system.c  ****     gpio_write_pin(PIN_LED2, LOW);                                  // set led2 low
- 251               		.loc 1 113 0
- 252 00de 60E0      		ldi r22,0
- 253 00e0 81E3      		ldi r24,lo8(49)
- 254 00e2 0E94 0000 		call gpio_write_pin
- 255               	.LVL12:
- 256               	.LBE18:
- 257               	.LBE17:
+  39:src/system.c  ****     // increment sys_time
+  40:src/system.c  ****     sys_time++;
+ 115               		.loc 1 40 5 view .LVU9
+ 116               		.loc 1 40 13 is_stmt 0 view .LVU10
+ 117 003e 8091 0000 		lds r24,sys_time
+ 118 0042 9091 0000 		lds r25,sys_time+1
+ 119 0046 A091 0000 		lds r26,sys_time+2
+ 120 004a B091 0000 		lds r27,sys_time+3
+ 121 004e 0196      		adiw r24,1
+ 122 0050 A11D      		adc r26,__zero_reg__
+ 123 0052 B11D      		adc r27,__zero_reg__
+ 124 0054 8093 0000 		sts sys_time,r24
+ 125 0058 9093 0000 		sts sys_time+1,r25
+ 126 005c A093 0000 		sts sys_time+2,r26
+ 127 0060 B093 0000 		sts sys_time+3,r27
+ 128               	/* epilogue start */
+  41:src/system.c  **** 
+  42:src/system.c  **** }
+ 129               		.loc 1 42 1 view .LVU11
+ 130 0064 FF91      		pop r31
+ 131 0066 EF91      		pop r30
+ 132 0068 BF91      		pop r27
+ 133 006a AF91      		pop r26
+ 134 006c 9F91      		pop r25
+ 135 006e 8F91      		pop r24
+ 136 0070 7F91      		pop r23
+ 137 0072 6F91      		pop r22
+ 138 0074 5F91      		pop r21
+ 139 0076 4F91      		pop r20
+ 140 0078 3F91      		pop r19
+ 141 007a 2F91      		pop r18
+ 142 007c 0F90      		pop r0
+ 143 007e 0BBE      		out __RAMPZ__,r0
+ 144 0080 0F90      		pop r0
+ 145 0082 0FBE      		out __SREG__,r0
+ 146 0084 0F90      		pop r0
+ 147 0086 1F90      		pop r1
+ 148 0088 1895      		reti
+ 149               		.cfi_endproc
+ 150               	.LFE24:
+ 152               		.section	.rodata.str1.1,"aMS",@progbits,1
+ 153               	.LC0:
+ 154 0000 5345 4E53 		.string	"SENSA - Motor control board - DEBUG \n\n"
+ 154      4120 2D20 
+ 154      4D6F 746F 
+ 154      7220 636F 
+ 154      6E74 726F 
+ 155               	.LC1:
+ 156 0027 5374 6172 		.string	"Starting init... "
+ 156      7469 6E67 
+ 156      2069 6E69 
+ 156      742E 2E2E 
+ 156      2000 
+ 157               	.LC2:
+ 158 0039 6669 6E69 		.string	"finished... \n\n"
+ 158      7368 6564 
+ 158      2E2E 2E20 
+ 158      0A0A 00
+ 159               		.text
+ 160               	.global	system_init
+ 162               	system_init:
+ 163               	.LFB25:
+  43:src/system.c  **** 
+  44:src/system.c  **** /*
+  45:src/system.c  ****  * Function:        void system_init(void)
+  46:src/system.c  ****  * Description:     init everything that is needed
+  47:src/system.c  ****  */
+  48:src/system.c  **** void system_init(void) {
+ 164               		.loc 1 48 24 is_stmt 1 view -0
+ 165               		.cfi_startproc
+ 166 008a CF93      		push r28
+ 167               	.LCFI14:
+ 168               		.cfi_def_cfa_offset 3
+ 169               		.cfi_offset 28, -2
+ 170 008c DF93      		push r29
+ 171               	.LCFI15:
+ 172               		.cfi_def_cfa_offset 4
+ 173               		.cfi_offset 29, -3
+ 174               	/* prologue: function */
+ 175               	/* frame size = 0 */
+ 176               	/* stack size = 2 */
+ 177               	.L__stack_usage = 2
   49:src/system.c  **** 
- 258               		.loc 1 49 0
- 259 00e6 61E0      		ldi r22,lo8(1)
- 260 00e8 80E3      		ldi r24,lo8(48)
- 261 00ea 0E94 0000 		call gpio_write_pin
- 262               	.LVL13:
- 263               	.LBB19:
- 264               	.LBB20:
-  12:src/system.c  **** }
- 265               		.loc 1 12 0
- 266 00ee 80E0      		ldi r24,lo8(gs(gpio_debouncer))
- 267 00f0 90E0      		ldi r25,hi8(gs(gpio_debouncer))
- 268 00f2 9093 0000 		sts timer_callback+1,r25
- 269 00f6 8093 0000 		sts timer_callback,r24
- 270               	.LVL14:
- 271               	.LBE20:
- 272               	.LBE19:
- 273               	.LBB21:
- 274               	.LBB22:
-  17:src/system.c  **** 	TCCR1B = (1 << WGM12) | (1 << CS10);
- 275               		.loc 1 17 0
- 276 00fa 1092 8000 		sts 128,__zero_reg__
-  18:src/system.c  **** 	OCR1A = (double)F_CPU / (double)freq + 0.5;
- 277               		.loc 1 18 0
- 278 00fe 89E0      		ldi r24,lo8(9)
- 279 0100 8093 8100 		sts 129,r24
-  19:src/system.c  **** 	TIMSK1 = 1 << OCIE1A;
- 280               		.loc 1 19 0
- 281 0104 80E8      		ldi r24,lo8(-128)
- 282 0106 9EE3      		ldi r25,lo8(62)
- 283 0108 9093 8900 		sts 136+1,r25
- 284 010c 8093 8800 		sts 136,r24
-  20:src/system.c  **** 
- 285               		.loc 1 20 0
- 286 0110 82E0      		ldi r24,lo8(2)
- 287 0112 8093 6F00 		sts 111,r24
-  22:src/system.c  **** }
- 288               		.loc 1 22 0
- 289 0116 8FB7      		in r24,__SREG__
- 290 0118 8068      		ori r24,lo8(-128)
- 291 011a 8FBF      		out __SREG__,r24
- 292               	.LVL15:
- 293               	.LBE22:
- 294               	.LBE21:
-  56:src/system.c  **** 	if( CAN_InitRxMob(MOTOR_CONTROL_CAN_ID) == NOTINITED ) {
- 295               		.loc 1 56 0
- 296 011c 0E94 0000 		call CAN_Init
- 297               	.LVL16:
-  57:src/system.c  ****         debug_printf("ERROR! void system_init(void) - CAN Rx Mob not inited... halting system");
- 298               		.loc 1 57 0
- 299 0120 84ED      		ldi r24,lo8(-44)
- 300 0122 90E0      		ldi r25,0
- 301 0124 0E94 0000 		call CAN_InitRxMob
- 302               	.LVL17:
- 303 0128 8111      		cpse r24,__zero_reg__
- 304 012a 00C0      		rjmp .L13
-  58:src/system.c  ****         while(1) {
- 305               		.loc 1 58 0
- 306 012c 80E0      		ldi r24,lo8(.LC2)
- 307 012e 90E0      		ldi r25,hi8(.LC2)
- 308 0130 0E94 0000 		call debug_printf
- 309               	.LVL18:
- 310               	.L14:
-  60:src/system.c  ****         }
- 311               		.loc 1 60 0 discriminator 1
- 312 0134 84E6      		ldi r24,lo8(100)
- 313 0136 90E0      		ldi r25,0
- 314 0138 0E94 0000 		call delay
- 315               	.LVL19:
- 316 013c 00C0      		rjmp .L14
- 317               	.L13:
-  65:src/system.c  **** 
- 318               		.loc 1 65 0
- 319 013e 0E94 0000 		call init_stepper
- 320               	.LVL20:
-  68:src/system.c  **** 
- 321               		.loc 1 68 0
- 322 0142 0E94 0000 		call init_hbridge
- 323               	.LVL21:
- 324 0146 C0E0      		ldi r28,lo8(switches_pin)
- 325 0148 D0E0      		ldi r29,hi8(switches_pin)
- 326               	.LVL22:
- 327               	.L15:
- 328               	.LBB23:
- 329               	.LBB24:
- 114:src/system.c  ****     
- 115:src/system.c  **** } // end of init_led(void)
- 116:src/system.c  **** 
+  50:src/system.c  ****     #ifdef DEBUG
+  51:src/system.c  ****         USART0_init(9600);
+ 178               		.loc 1 51 9 view .LVU13
+ 179 008e 60E8      		ldi r22,lo8(-128)
+ 180 0090 75E2      		ldi r23,lo8(37)
+ 181 0092 80E0      		ldi r24,0
+ 182 0094 90E0      		ldi r25,0
+ 183 0096 0E94 0000 		call USART0_init
+ 184               	.LVL2:
+  52:src/system.c  ****     #endif
+  53:src/system.c  ****     debug_printf("SENSA - Motor control board - DEBUG \n\n");
+ 185               		.loc 1 53 5 view .LVU14
+ 186 009a 80E0      		ldi r24,lo8(.LC0)
+ 187 009c 90E0      		ldi r25,hi8(.LC0)
+ 188 009e 0E94 0000 		call debug_printf
+ 189               	.LVL3:
+  54:src/system.c  ****     debug_printf("Starting init... ");
+ 190               		.loc 1 54 5 view .LVU15
+ 191 00a2 80E0      		ldi r24,lo8(.LC1)
+ 192 00a4 90E0      		ldi r25,hi8(.LC1)
+ 193 00a6 0E94 0000 		call debug_printf
+ 194               	.LVL4:
+  55:src/system.c  ****     
+  56:src/system.c  ****     init_led();
+ 195               		.loc 1 56 5 view .LVU16
+ 196               	.LBB15:
+ 197               	.LBI15:
+  57:src/system.c  **** 
+  58:src/system.c  ****     // indicate the beginning of the init
+  59:src/system.c  ****     gpio_write_pin(PIN_LED1, HIGH);                       
+  60:src/system.c  **** 
+  61:src/system.c  ****     CAN_Init();
+  62:src/system.c  **** 	CAN_InitRxMob(MOTOR_CONTROL_CAN_ID);
+  63:src/system.c  **** 
+  64:src/system.c  ****     // timer callback for debouncing inputs
+  65:src/system.c  ****     timer_register_callback(gpio_debouncer);
+  66:src/system.c  **** 
+  67:src/system.c  ****     // timer set to 1000hz
+  68:src/system.c  ****     timer_init(1000);
+  69:src/system.c  **** 
+  70:src/system.c  ****     // CAN Bus init
+  71:src/system.c  ****     //CAN_Init();
+  72:src/system.c  **** 	//if( CAN_InitRxMob(MOTOR_CONTROL_CAN_ID) == NOTINITED ) {
+  73:src/system.c  ****       //  debug_printf("ERROR! void system_init(void) - CAN Rx Mob not inited... halting system");
+  74:src/system.c  ****         //while(1) {
+  75:src/system.c  ****           //  delay(100);
+  76:src/system.c  ****         //}
+  77:src/system.c  ****     //}
+  78:src/system.c  **** 
+  79:src/system.c  ****     // Stepper Init
+  80:src/system.c  ****     init_stepper();
+  81:src/system.c  **** 
+  82:src/system.c  ****     // DC Motor Init
+  83:src/system.c  ****     init_hbridge();
+  84:src/system.c  **** 
+  85:src/system.c  ****     // Encoder Init
+  86:src/system.c  **** 
+  87:src/system.c  ****     // Switches Init
+  88:src/system.c  ****     init_switches();
+  89:src/system.c  **** 
+  90:src/system.c  ****     // end of init
+  91:src/system.c  ****     gpio_write_pin(PIN_LED1, LOW); 
+  92:src/system.c  **** 
+  93:src/system.c  ****     debug_printf("finished... \n\n");
+  94:src/system.c  **** }
+  95:src/system.c  **** 
+  96:src/system.c  **** 
+  97:src/system.c  **** /************************************************************/
+  98:src/system.c  **** /*                   Helper functions                       */
+  99:src/system.c  **** /************************************************************/
+ 100:src/system.c  **** 
+ 101:src/system.c  **** /*
+ 102:src/system.c  ****  * Function:   void delay(int ms)
+ 103:src/system.c  ****  * Parameter:  int ms - the amount of miliseconds we need to delay
+ 104:src/system.c  ****  */
+ 105:src/system.c  **** void delay(int ms)
+ 106:src/system.c  **** {
+ 107:src/system.c  ****   while (0 < ms)
+ 108:src/system.c  ****   {  
+ 109:src/system.c  ****     _delay_ms(1);
+ 110:src/system.c  ****     --ms;
+ 111:src/system.c  ****   }
+ 112:src/system.c  **** } // end of delay(int ms)
+ 113:src/system.c  **** 
+ 114:src/system.c  **** /************************************************************/
+ 115:src/system.c  **** /*                  LED debug section                       */
+ 116:src/system.c  **** /************************************************************/
  117:src/system.c  **** 
- 118:src/system.c  **** /************************************************************/
- 119:src/system.c  **** /*                   Switches section                       */
- 120:src/system.c  **** /************************************************************/
- 121:src/system.c  **** 
- 122:src/system.c  **** uint8_t switches_pin[8] = {40,41,42,43,44,45,46,47};
+ 118:src/system.c  **** /*
+ 119:src/system.c  ****  * Function:   void init_led(void)
+ 120:src/system.c  ****  * Parameter:  init the pins for the LEDs
+ 121:src/system.c  ****  */
+ 122:src/system.c  **** static void init_led(void) {
+ 198               		.loc 1 122 13 view .LVU17
+ 199               	.LBB16:
  123:src/system.c  **** 
- 124:src/system.c  **** /*
- 125:src/system.c  ****  * Function:   static void init_switches()
- 126:src/system.c  ****  * Parameter:  init pins for switches (switches_pin)
- 127:src/system.c  ****  */
- 128:src/system.c  **** static void init_switches(void) {
- 129:src/system.c  ****     for(int i=0; i < 8; i++) {
- 130:src/system.c  ****         gpio_register_pin(switches_pin[i], GPIO_DIRECTION_INPUT, false);
- 330               		.loc 1 130 0
- 331 014a 40E0      		ldi r20,0
- 332 014c 60E0      		ldi r22,0
- 333 014e 8991      		ld r24,Y+
- 334               	.LVL23:
- 335 0150 0E94 0000 		call gpio_register_pin
- 336               	.LVL24:
- 129:src/system.c  ****         gpio_register_pin(switches_pin[i], GPIO_DIRECTION_INPUT, false);
- 337               		.loc 1 129 0
- 338 0154 80E0      		ldi r24,hi8(switches_pin+8)
- 339 0156 C030      		cpi r28,lo8(switches_pin+8)
- 340 0158 D807      		cpc r29,r24
- 341 015a 01F4      		brne .L15
- 342               	.LVL25:
- 343               	.LBE24:
- 344               	.LBE23:
-  76:src/system.c  **** 
- 345               		.loc 1 76 0
- 346 015c 60E0      		ldi r22,0
- 347 015e 80E3      		ldi r24,lo8(48)
- 348 0160 0E94 0000 		call gpio_write_pin
- 349               	.LVL26:
-  78:src/system.c  **** }
- 350               		.loc 1 78 0
- 351 0164 80E0      		ldi r24,lo8(.LC3)
- 352 0166 90E0      		ldi r25,hi8(.LC3)
- 353               	/* epilogue start */
-  79:src/system.c  **** 
- 354               		.loc 1 79 0
- 355 0168 DF91      		pop r29
- 356 016a CF91      		pop r28
-  78:src/system.c  **** }
- 357               		.loc 1 78 0
- 358 016c 0C94 0000 		jmp debug_printf
- 359               	.LVL27:
- 360               		.cfi_endproc
- 361               	.LFE25:
- 363               	.global	read_switch
- 365               	read_switch:
- 366               	.LFB29:
- 131:src/system.c  ****     }
- 132:src/system.c  **** } // end of init_switches()
- 133:src/system.c  **** 
- 134:src/system.c  **** /*
- 135:src/system.c  ****  * Function:   uint8_t read_switch(uint8_t num)
- 136:src/system.c  ****  * Parameter:  read `num` switch
- 137:src/system.c  ****  */
- 138:src/system.c  **** uint8_t read_switch(uint8_t num) {
- 367               		.loc 1 138 0
- 368               		.cfi_startproc
- 369               	.LVL28:
- 370               	/* prologue: function */
- 371               	/* frame size = 0 */
- 372               	/* stack size = 0 */
- 373               	.L__stack_usage = 0
- 139:src/system.c  **** 
- 140:src/system.c  ****     return gpio_read_pin(switches_pin[num] - 1);
- 374               		.loc 1 140 0
- 375 0170 E82F      		mov r30,r24
- 376 0172 F0E0      		ldi r31,0
- 377 0174 E050      		subi r30,lo8(-(switches_pin))
- 378 0176 F040      		sbci r31,hi8(-(switches_pin))
- 379 0178 8081      		ld r24,Z
- 380               	.LVL29:
- 381 017a 8150      		subi r24,lo8(-(-1))
- 382 017c 0C94 0000 		jmp gpio_read_pin
- 383               	.LVL30:
- 384               		.cfi_endproc
- 385               	.LFE29:
- 387               	.global	switches_pin
- 388               		.data
- 391               	switches_pin:
- 392 0000 28        		.byte	40
- 393 0001 29        		.byte	41
- 394 0002 2A        		.byte	42
- 395 0003 2B        		.byte	43
- 396 0004 2C        		.byte	44
- 397 0005 2D        		.byte	45
- 398 0006 2E        		.byte	46
- 399 0007 2F        		.byte	47
- 400               		.local	timer_callback
- 401               		.comm	timer_callback,2,1
- 402               		.local	sys_time
- 403               		.comm	sys_time,4,1
- 404               		.text
- 405               	.Letext0:
- 406               		.file 3 "/usr/lib/avr/include/stdint.h"
- 407               		.file 4 "src/gpio.h"
- 408               		.file 5 "src/Uart.h"
- 409               		.file 6 "src/can.h"
- 410               		.file 7 "src/stepper.h"
- 411               		.file 8 "src/hbridge.h"
+ 124:src/system.c  ****     gpio_register_pin(PIN_LED1, GPIO_DIRECTION_OUTPUT, true);      // set led1 as output
+ 200               		.loc 1 124 5 view .LVU18
+ 201 00aa 41E0      		ldi r20,lo8(1)
+ 202 00ac 61E0      		ldi r22,lo8(1)
+ 203 00ae 80E3      		ldi r24,lo8(48)
+ 204 00b0 0E94 0000 		call gpio_register_pin
+ 205               	.LVL5:
+ 125:src/system.c  ****     gpio_register_pin(PIN_LED2, GPIO_DIRECTION_OUTPUT, true);      // set led2 as output
+ 206               		.loc 1 125 5 view .LVU19
+ 207 00b4 41E0      		ldi r20,lo8(1)
+ 208 00b6 61E0      		ldi r22,lo8(1)
+ 209 00b8 81E3      		ldi r24,lo8(49)
+ 210 00ba 0E94 0000 		call gpio_register_pin
+ 211               	.LVL6:
+ 126:src/system.c  **** 
+ 127:src/system.c  ****     gpio_write_pin(PIN_LED1, LOW);                                  // set led1 low
+ 212               		.loc 1 127 5 view .LVU20
+ 213 00be 60E0      		ldi r22,0
+ 214 00c0 80E3      		ldi r24,lo8(48)
+ 215 00c2 0E94 0000 		call gpio_write_pin
+ 216               	.LVL7:
+ 128:src/system.c  ****     gpio_write_pin(PIN_LED2, LOW);                                  // set led2 low
+ 217               		.loc 1 128 5 view .LVU21
+ 218 00c6 60E0      		ldi r22,0
+ 219 00c8 81E3      		ldi r24,lo8(49)
+ 220 00ca 0E94 0000 		call gpio_write_pin
+ 221               	.LVL8:
+ 222               	.LBE16:
+ 223               	.LBE15:
+  59:src/system.c  **** 
+ 224               		.loc 1 59 5 view .LVU22
+ 225 00ce 61E0      		ldi r22,lo8(1)
+ 226 00d0 80E3      		ldi r24,lo8(48)
+ 227 00d2 0E94 0000 		call gpio_write_pin
+ 228               	.LVL9:
+  61:src/system.c  **** 	CAN_InitRxMob(MOTOR_CONTROL_CAN_ID);
+ 229               		.loc 1 61 5 view .LVU23
+ 230 00d6 0E94 0000 		call CAN_Init
+ 231               	.LVL10:
+  62:src/system.c  **** 
+ 232               		.loc 1 62 2 view .LVU24
+ 233 00da 84ED      		ldi r24,lo8(-44)
+ 234 00dc 90E0      		ldi r25,0
+ 235 00de 0E94 0000 		call CAN_InitRxMob
+ 236               	.LVL11:
+  65:src/system.c  **** 
+ 237               		.loc 1 65 5 view .LVU25
+ 238               	.LBB17:
+ 239               	.LBI17:
+  14:src/system.c  **** {
+ 240               		.loc 1 14 6 view .LVU26
+ 241               	.LBB18:
+  16:src/system.c  **** } // end of timer_register_callback()
+ 242               		.loc 1 16 5 view .LVU27
+  16:src/system.c  **** } // end of timer_register_callback()
+ 243               		.loc 1 16 20 is_stmt 0 view .LVU28
+ 244 00e2 80E0      		ldi r24,lo8(gs(gpio_debouncer))
+ 245 00e4 90E0      		ldi r25,hi8(gs(gpio_debouncer))
+ 246 00e6 9093 0000 		sts timer_callback+1,r25
+ 247 00ea 8093 0000 		sts timer_callback,r24
+ 248               	.LVL12:
+  16:src/system.c  **** } // end of timer_register_callback()
+ 249               		.loc 1 16 20 view .LVU29
+ 250               	.LBE18:
+ 251               	.LBE17:
+  68:src/system.c  **** 
+ 252               		.loc 1 68 5 is_stmt 1 view .LVU30
+ 253               	.LBB19:
+ 254               	.LBI19:
+  23:src/system.c  **** {
+ 255               		.loc 1 23 13 view .LVU31
+ 256               	.LBB20:
+  25:src/system.c  **** 	TCCR1B = (1 << WGM12) | (1 << CS10);
+ 257               		.loc 1 25 5 view .LVU32
+  25:src/system.c  **** 	TCCR1B = (1 << WGM12) | (1 << CS10);
+ 258               		.loc 1 25 12 is_stmt 0 view .LVU33
+ 259 00ee 1092 8000 		sts 128,__zero_reg__
+  26:src/system.c  **** 	OCR1A = (double)F_CPU / (double)freq + 0.5;
+ 260               		.loc 1 26 2 is_stmt 1 view .LVU34
+  26:src/system.c  **** 	OCR1A = (double)F_CPU / (double)freq + 0.5;
+ 261               		.loc 1 26 9 is_stmt 0 view .LVU35
+ 262 00f2 89E0      		ldi r24,lo8(9)
+ 263 00f4 8093 8100 		sts 129,r24
+  27:src/system.c  **** 	TIMSK1 = 1 << OCIE1A;
+ 264               		.loc 1 27 2 is_stmt 1 view .LVU36
+  27:src/system.c  **** 	TIMSK1 = 1 << OCIE1A;
+ 265               		.loc 1 27 8 is_stmt 0 view .LVU37
+ 266 00f8 80E8      		ldi r24,lo8(-128)
+ 267 00fa 9EE3      		ldi r25,lo8(62)
+ 268 00fc 9093 8900 		sts 136+1,r25
+ 269 0100 8093 8800 		sts 136,r24
+  28:src/system.c  **** 
+ 270               		.loc 1 28 2 is_stmt 1 view .LVU38
+  28:src/system.c  **** 
+ 271               		.loc 1 28 9 is_stmt 0 view .LVU39
+ 272 0104 82E0      		ldi r24,lo8(2)
+ 273 0106 8093 6F00 		sts 111,r24
+  30:src/system.c  **** } // end of timer_init()
+ 274               		.loc 1 30 2 is_stmt 1 view .LVU40
+  30:src/system.c  **** } // end of timer_init()
+ 275               		.loc 1 30 7 is_stmt 0 view .LVU41
+ 276 010a 8FB7      		in r24,__SREG__
+ 277 010c 8068      		ori r24,lo8(-128)
+ 278 010e 8FBF      		out __SREG__,r24
+ 279               	.LVL13:
+  30:src/system.c  **** } // end of timer_init()
+ 280               		.loc 1 30 7 view .LVU42
+ 281               	.LBE20:
+ 282               	.LBE19:
+  80:src/system.c  **** 
+ 283               		.loc 1 80 5 is_stmt 1 view .LVU43
+ 284 0110 0E94 0000 		call init_stepper
+ 285               	.LVL14:
+  83:src/system.c  **** 
+ 286               		.loc 1 83 5 view .LVU44
+ 287 0114 0E94 0000 		call init_hbridge
+ 288               	.LVL15:
+  88:src/system.c  **** 
+ 289               		.loc 1 88 5 view .LVU45
+ 290               	.LBB21:
+ 291               	.LBI21:
+ 129:src/system.c  ****     
+ 130:src/system.c  **** } // end of init_led(void)
+ 131:src/system.c  **** 
+ 132:src/system.c  **** 
+ 133:src/system.c  **** /************************************************************/
+ 134:src/system.c  **** /*                   Switches section                       */
+ 135:src/system.c  **** /************************************************************/
+ 136:src/system.c  **** 
+ 137:src/system.c  **** uint8_t switches_pin[8] = {40,41,42,43,44,45,46,47};
+ 138:src/system.c  **** 
+ 139:src/system.c  **** /*
+ 140:src/system.c  ****  * Function:   static void init_switches()
+ 141:src/system.c  ****  * Parameter:  init pins for switches (switches_pin)
+ 142:src/system.c  ****  */
+ 143:src/system.c  **** static void init_switches(void) {
+ 292               		.loc 1 143 13 view .LVU46
+ 293               		.loc 1 143 13 is_stmt 0 view .LVU47
+ 294 0118 C0E0      		ldi r28,lo8(switches_pin)
+ 295 011a D0E0      		ldi r29,hi8(switches_pin)
+ 296               	.LVL16:
+ 297               	.L8:
+ 298               	.LBB22:
+ 144:src/system.c  ****     for(int i=0; i < 8; i++) {
+ 145:src/system.c  ****         gpio_register_pin(switches_pin[i], GPIO_DIRECTION_INPUT, false);
+ 299               		.loc 1 145 9 is_stmt 1 view .LVU48
+ 300 011c 40E0      		ldi r20,0
+ 301 011e 60E0      		ldi r22,0
+ 302 0120 8991      		ld r24,Y+
+ 303               	.LVL17:
+ 304               		.loc 1 145 9 is_stmt 0 view .LVU49
+ 305 0122 0E94 0000 		call gpio_register_pin
+ 306               	.LVL18:
+ 144:src/system.c  ****     for(int i=0; i < 8; i++) {
+ 307               		.loc 1 144 5 view .LVU50
+ 308 0126 80E0      		ldi r24,hi8(switches_pin+8)
+ 309 0128 C030      		cpi r28,lo8(switches_pin+8)
+ 310 012a D807      		cpc r29,r24
+ 311 012c 01F4      		brne .L8
+ 312               	.LVL19:
+ 144:src/system.c  ****     for(int i=0; i < 8; i++) {
+ 313               		.loc 1 144 5 view .LVU51
+ 314               	.LBE22:
+ 315               	.LBE21:
+  91:src/system.c  **** 
+ 316               		.loc 1 91 5 is_stmt 1 view .LVU52
+ 317 012e 60E0      		ldi r22,0
+ 318 0130 80E3      		ldi r24,lo8(48)
+ 319 0132 0E94 0000 		call gpio_write_pin
+ 320               	.LVL20:
+  93:src/system.c  **** }
+ 321               		.loc 1 93 5 view .LVU53
+ 322 0136 80E0      		ldi r24,lo8(.LC2)
+ 323 0138 90E0      		ldi r25,hi8(.LC2)
+ 324               	/* epilogue start */
+  94:src/system.c  **** 
+ 325               		.loc 1 94 1 is_stmt 0 view .LVU54
+ 326 013a DF91      		pop r29
+ 327 013c CF91      		pop r28
+  93:src/system.c  **** }
+ 328               		.loc 1 93 5 view .LVU55
+ 329 013e 0C94 0000 		jmp debug_printf
+ 330               	.LVL21:
+ 331               		.cfi_endproc
+ 332               	.LFE25:
+ 334               	.global	delay
+ 336               	delay:
+ 337               	.LVL22:
+ 338               	.LFB26:
+ 106:src/system.c  ****   while (0 < ms)
+ 339               		.loc 1 106 1 is_stmt 1 view -0
+ 340               		.cfi_startproc
+ 341               	/* prologue: function */
+ 342               	/* frame size = 0 */
+ 343               	/* stack size = 0 */
+ 344               	.L__stack_usage = 0
+ 107:src/system.c  ****   {  
+ 345               		.loc 1 107 3 view .LVU57
+ 346               	.L11:
+ 107:src/system.c  ****   {  
+ 347               		.loc 1 107 9 is_stmt 0 view .LVU58
+ 348 0142 1816      		cp __zero_reg__,r24
+ 349 0144 1906      		cpc __zero_reg__,r25
+ 350 0146 04F0      		brlt .L12
+ 351               	/* epilogue start */
+ 112:src/system.c  **** 
+ 352               		.loc 1 112 1 view .LVU59
+ 353 0148 0895      		ret
+ 354               	.L12:
+ 109:src/system.c  ****     --ms;
+ 355               		.loc 1 109 5 is_stmt 1 view .LVU60
+ 356               	.LVL23:
+ 357               	.LBB23:
+ 358               	.LBI23:
+ 359               		.file 2 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h"
+   1:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+   6:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+   9:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  12:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      distribution.
+  16:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  17:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  21:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  33:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /* $Id: delay.h.in 2506 2016-02-08 10:05:45Z joerg_wunsch $ */
+  34:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  35:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  38:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #ifndef __DOXYGEN__
+  39:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #  ifndef __HAS_DELAY_CYCLES
+  40:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #    define __HAS_DELAY_CYCLES 1
+  41:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #  endif
+  42:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #endif  /* __DOXYGEN__ */
+  43:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  44:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #include <inttypes.h>
+  45:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  46:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #include <math.h>
+  47:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  48:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /** \file */
+  49:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  50:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \code
+  51:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  52:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  53:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     #include <util/delay.h>
+  54:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \endcode
+  55:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  56:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  57:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  58:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  59:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     used.
+  60:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  61:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  62:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  63:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  64:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  65:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  66:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  67:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  68:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  69:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  70:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  71:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  72:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  73:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  74:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  75:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  76:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  77:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     routines linked into the application.
+  78:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  79:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  80:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  81:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  82:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  83:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** */
+  84:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  85:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  86:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
+  87:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
+  88:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #endif
+  89:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  90:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #ifndef F_CPU
+  91:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  92:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  93:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /** \ingroup util_delay
+  94:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \def F_CPU
+  95:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \brief CPU frequency in Hz
+  96:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  97:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     The macro F_CPU specifies the CPU frequency to be considered by
+  98:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     the delay macros.  This macro is normally supplied by the
+  99:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     environment (e.g. from within a project header, or the project's
+ 100:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     Makefile).  The value 1 MHz here is only provided as a "vanilla"
+ 101:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     fallback if no such user-provided definition could be found.
+ 102:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 103:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     In terms of the delay functions, the CPU frequency can be given as
+ 104:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
+ 105:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     However, the macros in <util/setbaud.h> require it to be an
+ 106:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     integer value.
+ 107:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****  */
+ 108:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** # define F_CPU 1000000UL
+ 109:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #endif
+ 110:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 111:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+ 112:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+ 113:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #endif
+ 114:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 115:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 116:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 117:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 118:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #  include <math.h>
+ 119:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #endif
+ 120:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 121:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /**
+ 122:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    \ingroup util_delay
+ 123:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 124:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 125:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 126:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 127:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 128:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 129:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 130:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 131:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 132:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 133:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 134:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 135:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 136:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 137:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 138:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 139:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 140:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 141:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 142:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Conversion of \c __ms into clock cycles may not always result in
+ 143:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 144:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    integer. This ensures that the user gets at least \c __ms
+ 145:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    microseconds of delay.
+ 146:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 147:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 148:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 149:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 150:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    respectively.
+ 151:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 152:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    \note
+ 153:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 154:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    The implementation of _delay_ms() based on
+ 155:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 156:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    implementations.  In order to get functionality backward compatible
+ 157:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
+ 158:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    must be defined before including this header file. Also, the
+ 159:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    backward compatible algorithm will be chosen if the code is
+ 160:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 161:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 162:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    not available to the compiler then.
+ 163:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 164:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****  */
+ 165:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** void
+ 166:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 360               		.loc 2 166 1 view .LVU61
+ 361               	.LBB24:
+ 167:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** {
+ 168:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	double __tmp ;
+ 362               		.loc 2 168 2 view .LVU62
+ 169:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 170:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 171:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 172:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 363               		.loc 2 172 2 view .LVU63
+ 173:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 364               		.loc 2 173 2 view .LVU64
+ 174:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 365               		.loc 2 174 2 view .LVU65
+ 175:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 176:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 177:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 178:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 179:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 180:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 181:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 182:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	#else
+ 183:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 		//round up by default
+ 184:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 366               		.loc 2 184 3 view .LVU66
+ 185:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	#endif
+ 186:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 187:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 367               		.loc 2 187 2 view .LVU67
+ 368 014a EFE9      		ldi r30,lo8(3999)
+ 369 014c FFE0      		ldi r31,hi8(3999)
+ 370 014e 3197      	1:	sbiw r30,1
+ 371 0150 01F4      		brne 1b
+ 372 0152 00C0      		rjmp .
+ 373 0154 0000      		nop
+ 374               	.LVL24:
+ 375               		.loc 2 187 2 is_stmt 0 view .LVU68
+ 376               	.LBE24:
+ 377               	.LBE23:
+ 110:src/system.c  ****   }
+ 378               		.loc 1 110 5 is_stmt 1 view .LVU69
+ 379 0156 0197      		sbiw r24,1
+ 380               	.LVL25:
+ 110:src/system.c  ****   }
+ 381               		.loc 1 110 5 is_stmt 0 view .LVU70
+ 382 0158 00C0      		rjmp .L11
+ 383               		.cfi_endproc
+ 384               	.LFE26:
+ 386               	.global	read_switch
+ 388               	read_switch:
+ 389               	.LVL26:
+ 390               	.LFB29:
+ 146:src/system.c  ****     }
+ 147:src/system.c  **** } // end of init_switches()
+ 148:src/system.c  **** 
+ 149:src/system.c  **** /*
+ 150:src/system.c  ****  * Function:   uint8_t read_switch(uint8_t num)
+ 151:src/system.c  ****  * Parameter:  read `num` switch
+ 152:src/system.c  ****  */
+ 153:src/system.c  **** uint8_t read_switch(uint8_t num) {
+ 391               		.loc 1 153 34 is_stmt 1 view -0
+ 392               		.cfi_startproc
+ 393               	/* prologue: function */
+ 394               	/* frame size = 0 */
+ 395               	/* stack size = 0 */
+ 396               	.L__stack_usage = 0
+ 154:src/system.c  **** 
+ 155:src/system.c  ****     return gpio_read_pin(switches_pin[num] - 1);
+ 397               		.loc 1 155 5 view .LVU72
+ 398               		.loc 1 155 38 is_stmt 0 view .LVU73
+ 399 015a E82F      		mov r30,r24
+ 400 015c F0E0      		ldi r31,0
+ 401 015e E050      		subi r30,lo8(-(switches_pin))
+ 402 0160 F040      		sbci r31,hi8(-(switches_pin))
+ 403               		.loc 1 155 12 view .LVU74
+ 404 0162 8081      		ld r24,Z
+ 405               	.LVL27:
+ 406               		.loc 1 155 12 view .LVU75
+ 407 0164 8150      		subi r24,lo8(-(-1))
+ 408 0166 0C94 0000 		jmp gpio_read_pin
+ 409               	.LVL28:
+ 410               		.cfi_endproc
+ 411               	.LFE29:
+ 413               	.global	switches_pin
+ 414               		.data
+ 417               	switches_pin:
+ 418 0000 28        		.byte	40
+ 419 0001 29        		.byte	41
+ 420 0002 2A        		.byte	42
+ 421 0003 2B        		.byte	43
+ 422 0004 2C        		.byte	44
+ 423 0005 2D        		.byte	45
+ 424 0006 2E        		.byte	46
+ 425 0007 2F        		.byte	47
+ 426               		.local	timer_callback
+ 427               		.comm	timer_callback,2,1
+ 428               		.local	sys_time
+ 429               		.comm	sys_time,4,1
+ 430               		.text
+ 431               	.Letext0:
+ 432               		.file 3 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdint.h"
+ 433               		.file 4 "/usr/local/Cellar/avr-gcc/8.3.0/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
+ 434               		.file 5 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdio.h"
+ 435               		.file 6 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdlib.h"
+ 436               		.file 7 "src/gpio.h"
+ 437               		.file 8 "src/Uart.h"
+ 438               		.file 9 "src/can.h"
+ 439               		.file 10 "src/stepper.h"
+ 440               		.file 11 "src/hbridge.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 system.c
-     /tmp/ccBchLij.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccBchLij.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccBchLij.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccBchLij.s:5      *ABS*:000000000000003b __RAMPZ__
-     /tmp/ccBchLij.s:6      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccBchLij.s:7      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccBchLij.s:13     .text:0000000000000000 timer_register_callback
+/var/tmp//ccdXVWnC.s:2      *ABS*:000000000000003e __SP_H__
+/var/tmp//ccdXVWnC.s:3      *ABS*:000000000000003d __SP_L__
+/var/tmp//ccdXVWnC.s:4      *ABS*:000000000000003f __SREG__
+/var/tmp//ccdXVWnC.s:5      *ABS*:000000000000003b __RAMPZ__
+/var/tmp//ccdXVWnC.s:6      *ABS*:0000000000000000 __tmp_reg__
+/var/tmp//ccdXVWnC.s:7      *ABS*:0000000000000001 __zero_reg__
+/var/tmp//ccdXVWnC.s:13     .text:0000000000000000 timer_register_callback
                              .bss:0000000000000000 timer_callback
-     /tmp/ccBchLij.s:32     .text:000000000000000a __vector_12
-     /tmp/ccBchLij.s:401    .bss:0000000000000002 sys_time
-     /tmp/ccBchLij.s:148    .text:000000000000008a delay
-     /tmp/ccBchLij.s:199    .text:00000000000000a2 system_init
-     /tmp/ccBchLij.s:391    .data:0000000000000000 switches_pin
-     /tmp/ccBchLij.s:365    .text:0000000000000170 read_switch
+/var/tmp//ccdXVWnC.s:35     .text:000000000000000a __vector_12
+/var/tmp//ccdXVWnC.s:427    .bss:0000000000000002 sys_time
+/var/tmp//ccdXVWnC.s:162    .text:000000000000008a system_init
+/var/tmp//ccdXVWnC.s:417    .data:0000000000000000 switches_pin
+/var/tmp//ccdXVWnC.s:336    .text:0000000000000142 delay
+/var/tmp//ccdXVWnC.s:388    .text:000000000000015a read_switch
 
 UNDEFINED SYMBOLS
 USART0_init
 debug_printf
 gpio_register_pin
 gpio_write_pin
-gpio_debouncer
 CAN_Init
 CAN_InitRxMob
+gpio_debouncer
 init_stepper
 init_hbridge
 gpio_read_pin

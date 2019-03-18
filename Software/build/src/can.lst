@@ -27,241 +27,276 @@
   13:src/can.c     **** // Interrupt Service Routine
   14:src/can.c     **** ISR(CANIT_vect)
   15:src/can.c     **** {
-  16               		.loc 1 15 0
+  16               		.loc 1 15 1 view -0
   17               		.cfi_startproc
-  18 0000 1F92      		push r1
-  19               	.LCFI0:
-  20               		.cfi_def_cfa_offset 3
-  21               		.cfi_offset 1, -2
-  22 0002 0F92      		push r0
-  23               	.LCFI1:
-  24               		.cfi_def_cfa_offset 4
-  25               		.cfi_offset 0, -3
-  26 0004 0FB6      		in r0,__SREG__
-  27 0006 0F92      		push r0
-  28 0008 1124      		clr __zero_reg__
-  29 000a 0BB6      		in r0,__RAMPZ__
-  30 000c 0F92      		push r0
-  31 000e 2F93      		push r18
-  32               	.LCFI2:
-  33               		.cfi_def_cfa_offset 5
-  34               		.cfi_offset 18, -4
-  35 0010 3F93      		push r19
-  36               	.LCFI3:
-  37               		.cfi_def_cfa_offset 6
-  38               		.cfi_offset 19, -5
-  39 0012 4F93      		push r20
-  40               	.LCFI4:
-  41               		.cfi_def_cfa_offset 7
-  42               		.cfi_offset 20, -6
-  43 0014 5F93      		push r21
-  44               	.LCFI5:
-  45               		.cfi_def_cfa_offset 8
-  46               		.cfi_offset 21, -7
-  47 0016 8F93      		push r24
-  48               	.LCFI6:
-  49               		.cfi_def_cfa_offset 9
-  50               		.cfi_offset 24, -8
-  51 0018 9F93      		push r25
-  52               	.LCFI7:
-  53               		.cfi_def_cfa_offset 10
-  54               		.cfi_offset 25, -9
-  55 001a EF93      		push r30
-  56               	.LCFI8:
-  57               		.cfi_def_cfa_offset 11
-  58               		.cfi_offset 30, -10
-  59 001c FF93      		push r31
-  60               	.LCFI9:
-  61               		.cfi_def_cfa_offset 12
-  62               		.cfi_offset 31, -11
-  63               	/* prologue: Signal */
-  64               	/* frame size = 0 */
-  65               	/* stack size = 12 */
-  66               	.L__stack_usage = 12
+  18 0000 0F92 0FB6 		__gcc_isr 1
+  18      0F92 1F92 
+  18      1124 2F93 
+  19 000c 2BB7      		in r18,__RAMPZ__
+  20 000e 2F93      		push r18
+  21 0010 3F93      		push r19
+  22               	.LCFI0:
+  23               		.cfi_def_cfa_offset 3
+  24               		.cfi_offset 19, -2
+  25 0012 4F93      		push r20
+  26               	.LCFI1:
+  27               		.cfi_def_cfa_offset 4
+  28               		.cfi_offset 20, -3
+  29 0014 5F93      		push r21
+  30               	.LCFI2:
+  31               		.cfi_def_cfa_offset 5
+  32               		.cfi_offset 21, -4
+  33 0016 8F93      		push r24
+  34               	.LCFI3:
+  35               		.cfi_def_cfa_offset 6
+  36               		.cfi_offset 24, -5
+  37 0018 9F93      		push r25
+  38               	.LCFI4:
+  39               		.cfi_def_cfa_offset 7
+  40               		.cfi_offset 25, -6
+  41 001a AF93      		push r26
+  42               	.LCFI5:
+  43               		.cfi_def_cfa_offset 8
+  44               		.cfi_offset 26, -7
+  45 001c BF93      		push r27
+  46               	.LCFI6:
+  47               		.cfi_def_cfa_offset 9
+  48               		.cfi_offset 27, -8
+  49 001e EF93      		push r30
+  50               	.LCFI7:
+  51               		.cfi_def_cfa_offset 10
+  52               		.cfi_offset 30, -9
+  53 0020 FF93      		push r31
+  54               	.LCFI8:
+  55               		.cfi_def_cfa_offset 11
+  56               		.cfi_offset 31, -10
+  57               	/* prologue: Signal */
+  58               	/* frame size = 0 */
+  59               	/* stack size = 10...14 */
+  60               	.L__stack_usage = 10 + __gcc_isr.n_pushed
   16:src/can.c     **** 	unsigned char tempPage = CANPAGE;
-  67               		.loc 1 16 0
-  68 001e 3091 ED00 		lds r19,237
-  69               	.LVL0:
+  61               		.loc 1 16 2 view .LVU1
+  62               		.loc 1 16 16 is_stmt 0 view .LVU2
+  63 0022 3091 ED00 		lds r19,237
+  64               	.LVL0:
   17:src/can.c     **** 	unsigned char ch;
+  65               		.loc 1 17 2 is_stmt 1 view .LVU3
   18:src/can.c     **** 
   19:src/can.c     **** 	// prolazim redom kroz MOb- ove i gledam da li se nesto dogadja
   20:src/can.c     **** 	for(ch = 0; ch < 15; ch++)
-  70               		.loc 1 20 0
-  71 0022 80E0      		ldi r24,0
-  72               	.LVL1:
-  73               	.L7:
+  66               		.loc 1 20 2 view .LVU4
+  16:src/can.c     **** 	unsigned char ch;
+  67               		.loc 1 16 16 is_stmt 0 view .LVU5
+  68 0026 80E0      		ldi r24,0
+  69               	.LVL1:
+  70               	.L7:
   21:src/can.c     **** 	{
   22:src/can.c     **** 		CANPAGE = ch << 4;
-  74               		.loc 1 22 0
-  75 0024 982F      		mov r25,r24
-  76 0026 9295      		swap r25
-  77 0028 907F      		andi r25,lo8(-16)
-  78 002a 9093 ED00 		sts 237,r25
+  71               		.loc 1 22 3 is_stmt 1 view .LVU6
+  72               		.loc 1 22 11 is_stmt 0 view .LVU7
+  73 0028 8093 ED00 		sts 237,r24
   23:src/can.c     **** 
   24:src/can.c     **** 		// proveravam da li je uspesno primljen podatak (ako je MOb bio podesen kao prijemnik)
   25:src/can.c     **** 		// PRIJEMNI MOb- ovi uvek ostaju prijemni!
   26:src/can.c     **** 		if( (CANSTMOB >> RXOK) & 0x01)	//receive interrupt
-  79               		.loc 1 26 0
-  80 002e 9091 EE00 		lds r25,238
-  81 0032 95FF      		sbrs r25,5
-  82 0034 00C0      		rjmp .L2
+  74               		.loc 1 26 3 is_stmt 1 view .LVU8
+  75               		.loc 1 26 8 is_stmt 0 view .LVU9
+  76 002c 9091 EE00 		lds r25,238
+  77               		.loc 1 26 5 view .LVU10
+  78 0030 95FF      		sbrs r25,5
+  79 0032 00C0      		rjmp .L2
   27:src/can.c     **** 		{
   28:src/can.c     **** 			// PRIJEMNI MOb- ovi uvek ostaju prijemni!
   29:src/can.c     **** 			CANCDMOB = (1 << CONMOB1); // podesavam MOb kao receiver
-  83               		.loc 1 29 0
-  84 0036 80E8      		ldi r24,lo8(-128)
-  85               	.LVL2:
-  86 0038 8093 EF00 		sts 239,r24
+  80               		.loc 1 29 4 is_stmt 1 view .LVU11
+  81               		.loc 1 29 13 is_stmt 0 view .LVU12
+  82 0034 80E8      		ldi r24,lo8(-128)
+  83 0036 8093 EF00 		sts 239,r24
   30:src/can.c     **** 			CANSTMOB &= ~(1 << RXOK); // resetujem flag
-  87               		.loc 1 30 0
-  88 003c 8091 EE00 		lds r24,238
-  89 0040 8F7D      		andi r24,lo8(-33)
-  90 0042 8093 EE00 		sts 238,r24
-  91               	.LVL3:
-  92 0046 80E0      		ldi r24,0
-  93 0048 90E0      		ldi r25,0
-  94               	.LBB2:
+  84               		.loc 1 30 4 is_stmt 1 view .LVU13
+  85               		.loc 1 30 13 is_stmt 0 view .LVU14
+  86 003a 8091 EE00 		lds r24,238
+  87 003e 8F7D      		andi r24,lo8(-33)
+  88 0040 8093 EE00 		sts 238,r24
   31:src/can.c     **** 
   32:src/can.c     **** 			for(unsigned char i = 0; i < 8; i++)
+  89               		.loc 1 32 4 is_stmt 1 view .LVU15
+  90               	.LBB2:
+  91               		.loc 1 32 8 view .LVU16
+  92               	.LVL2:
+  93               		.loc 1 32 8 is_stmt 0 view .LVU17
+  94               	.LBE2:
+  30:src/can.c     **** 			CANSTMOB &= ~(1 << RXOK); // resetujem flag
+  95               		.loc 1 30 13 view .LVU18
+  96 0044 90E0      		ldi r25,0
+  97 0046 80E0      		ldi r24,0
+  98               	.LBB3:
   33:src/can.c     **** 				rxBuffer[rxWrIndex].data[i] = CANMSG;
-  95               		.loc 1 33 0
-  96 004a 5AE0      		ldi r21,lo8(10)
-  97               	.LVL4:
-  98               	.L3:
-  99               		.loc 1 33 0 is_stmt 0 discriminator 3
- 100 004c 4091 0000 		lds r20,rxWrIndex
- 101 0050 2091 FA00 		lds r18,250
- 102 0054 FC01      		movw r30,r24
- 103 0056 549F      		mul r21,r20
- 104 0058 E00D      		add r30,r0
- 105 005a F11D      		adc r31,r1
- 106 005c 1124      		clr __zero_reg__
- 107 005e E050      		subi r30,lo8(-(rxBuffer))
- 108 0060 F040      		sbci r31,hi8(-(rxBuffer))
- 109 0062 2083      		st Z,r18
- 110               	.LVL5:
- 111 0064 0196      		adiw r24,1
- 112               	.LVL6:
+  99               		.loc 1 33 33 view .LVU19
+ 100 0048 EAE0      		ldi r30,lo8(10)
+ 101               	.LVL3:
+ 102               	.L3:
+ 103               		.loc 1 33 5 is_stmt 1 discriminator 3 view .LVU20
+ 104               		.loc 1 33 29 is_stmt 0 discriminator 3 view .LVU21
+ 105 004a 4091 0000 		lds r20,rxWrIndex
+ 106               		.loc 1 33 35 discriminator 3 view .LVU22
+ 107 004e 2091 FA00 		lds r18,250
+ 108               		.loc 1 33 33 discriminator 3 view .LVU23
+ 109 0052 DC01      		movw r26,r24
+ 110 0054 E49F      		mul r30,r20
+ 111 0056 A00D      		add r26,r0
+ 112 0058 B11D      		adc r27,r1
+ 113 005a 1124      		clr __zero_reg__
+ 114 005c A050      		subi r26,lo8(-(rxBuffer))
+ 115 005e B040      		sbci r27,hi8(-(rxBuffer))
+ 116 0060 2C93      		st X,r18
+ 117               	.LVL4:
+ 118               		.loc 1 33 33 discriminator 3 view .LVU24
+ 119 0062 0196      		adiw r24,1
+ 120               	.LVL5:
   32:src/can.c     **** 				rxBuffer[rxWrIndex].data[i] = CANMSG;
- 113               		.loc 1 32 0 is_stmt 1 discriminator 3
- 114 0066 8830      		cpi r24,8
- 115 0068 9105      		cpc r25,__zero_reg__
- 116 006a 01F4      		brne .L3
- 117               	.LBE2:
+ 121               		.loc 1 32 4 discriminator 3 view .LVU25
+ 122 0064 8830      		cpi r24,8
+ 123 0066 9105      		cpc r25,__zero_reg__
+ 124 0068 01F4      		brne .L3
+ 125               	.LBE3:
   34:src/can.c     **** 			//altUart1Write(rxBuffer[rxWrIndex].data[0]);
   35:src/can.c     **** 
   36:src/can.c     **** 			rxBuffer[rxWrIndex].msgIde = (CANIDT2 >> 5) | (CANIDT1 << 3);
- 118               		.loc 1 36 0
- 119 006c E091 0000 		lds r30,rxWrIndex
- 120 0070 2091 F200 		lds r18,242
- 121 0074 8091 F300 		lds r24,243
- 122               	.LVL7:
- 123 0078 2295      		swap r18
- 124 007a 2695      		lsr r18
- 125 007c 2770      		andi r18,lo8(7)
- 126 007e 48E0      		ldi r20,lo8(8)
- 127 0080 849F      		mul r24,r20
- 128 0082 C001      		movw r24,r0
- 129 0084 1124      		clr __zero_reg__
- 130 0086 822B      		or r24,r18
- 131 0088 2AE0      		ldi r18,lo8(10)
- 132 008a E29F      		mul r30,r18
- 133 008c F001      		movw r30,r0
- 134 008e 1124      		clr __zero_reg__
- 135 0090 E050      		subi r30,lo8(-(rxBuffer))
- 136 0092 F040      		sbci r31,hi8(-(rxBuffer))
- 137 0094 9187      		std Z+9,r25
- 138 0096 8087      		std Z+8,r24
+ 126               		.loc 1 36 4 is_stmt 1 view .LVU26
+ 127               		.loc 1 36 34 is_stmt 0 view .LVU27
+ 128 006a 2091 F200 		lds r18,242
+ 129               		.loc 1 36 51 view .LVU28
+ 130 006e 8091 F300 		lds r24,243
+ 131               	.LVL6:
+ 132               		.loc 1 36 23 view .LVU29
+ 133 0072 4091 0000 		lds r20,rxWrIndex
+ 134               		.loc 1 36 42 view .LVU30
+ 135 0076 2295      		swap r18
+ 136 0078 2695      		lsr r18
+ 137 007a 2770      		andi r18,lo8(7)
+ 138               		.loc 1 36 59 view .LVU31
+ 139 007c 58E0      		ldi r21,lo8(8)
+ 140 007e 859F      		mul r24,r21
+ 141 0080 C001      		movw r24,r0
+ 142 0082 1124      		clr __zero_reg__
+ 143               		.loc 1 36 48 view .LVU32
+ 144 0084 822B      		or r24,r18
+ 145               		.loc 1 36 31 view .LVU33
+ 146 0086 E49F      		mul r30,r20
+ 147 0088 F001      		movw r30,r0
+ 148 008a 1124      		clr __zero_reg__
+ 149 008c E050      		subi r30,lo8(-(rxBuffer))
+ 150 008e F040      		sbci r31,hi8(-(rxBuffer))
+ 151 0090 9187      		std Z+9,r25
+ 152 0092 8087      		std Z+8,r24
   37:src/can.c     **** 
   38:src/can.c     **** 			if(++rxWrIndex == RX_BUFFER_SIZE)
- 139               		.loc 1 38 0
- 140 0098 8091 0000 		lds r24,rxWrIndex
- 141 009c 8F5F      		subi r24,lo8(-(1))
- 142 009e 8093 0000 		sts rxWrIndex,r24
- 143 00a2 8233      		cpi r24,lo8(50)
- 144 00a4 01F4      		brne .L4
+ 153               		.loc 1 38 4 is_stmt 1 view .LVU34
+ 154               		.loc 1 38 7 is_stmt 0 view .LVU35
+ 155 0094 8091 0000 		lds r24,rxWrIndex
+ 156 0098 8F5F      		subi r24,lo8(-(1))
+ 157               		.loc 1 38 6 view .LVU36
+ 158 009a 8093 0000 		sts rxWrIndex,r24
+ 159 009e 8233      		cpi r24,lo8(50)
+ 160 00a0 01F4      		brne .L4
   39:src/can.c     **** 				rxWrIndex = 0;
- 145               		.loc 1 39 0
- 146 00a6 1092 0000 		sts rxWrIndex,__zero_reg__
- 147               	.L4:
+ 161               		.loc 1 39 5 is_stmt 1 view .LVU37
+ 162               		.loc 1 39 15 is_stmt 0 view .LVU38
+ 163 00a2 1092 0000 		sts rxWrIndex,__zero_reg__
+ 164               	.L4:
   40:src/can.c     **** 
   41:src/can.c     **** 			rxCounter++;
- 148               		.loc 1 41 0
- 149 00aa 8091 0000 		lds r24,rxCounter
- 150 00ae 8F5F      		subi r24,lo8(-(1))
- 151 00b0 8093 0000 		sts rxCounter,r24
+ 165               		.loc 1 41 4 is_stmt 1 view .LVU39
+ 166               		.loc 1 41 13 is_stmt 0 view .LVU40
+ 167 00a6 8091 0000 		lds r24,rxCounter
+ 168 00aa 8F5F      		subi r24,lo8(-(1))
+ 169 00ac 8093 0000 		sts rxCounter,r24
   42:src/can.c     **** 
   43:src/can.c     **** 			//brPrimljenih1++;
   44:src/can.c     **** 
   45:src/can.c     **** 			break;
- 152               		.loc 1 45 0
- 153 00b4 00C0      		rjmp .L5
- 154               	.LVL8:
- 155               	.L2:
+ 170               		.loc 1 45 4 is_stmt 1 view .LVU41
+ 171               	.L5:
   46:src/can.c     **** 		}
   47:src/can.c     **** 
   48:src/can.c     **** 		// proveravam da li je uspesno poslat podatak (ako je MOb bio podesen kao predajnik)
   49:src/can.c     **** 		if( (CANSTMOB >> TXOK) & 0x01)	//transmit interrupt
- 156               		.loc 1 49 0
- 157 00b6 9091 EE00 		lds r25,238
- 158 00ba 96FF      		sbrs r25,6
- 159 00bc 00C0      		rjmp .L6
   50:src/can.c     **** 		{
   51:src/can.c     **** 			CANCDMOB = 0; // disable mob
- 160               		.loc 1 51 0
- 161 00be 1092 EF00 		sts 239,__zero_reg__
   52:src/can.c     **** 			CANSTMOB &= ~(1 << TXOK); // resetujem flag
- 162               		.loc 1 52 0
- 163 00c2 8091 EE00 		lds r24,238
- 164               	.LVL9:
- 165 00c6 8F7B      		andi r24,lo8(-65)
- 166 00c8 8093 EE00 		sts 238,r24
   53:src/can.c     **** 
   54:src/can.c     **** 			break;
- 167               		.loc 1 54 0
- 168 00cc 00C0      		rjmp .L5
- 169               	.LVL10:
- 170               	.L6:
-  20:src/can.c     **** 	{
- 171               		.loc 1 20 0 discriminator 2
- 172 00ce 8F5F      		subi r24,lo8(-(1))
- 173               	.LVL11:
- 174 00d0 8F30      		cpi r24,lo8(15)
- 175 00d2 01F0      		breq .+2
- 176 00d4 00C0      		rjmp .L7
- 177               	.LVL12:
- 178               	.L5:
   55:src/can.c     **** 		}
   56:src/can.c     **** 	}
   57:src/can.c     **** 
   58:src/can.c     **** 	CANPAGE = tempPage;
- 179               		.loc 1 58 0
- 180 00d6 3093 ED00 		sts 237,r19
- 181               	/* epilogue start */
+ 172               		.loc 1 58 2 view .LVU42
+ 173               		.loc 1 58 10 is_stmt 0 view .LVU43
+ 174 00b0 3093 ED00 		sts 237,r19
+ 175               	/* epilogue start */
   59:src/can.c     **** 	//CANGIT = CANGIT; // jako retardirano
   60:src/can.c     **** }
- 182               		.loc 1 60 0
- 183 00da FF91      		pop r31
- 184 00dc EF91      		pop r30
- 185 00de 9F91      		pop r25
- 186 00e0 8F91      		pop r24
- 187 00e2 5F91      		pop r21
- 188 00e4 4F91      		pop r20
- 189 00e6 3F91      		pop r19
- 190               	.LVL13:
- 191 00e8 2F91      		pop r18
- 192 00ea 0F90      		pop r0
- 193 00ec 0BBE      		out __RAMPZ__,r0
- 194 00ee 0F90      		pop r0
- 195 00f0 0FBE      		out __SREG__,r0
- 196 00f2 0F90      		pop r0
- 197 00f4 1F90      		pop r1
- 198 00f6 1895      		reti
- 199               		.cfi_endproc
- 200               	.LFE0:
- 202               	.global	CAN_Init
- 204               	CAN_Init:
- 205               	.LFB1:
+ 176               		.loc 1 60 1 view .LVU44
+ 177 00b4 FF91      		pop r31
+ 178 00b6 EF91      		pop r30
+ 179 00b8 BF91      		pop r27
+ 180 00ba AF91      		pop r26
+ 181 00bc 9F91      		pop r25
+ 182 00be 8F91      		pop r24
+ 183 00c0 5F91      		pop r21
+ 184 00c2 4F91      		pop r20
+ 185 00c4 3F91      		pop r19
+ 186               	.LVL7:
+ 187               		.loc 1 60 1 view .LVU45
+ 188 00c6 2F91      		pop r18
+ 189 00c8 2BBF      		out __RAMPZ__,r18
+ 190 00ca 2F91 1F90 		__gcc_isr 2
+ 190      0F90 0FBE 
+ 190      0F90 
+ 191 00d4 1895      		reti
+ 192               	.LVL8:
+ 193               	.L2:
+  49:src/can.c     **** 		{
+ 194               		.loc 1 49 3 is_stmt 1 view .LVU46
+  49:src/can.c     **** 		{
+ 195               		.loc 1 49 8 is_stmt 0 view .LVU47
+ 196 00d6 9091 EE00 		lds r25,238
+  49:src/can.c     **** 		{
+ 197               		.loc 1 49 5 view .LVU48
+ 198 00da 96FF      		sbrs r25,6
+ 199 00dc 00C0      		rjmp .L6
+  51:src/can.c     **** 			CANSTMOB &= ~(1 << TXOK); // resetujem flag
+ 200               		.loc 1 51 4 is_stmt 1 view .LVU49
+  51:src/can.c     **** 			CANSTMOB &= ~(1 << TXOK); // resetujem flag
+ 201               		.loc 1 51 13 is_stmt 0 view .LVU50
+ 202 00de 1092 EF00 		sts 239,__zero_reg__
+  52:src/can.c     **** 
+ 203               		.loc 1 52 4 is_stmt 1 view .LVU51
+  52:src/can.c     **** 
+ 204               		.loc 1 52 13 is_stmt 0 view .LVU52
+ 205 00e2 8091 EE00 		lds r24,238
+ 206 00e6 8F7B      		andi r24,lo8(-65)
+ 207 00e8 8093 EE00 		sts 238,r24
+  54:src/can.c     **** 		}
+ 208               		.loc 1 54 4 is_stmt 1 view .LVU53
+ 209 00ec 00C0      		rjmp .L5
+ 210               	.L6:
+  54:src/can.c     **** 		}
+ 211               		.loc 1 54 4 is_stmt 0 view .LVU54
+ 212 00ee 805F      		subi r24,lo8(-(16))
+  20:src/can.c     **** 	{
+ 213               		.loc 1 20 2 discriminator 2 view .LVU55
+ 214 00f0 803F      		cpi r24,lo8(-16)
+ 215 00f2 01F0      		breq .+2
+ 216 00f4 00C0      		rjmp .L7
+ 217 00f6 00C0      		rjmp .L5
+ 218               		__gcc_isr 0,r18
+ 219               		.cfi_endproc
+ 220               	.LFE0:
+ 222               	.global	CAN_Init
+ 224               	CAN_Init:
+ 225               	.LFB1:
   61:src/can.c     **** 
   62:src/can.c     **** 
   63:src/can.c     **** /*********************************************************************************
@@ -275,693 +310,863 @@
   71:src/can.c     **** *********************************************************************************/
   72:src/can.c     **** void CAN_Init(void)
   73:src/can.c     **** {
- 206               		.loc 1 73 0
- 207               		.cfi_startproc
- 208               	/* prologue: function */
- 209               	/* frame size = 0 */
- 210               	/* stack size = 0 */
- 211               	.L__stack_usage = 0
+ 226               		.loc 1 73 1 is_stmt 1 view -0
+ 227               		.cfi_startproc
+ 228               	/* prologue: function */
+ 229               	/* frame size = 0 */
+ 230               	/* stack size = 0 */
+ 231               	.L__stack_usage = 0
   74:src/can.c     **** 	unsigned char ch;
+ 232               		.loc 1 74 2 view .LVU57
   75:src/can.c     **** 	unsigned char data;
+ 233               		.loc 1 75 2 view .LVU58
   76:src/can.c     **** 
   77:src/can.c     **** 	// Reset the CAN controller
   78:src/can.c     **** 	CANGCON = 0x01;
- 212               		.loc 1 78 0
- 213 00f8 81E0      		ldi r24,lo8(1)
- 214 00fa 8093 D800 		sts 216,r24
- 215               	.LVL14:
+ 234               		.loc 1 78 2 view .LVU59
+ 235               		.loc 1 78 10 is_stmt 0 view .LVU60
+ 236 00f8 81E0      		ldi r24,lo8(1)
+ 237 00fa 8093 D800 		sts 216,r24
   79:src/can.c     **** 
   80:src/can.c     **** 	// idem od 0 do 14 MOba i resetujem ih, zato sto posle reseta MObovi imaju nedefinisano stanje
   81:src/can.c     **** 	for(ch = 0; ch < 15; ch++)
- 216               		.loc 1 81 0
- 217 00fe 80E0      		ldi r24,0
- 218               	.LVL15:
- 219               	.L13:
+ 238               		.loc 1 81 2 is_stmt 1 view .LVU61
+ 239               	.LVL9:
+  78:src/can.c     **** 
+ 240               		.loc 1 78 10 is_stmt 0 view .LVU62
+ 241 00fe 80E0      		ldi r24,0
+ 242               	.LVL10:
+ 243               	.L11:
   82:src/can.c     **** 	{
   83:src/can.c     **** 		CANPAGE = ch << 4;
- 220               		.loc 1 83 0
- 221 0100 982F      		mov r25,r24
- 222 0102 9295      		swap r25
- 223 0104 907F      		andi r25,lo8(-16)
- 224 0106 9093 ED00 		sts 237,r25
+ 244               		.loc 1 83 3 is_stmt 1 view .LVU63
+ 245               		.loc 1 83 11 is_stmt 0 view .LVU64
+ 246 0100 8093 ED00 		sts 237,r24
   84:src/can.c     **** 
   85:src/can.c     **** 		CANSTMOB = 0;
- 225               		.loc 1 85 0
- 226 010a 1092 EE00 		sts 238,__zero_reg__
+ 247               		.loc 1 85 3 is_stmt 1 view .LVU65
+ 248               		.loc 1 85 12 is_stmt 0 view .LVU66
+ 249 0104 1092 EE00 		sts 238,__zero_reg__
   86:src/can.c     **** 		CANCDMOB = 0;
- 227               		.loc 1 86 0
- 228 010e 1092 EF00 		sts 239,__zero_reg__
+ 250               		.loc 1 86 3 is_stmt 1 view .LVU67
+ 251               		.loc 1 86 12 is_stmt 0 view .LVU68
+ 252 0108 1092 EF00 		sts 239,__zero_reg__
   87:src/can.c     **** 
   88:src/can.c     **** 		CANIDT1 = 0;
- 229               		.loc 1 88 0
- 230 0112 1092 F300 		sts 243,__zero_reg__
+ 253               		.loc 1 88 3 is_stmt 1 view .LVU69
+ 254               		.loc 1 88 11 is_stmt 0 view .LVU70
+ 255 010c 1092 F300 		sts 243,__zero_reg__
   89:src/can.c     **** 		CANIDT2 = 0;
- 231               		.loc 1 89 0
- 232 0116 1092 F200 		sts 242,__zero_reg__
+ 256               		.loc 1 89 3 is_stmt 1 view .LVU71
+ 257               		.loc 1 89 11 is_stmt 0 view .LVU72
+ 258 0110 1092 F200 		sts 242,__zero_reg__
   90:src/can.c     **** 		CANIDT3 = 0;
- 233               		.loc 1 90 0
- 234 011a 1092 F100 		sts 241,__zero_reg__
+ 259               		.loc 1 90 3 is_stmt 1 view .LVU73
+ 260               		.loc 1 90 11 is_stmt 0 view .LVU74
+ 261 0114 1092 F100 		sts 241,__zero_reg__
   91:src/can.c     **** 		CANIDT4 = 0;
- 235               		.loc 1 91 0
- 236 011e 1092 F000 		sts 240,__zero_reg__
+ 262               		.loc 1 91 3 is_stmt 1 view .LVU75
+ 263               		.loc 1 91 11 is_stmt 0 view .LVU76
+ 264 0118 1092 F000 		sts 240,__zero_reg__
   92:src/can.c     **** 		CANIDM1 = 0;
- 237               		.loc 1 92 0
- 238 0122 1092 F700 		sts 247,__zero_reg__
+ 265               		.loc 1 92 3 is_stmt 1 view .LVU77
+ 266               		.loc 1 92 11 is_stmt 0 view .LVU78
+ 267 011c 1092 F700 		sts 247,__zero_reg__
   93:src/can.c     **** 		CANIDM2 = 0;
- 239               		.loc 1 93 0
- 240 0126 1092 F600 		sts 246,__zero_reg__
+ 268               		.loc 1 93 3 is_stmt 1 view .LVU79
+ 269               		.loc 1 93 11 is_stmt 0 view .LVU80
+ 270 0120 1092 F600 		sts 246,__zero_reg__
   94:src/can.c     **** 		CANIDM3 = 0;
- 241               		.loc 1 94 0
- 242 012a 1092 F500 		sts 245,__zero_reg__
+ 271               		.loc 1 94 3 is_stmt 1 view .LVU81
+ 272               		.loc 1 94 11 is_stmt 0 view .LVU82
+ 273 0124 1092 F500 		sts 245,__zero_reg__
   95:src/can.c     **** 		CANIDM4 = 0;
- 243               		.loc 1 95 0
- 244 012e 1092 F400 		sts 244,__zero_reg__
- 245               	.LVL16:
- 246 0132 98E0      		ldi r25,lo8(8)
- 247               	.LVL17:
- 248               	.L12:
+ 274               		.loc 1 95 3 is_stmt 1 view .LVU83
+ 275               		.loc 1 95 11 is_stmt 0 view .LVU84
+ 276 0128 1092 F400 		sts 244,__zero_reg__
   96:src/can.c     **** 
   97:src/can.c     **** 		// CANMSG je organizovan kao 8- bajtni FIFO red
   98:src/can.c     **** 		// koristi se auto-increment pa ce proci kroz svih 8 bajtova poruke-> organizovan kao FIFO
   99:src/can.c     **** 		for (data = 0; data < 8; data++)
+ 277               		.loc 1 99 3 is_stmt 1 view .LVU85
+ 278               	.LVL11:
  100:src/can.c     **** 			CANMSG = 0;
- 249               		.loc 1 100 0 discriminator 3
- 250 0134 1092 FA00 		sts 250,__zero_reg__
- 251               	.LVL18:
- 252 0138 9150      		subi r25,lo8(-(-1))
- 253               	.LVL19:
-  99:src/can.c     **** 			CANMSG = 0;
- 254               		.loc 1 99 0 discriminator 3
- 255 013a 01F4      		brne .L12
+ 279               		.loc 1 100 4 view .LVU86
+ 280               		.loc 1 100 11 is_stmt 0 view .LVU87
+ 281 012c 1092 FA00 		sts 250,__zero_reg__
+ 282               	.LVL12:
+ 283               		.loc 1 100 4 is_stmt 1 view .LVU88
+ 284               		.loc 1 100 11 is_stmt 0 view .LVU89
+ 285 0130 1092 FA00 		sts 250,__zero_reg__
+ 286               	.LVL13:
+ 287               		.loc 1 100 4 is_stmt 1 view .LVU90
+ 288               		.loc 1 100 11 is_stmt 0 view .LVU91
+ 289 0134 1092 FA00 		sts 250,__zero_reg__
+ 290               	.LVL14:
+ 291               		.loc 1 100 4 is_stmt 1 view .LVU92
+ 292               		.loc 1 100 11 is_stmt 0 view .LVU93
+ 293 0138 1092 FA00 		sts 250,__zero_reg__
+ 294               	.LVL15:
+ 295               		.loc 1 100 4 is_stmt 1 view .LVU94
+ 296               		.loc 1 100 11 is_stmt 0 view .LVU95
+ 297 013c 1092 FA00 		sts 250,__zero_reg__
+ 298               	.LVL16:
+ 299               		.loc 1 100 4 is_stmt 1 view .LVU96
+ 300               		.loc 1 100 11 is_stmt 0 view .LVU97
+ 301 0140 1092 FA00 		sts 250,__zero_reg__
+ 302               	.LVL17:
+ 303               		.loc 1 100 4 is_stmt 1 view .LVU98
+ 304               		.loc 1 100 11 is_stmt 0 view .LVU99
+ 305 0144 1092 FA00 		sts 250,__zero_reg__
+ 306               	.LVL18:
+ 307               		.loc 1 100 4 is_stmt 1 view .LVU100
+ 308               		.loc 1 100 11 is_stmt 0 view .LVU101
+ 309 0148 1092 FA00 		sts 250,__zero_reg__
+ 310               	.LVL19:
+ 311               		.loc 1 100 11 view .LVU102
+ 312 014c 805F      		subi r24,lo8(-(16))
   81:src/can.c     **** 	{
- 256               		.loc 1 81 0 discriminator 2
- 257 013c 8F5F      		subi r24,lo8(-(1))
- 258               	.LVL20:
- 259 013e 8F30      		cpi r24,lo8(15)
- 260 0140 01F4      		brne .L13
+ 313               		.loc 1 81 2 view .LVU103
+ 314 014e 803F      		cpi r24,lo8(-16)
+ 315 0150 01F4      		brne .L11
  101:src/can.c     **** 	}
  102:src/can.c     **** 
  103:src/can.c     **** 
  104:src/can.c     **** 	// Enable the CAN controller
  105:src/can.c     **** 	CANGCON = 0x02;
- 261               		.loc 1 105 0
- 262 0142 82E0      		ldi r24,lo8(2)
- 263               	.LVL21:
- 264 0144 8093 D800 		sts 216,r24
+ 316               		.loc 1 105 2 is_stmt 1 view .LVU104
+ 317               		.loc 1 105 10 is_stmt 0 view .LVU105
+ 318 0152 82E0      		ldi r24,lo8(2)
+ 319 0154 8093 D800 		sts 216,r24
  106:src/can.c     **** 
  107:src/can.c     **** 	/************ BIT TAJMING PODESAVANJA -> BAUD RATE = 100kbps  **********************************/
  108:src/can.c     **** 
  109:src/can.c     **** 	//CANBT1 = 0x08; // Fcan = 2Mhz-> Tq = 0.5us
- 110:src/can.c     **** 	CANBT1 = 0x01;
- 265               		.loc 1 110 0
- 266 0148 81E0      		ldi r24,lo8(1)
- 267 014a 8093 E200 		sts 226,r24
- 111:src/can.c     **** 	CANBT2 = (1 << PRS2) | (1 << PRS0); // Propagation Time Segment-> 6xTq-> BILO 5
- 268               		.loc 1 111 0
- 269 014e 8AE0      		ldi r24,lo8(10)
- 270 0150 8093 E300 		sts 227,r24
- 112:src/can.c     **** 	CANBT3 = (1 << PHS22) | (1 << PHS21) /*| (1 << PHS20) */| (1 << PHS10) | (1 << PHS11) | (1 << PHS1
- 271               		.loc 1 112 0
- 272 0154 8EE6      		ldi r24,lo8(110)
- 273 0156 8093 E400 		sts 228,r24
+ 110:src/can.c     **** 	//CANBT1 = 0x01;
+ 111:src/can.c     **** 	//CANBT2 = (1 << PRS2) | (1 << PRS0); // Propagation Time Segment-> 6xTq-> BILO 5
+ 112:src/can.c     **** 	//CANBT3 = (1 << PHS22) | (1 << PHS21) /*| (1 << PHS20) */| (1 << PHS10) | (1 << PHS11) | (1 << PH
  113:src/can.c     **** 
- 114:src/can.c     **** 	/// Sjw je podesen na 1... 1 + 5 + 6 + 8 = 20
- 115:src/can.c     **** 	/************ BIT TAJMING PODESAVANJA -> BAUD RATE = 100kbps  **********************************/
- 116:src/can.c     **** 
- 117:src/can.c     **** 	CANTCON = 0; // preskaler za CAN timer-> ne koristimo ga pa ova vrednost nije vazna
- 274               		.loc 1 117 0
- 275 015a 1092 E500 		sts 229,__zero_reg__
- 118:src/can.c     **** 
- 119:src/can.c     **** 	// ukljucujem interrupte- ENIT-> Enable All Interrupts
- 120:src/can.c     **** 	// ENRX-> Enable RX interrupt
- 121:src/can.c     **** 	// ENTX-> Enable TX interrupt
- 122:src/can.c     **** 	CANGIE = (1 << ENIT) | (1 << ENRX) | (1 << ENTX);
- 276               		.loc 1 122 0
- 277 015e 80EB      		ldi r24,lo8(-80)
- 278 0160 8093 DB00 		sts 219,r24
- 123:src/can.c     **** 	// interrupti svih MOb- ova su ukljuceni
- 124:src/can.c     **** 	CANIE1 = 0xFF >> 1; // glupo govno trazi da MSB mora biti nula prilikom upisivanja u registar
- 279               		.loc 1 124 0
- 280 0164 8FE7      		ldi r24,lo8(127)
- 281 0166 8093 DF00 		sts 223,r24
- 125:src/can.c     **** 	CANIE2 = 0xFF;
- 282               		.loc 1 125 0
- 283 016a 8FEF      		ldi r24,lo8(-1)
- 284 016c 8093 DE00 		sts 222,r24
- 285 0170 0895      		ret
- 286               		.cfi_endproc
- 287               	.LFE1:
- 289               	.global	CAN_InitRxMob
- 291               	CAN_InitRxMob:
- 292               	.LFB2:
- 126:src/can.c     **** 
- 127:src/can.c     **** 	//sei();
- 128:src/can.c     **** }
- 129:src/can.c     **** 
+ 114:src/can.c     **** 	/*
+ 115:src/can.c     **** 	#if F_CPU == 16000000                 //< Fclkio = 16 MHz, Tclkio = 62.5 ns
+ 116:src/can.c     ****         {0x12, 0x0C, 0x37},                //< -- 100Kb/s, 16x Tscl, sampling at 75%
+ 117:src/can.c     ****         {0x0E, 0x0C, 0x37},                //< -- 125Kb/s, 16x Tscl, sampling at 75%
+ 118:src/can.c     ****         {0X08, 0x0C, 0x37},                //< -- 200Kb/s, 16x Tscl, sampling at 75%
+ 119:src/can.c     ****         {0x06, 0x0C, 0x37},                //< -- 250Kb/s, 16x Tscl, sampling at 75%
+ 120:src/can.c     ****         {0x06, 0x04, 0x13},                //< -- 500Kb/s,  8x Tscl, sampling at 75%
+ 121:src/can.c     ****         {0x02, 0x04, 0x13}                 //< --  1 Mb/s,  8x Tscl, sampling at 75% 
+ 122:src/can.c     **** 	*/
+ 123:src/can.c     **** 
+ 124:src/can.c     **** 	CANBT1 = 0x12;
+ 320               		.loc 1 124 2 is_stmt 1 view .LVU106
+ 321               		.loc 1 124 9 is_stmt 0 view .LVU107
+ 322 0158 82E1      		ldi r24,lo8(18)
+ 323 015a 8093 E200 		sts 226,r24
+ 125:src/can.c     **** 	CANBT2 = 0x0C;
+ 324               		.loc 1 125 2 is_stmt 1 view .LVU108
+ 325               		.loc 1 125 9 is_stmt 0 view .LVU109
+ 326 015e 8CE0      		ldi r24,lo8(12)
+ 327 0160 8093 E300 		sts 227,r24
+ 126:src/can.c     **** 	CANBT3 = 0x37;
+ 328               		.loc 1 126 2 is_stmt 1 view .LVU110
+ 329               		.loc 1 126 9 is_stmt 0 view .LVU111
+ 330 0164 87E3      		ldi r24,lo8(55)
+ 331 0166 8093 E400 		sts 228,r24
+ 127:src/can.c     **** 
+ 128:src/can.c     **** 	/// Sjw je podesen na 1... 1 + 5 + 6 + 8 = 20
+ 129:src/can.c     **** 	/************ BIT TAJMING PODESAVANJA -> BAUD RATE = 100kbps  **********************************/
  130:src/can.c     **** 
- 131:src/can.c     **** /*********************************************************************************
- 132:src/can.c     **** * Function Name		: CAN_InitRxMob
- 133:src/can.c     **** * Description       : Funkcija inicijalizuje prvi slobodni MOb kao prijemnik.
- 134:src/can.c     **** 					  Taj prijemni MOb ce primati samo poruke sa identifikatorom
- 135:src/can.c     **** 					  ide. U slucaju neuspesne inicijalizacije MOb- a vraca 0
- 136:src/can.c     **** * Parameters        : unsigned int ide
- 137:src/can.c     **** * Return Value      : char info da li je inicijalizacija uspela
- 138:src/can.c     **** *********************************************************************************/
- 139:src/can.c     **** char CAN_InitRxMob(unsigned int ide)
- 140:src/can.c     **** {
- 293               		.loc 1 140 0
- 294               		.cfi_startproc
- 295               	.LVL22:
- 296               	/* prologue: function */
- 297               	/* frame size = 0 */
- 298               	/* stack size = 0 */
- 299               	.L__stack_usage = 0
- 141:src/can.c     **** 	unsigned char ch;
- 142:src/can.c     **** 	unsigned char tempPage = CANPAGE;
- 300               		.loc 1 142 0
- 301 0172 4091 ED00 		lds r20,237
- 302               	.LVL23:
- 303               	.L17:
+ 131:src/can.c     **** 	CANTCON = 0; // preskaler za CAN timer-> ne koristimo ga pa ova vrednost nije vazna
+ 332               		.loc 1 131 2 is_stmt 1 view .LVU112
+ 333               		.loc 1 131 10 is_stmt 0 view .LVU113
+ 334 016a 1092 E500 		sts 229,__zero_reg__
+ 132:src/can.c     **** 
+ 133:src/can.c     **** 	// ukljucujem interrupte- ENIT-> Enable All Interrupts
+ 134:src/can.c     **** 	// ENRX-> Enable RX interrupt
+ 135:src/can.c     **** 	// ENTX-> Enable TX interrupt
+ 136:src/can.c     **** 	CANGIE = (1 << ENIT) | (1 << ENRX) | (1 << ENTX);
+ 335               		.loc 1 136 2 is_stmt 1 view .LVU114
+ 336               		.loc 1 136 9 is_stmt 0 view .LVU115
+ 337 016e 80EB      		ldi r24,lo8(-80)
+ 338 0170 8093 DB00 		sts 219,r24
+ 137:src/can.c     **** 	// interrupti svih MOb- ova su ukljuceni
+ 138:src/can.c     **** 	CANIE1 = 0xFF >> 1; // glupo govno trazi da MSB mora biti nula prilikom upisivanja u registar
+ 339               		.loc 1 138 2 is_stmt 1 view .LVU116
+ 340               		.loc 1 138 9 is_stmt 0 view .LVU117
+ 341 0174 8FE7      		ldi r24,lo8(127)
+ 342 0176 8093 DF00 		sts 223,r24
+ 139:src/can.c     **** 	CANIE2 = 0xFF;
+ 343               		.loc 1 139 2 is_stmt 1 view .LVU118
+ 344               		.loc 1 139 9 is_stmt 0 view .LVU119
+ 345 017a 8FEF      		ldi r24,lo8(-1)
+ 346 017c 8093 DE00 		sts 222,r24
+ 347               	/* epilogue start */
+ 140:src/can.c     **** 
+ 141:src/can.c     **** 	//sei();
+ 142:src/can.c     **** }
+ 348               		.loc 1 142 1 view .LVU120
+ 349 0180 0895      		ret
+ 350               		.cfi_endproc
+ 351               	.LFE1:
+ 353               	.global	CAN_InitRxMob
+ 355               	CAN_InitRxMob:
+ 356               	.LVL20:
+ 357               	.LFB2:
  143:src/can.c     **** 
- 144:src/can.c     **** 	while(((CANGSTA >> TXBSY) & 0x01) || ((CANGSTA >> RXBSY) & 0x01));
- 304               		.loc 1 144 0 discriminator 3
- 305 0176 2091 D900 		lds r18,217
- 306 017a 24FD      		sbrc r18,4
- 307 017c 00C0      		rjmp .L17
- 308               		.loc 1 144 0 is_stmt 0 discriminator 2
- 309 017e 2091 D900 		lds r18,217
- 310 0182 23FD      		sbrc r18,3
- 311 0184 00C0      		rjmp .L17
- 312 0186 20E0      		ldi r18,0
- 313               	.L20:
- 314               	.LVL24:
- 145:src/can.c     **** 
- 146:src/can.c     **** 	// prolazim redom kroz MOb- ove, cim naidjem na slobodan MOb
- 147:src/can.c     **** 	// uzimam ga
- 148:src/can.c     **** 	for(ch = 0; ch < 15; ch++)
- 149:src/can.c     **** 	{
- 150:src/can.c     **** 		CANPAGE = ch << 4;
- 315               		.loc 1 150 0 is_stmt 1
- 316 0188 322F      		mov r19,r18
- 317 018a 3295      		swap r19
- 318 018c 307F      		andi r19,lo8(-16)
- 319 018e 3093 ED00 		sts 237,r19
- 151:src/can.c     **** 
- 152:src/can.c     **** 		// ako je MOb vec zauzet nastavi dalje
- 153:src/can.c     **** 		if((CANCDMOB >> 6))
- 320               		.loc 1 153 0
- 321 0192 3091 EF00 		lds r19,239
- 322 0196 3295      		swap r19
- 323 0198 3695      		lsr r19
- 324 019a 3695      		lsr r19
- 325 019c 3370      		andi r19,lo8(3)
- 326 019e 01F0      		breq .L19
- 148:src/can.c     **** 	{
- 327               		.loc 1 148 0
- 328 01a0 2F5F      		subi r18,lo8(-(1))
- 329               	.LVL25:
- 330 01a2 2F30      		cpi r18,lo8(15)
- 331 01a4 01F4      		brne .L20
- 154:src/can.c     **** 			continue;
- 155:src/can.c     **** 
- 156:src/can.c     **** 		//uvek primam 8 bajtova
- 157:src/can.c     **** 		CANCDMOB = (1 << DLC0) | (1 << DLC1) | (1 << DLC2) | (1 << DLC3);
- 158:src/can.c     **** 
- 159:src/can.c     **** 		// podesavam identifikator
- 160:src/can.c     **** 		CANIDT1 = (0x00FF & ide) >> 3;
- 161:src/can.c     **** 		CANIDT2 = (ide & 0x00FF) << 5;
- 162:src/can.c     **** 
- 163:src/can.c     **** 		// podesavam masku- gledam sve bitove
- 164:src/can.c     **** 		CANIDM2 = 0x07 << 5;
- 165:src/can.c     **** 		CANIDM1 = 0xFF;
- 166:src/can.c     **** 
- 167:src/can.c     **** 		// podesavam MOb kao receiver
- 168:src/can.c     **** 		CANCDMOB |= (1 << CONMOB1);
- 169:src/can.c     **** 		sei();
- 170:src/can.c     **** 		CANPAGE = tempPage;
- 171:src/can.c     **** 
- 172:src/can.c     **** 		return 1;
- 173:src/can.c     **** 	}
- 174:src/can.c     **** 
- 175:src/can.c     **** 	CANPAGE = tempPage;
- 332               		.loc 1 175 0
- 333 01a6 4093 ED00 		sts 237,r20
- 176:src/can.c     **** 
- 177:src/can.c     **** 	return 0;
- 334               		.loc 1 177 0
- 335 01aa 80E0      		ldi r24,0
- 336               	.LVL26:
- 178:src/can.c     **** }
- 337               		.loc 1 178 0
- 338 01ac 0895      		ret
- 339               	.LVL27:
- 340               	.L19:
+ 144:src/can.c     **** 
+ 145:src/can.c     **** /*********************************************************************************
+ 146:src/can.c     **** * Function Name		: CAN_InitRxMob
+ 147:src/can.c     **** * Description       : Funkcija inicijalizuje prvi slobodni MOb kao prijemnik.
+ 148:src/can.c     **** 					  Taj prijemni MOb ce primati samo poruke sa identifikatorom
+ 149:src/can.c     **** 					  ide. U slucaju neuspesne inicijalizacije MOb- a vraca 0
+ 150:src/can.c     **** * Parameters        : unsigned int ide
+ 151:src/can.c     **** * Return Value      : char info da li je inicijalizacija uspela
+ 152:src/can.c     **** *********************************************************************************/
+ 153:src/can.c     **** char CAN_InitRxMob(unsigned int ide)
+ 154:src/can.c     **** {
+ 358               		.loc 1 154 1 is_stmt 1 view -0
+ 359               		.cfi_startproc
+ 360               	/* prologue: function */
+ 361               	/* frame size = 0 */
+ 362               	/* stack size = 0 */
+ 363               	.L__stack_usage = 0
+ 155:src/can.c     **** 	unsigned char ch;
+ 364               		.loc 1 155 2 view .LVU122
+ 156:src/can.c     **** 	unsigned char tempPage = CANPAGE;
+ 365               		.loc 1 156 2 view .LVU123
+ 366               		.loc 1 156 16 is_stmt 0 view .LVU124
+ 367 0182 5091 ED00 		lds r21,237
+ 368               	.LVL21:
  157:src/can.c     **** 
- 341               		.loc 1 157 0
- 342 01ae 2FE0      		ldi r18,lo8(15)
- 343               	.LVL28:
- 344 01b0 2093 EF00 		sts 239,r18
- 160:src/can.c     **** 		CANIDT2 = (ide & 0x00FF) << 5;
- 345               		.loc 1 160 0
- 346 01b4 9C01      		movw r18,r24
- 347 01b6 3327      		clr r19
- 348 01b8 93E0      		ldi r25,3
- 349               		1:
- 350 01ba 3695      		lsr r19
- 351 01bc 2795      		ror r18
- 352 01be 9A95      		dec r25
- 353 01c0 01F4      		brne 1b
- 354 01c2 2093 F300 		sts 243,r18
- 161:src/can.c     **** 
- 355               		.loc 1 161 0
- 356 01c6 8295      		swap r24
- 357               	.LVL29:
- 358 01c8 880F      		lsl r24
- 359 01ca 807E      		andi r24,lo8(-32)
- 360 01cc 8093 F200 		sts 242,r24
- 164:src/can.c     **** 		CANIDM1 = 0xFF;
- 361               		.loc 1 164 0
- 362 01d0 80EE      		ldi r24,lo8(-32)
- 363 01d2 8093 F600 		sts 246,r24
+ 158:src/can.c     **** 	while(((CANGSTA >> TXBSY) & 0x01) || ((CANGSTA >> RXBSY) & 0x01));
+ 369               		.loc 1 158 2 is_stmt 1 view .LVU125
+ 370               	.L14:
+ 371               		.loc 1 158 67 discriminator 3 view .LVU126
+ 372               		.loc 1 158 10 is_stmt 0 discriminator 3 view .LVU127
+ 373 0186 2091 D900 		lds r18,217
+ 374               		.loc 1 158 7 discriminator 3 view .LVU128
+ 375 018a 24FD      		sbrc r18,4
+ 376 018c 00C0      		rjmp .L14
+ 377               		.loc 1 158 41 discriminator 2 view .LVU129
+ 378 018e 2091 D900 		lds r18,217
+ 379               		.loc 1 158 36 discriminator 2 view .LVU130
+ 380 0192 422F      		mov r20,r18
+ 381 0194 4870      		andi r20,lo8(8)
+ 382 0196 23FD      		sbrc r18,3
+ 383 0198 00C0      		rjmp .L14
+ 384 019a 20E0      		ldi r18,0
+ 385               	.L17:
+ 159:src/can.c     **** 
+ 160:src/can.c     **** 	// prolazim redom kroz MOb- ove, cim naidjem na slobodan MOb
+ 161:src/can.c     **** 	// uzimam ga
+ 162:src/can.c     **** 	for(ch = 0; ch < 15; ch++)
+ 163:src/can.c     **** 	{
+ 164:src/can.c     **** 		CANPAGE = ch << 4;
+ 386               		.loc 1 164 3 is_stmt 1 view .LVU131
+ 387               		.loc 1 164 11 is_stmt 0 view .LVU132
+ 388 019c 2093 ED00 		sts 237,r18
  165:src/can.c     **** 
- 364               		.loc 1 165 0
- 365 01d6 8FEF      		ldi r24,lo8(-1)
- 366 01d8 8093 F700 		sts 247,r24
- 168:src/can.c     **** 		sei();
- 367               		.loc 1 168 0
- 368 01dc 8091 EF00 		lds r24,239
- 369 01e0 8068      		ori r24,lo8(-128)
- 370 01e2 8093 EF00 		sts 239,r24
- 169:src/can.c     **** 		CANPAGE = tempPage;
- 371               		.loc 1 169 0
- 372               	/* #APP */
- 373               	 ;  169 "src/can.c" 1
- 374 01e6 7894      		sei
- 375               	 ;  0 "" 2
- 170:src/can.c     **** 
- 376               		.loc 1 170 0
- 377               	/* #NOAPP */
- 378 01e8 4093 ED00 		sts 237,r20
- 172:src/can.c     **** 	}
- 379               		.loc 1 172 0
- 380 01ec 81E0      		ldi r24,lo8(1)
- 381 01ee 0895      		ret
- 382               		.cfi_endproc
- 383               	.LFE2:
- 385               	.global	CAN_checkRX
- 387               	CAN_checkRX:
- 388               	.LFB3:
- 179:src/can.c     **** 
+ 166:src/can.c     **** 		// ako je MOb vec zauzet nastavi dalje
+ 167:src/can.c     **** 		if((CANCDMOB >> 6))
+ 389               		.loc 1 167 3 is_stmt 1 view .LVU133
+ 390               		.loc 1 167 7 is_stmt 0 view .LVU134
+ 391 01a0 3091 EF00 		lds r19,239
+ 392               		.loc 1 167 6 view .LVU135
+ 393 01a4 3295      		swap r19
+ 394 01a6 3695      		lsr r19
+ 395 01a8 3695      		lsr r19
+ 396 01aa 3370      		andi r19,lo8(3)
+ 397               		.loc 1 167 5 view .LVU136
+ 398 01ac 01F0      		breq .L16
+ 168:src/can.c     **** 			continue;
+ 399               		.loc 1 168 4 is_stmt 1 view .LVU137
+ 400               	.LVL22:
+ 401               		.loc 1 168 4 is_stmt 0 view .LVU138
+ 402 01ae 205F      		subi r18,lo8(-(16))
+ 162:src/can.c     **** 	{
+ 403               		.loc 1 162 2 view .LVU139
+ 404 01b0 203F      		cpi r18,lo8(-16)
+ 405 01b2 01F4      		brne .L17
+ 169:src/can.c     **** 
+ 170:src/can.c     **** 		//uvek primam 8 bajtova
+ 171:src/can.c     **** 		CANCDMOB = (1 << DLC0) | (1 << DLC1) | (1 << DLC2) | (1 << DLC3);
+ 172:src/can.c     **** 
+ 173:src/can.c     **** 		// podesavam identifikator
+ 174:src/can.c     **** 		CANIDT1 = (0x00FF & ide) >> 3;
+ 175:src/can.c     **** 		CANIDT2 = (ide & 0x00FF) << 5;
+ 176:src/can.c     **** 
+ 177:src/can.c     **** 		// podesavam masku- gledam sve bitove
+ 178:src/can.c     **** 		CANIDM2 = 0x07 << 5;
+ 179:src/can.c     **** 		CANIDM1 = 0xFF;
  180:src/can.c     **** 
- 181:src/can.c     **** /*********************************************************************************
- 182:src/can.c     **** * Function Name		: CAN_checkRx
- 183:src/can.c     **** * Description       : Funkcija proverava da li ima primljenih podataka.
- 184:src/can.c     **** 					  Ako ima vraca 1, u suprotnom vraca 0
- 185:src/can.c     **** * Parameters        : None
- 186:src/can.c     **** * Return Value      : char info da li ima primljenih podataka
- 187:src/can.c     **** *********************************************************************************/
- 188:src/can.c     **** char CAN_checkRX(void)
- 189:src/can.c     **** {
- 389               		.loc 1 189 0
- 390               		.cfi_startproc
- 391               	/* prologue: function */
- 392               	/* frame size = 0 */
- 393               	/* stack size = 0 */
- 394               	.L__stack_usage = 0
- 190:src/can.c     **** 	if(rxCounter)
- 395               		.loc 1 190 0
- 396 01f0 9091 0000 		lds r25,rxCounter
- 397 01f4 81E0      		ldi r24,lo8(1)
- 398 01f6 9111      		cpse r25,__zero_reg__
- 399 01f8 00C0      		rjmp .L28
- 400 01fa 80E0      		ldi r24,0
- 401               	.L28:
- 191:src/can.c     **** 		return 1;
- 192:src/can.c     **** 
- 193:src/can.c     **** 	return 0;
- 194:src/can.c     **** }
- 402               		.loc 1 194 0
- 403 01fc 0895      		ret
- 404               		.cfi_endproc
- 405               	.LFE3:
- 407               	.global	CAN_read
- 409               	CAN_read:
- 410               	.LFB4:
- 195:src/can.c     **** 
- 196:src/can.c     **** 
- 197:src/can.c     **** /*********************************************************************************
- 198:src/can.c     **** * Function Name		: CAN_read
- 199:src/can.c     **** * Description       : Funkcija cita 8- bajtni niz karaktera iz prijemnog bafera CAN
- 200:src/can.c     **** 					  magistrale.
- 201:src/can.c     **** 				      U slucaju da nema primljenih podataka funkcija ceka na
- 202:src/can.c     **** 					  na podatak.
- 203:src/can.c     **** * Parameters        : canMsg *rxData
- 204:src/can.c     **** * Return Value      : void
- 205:src/can.c     **** *********************************************************************************/
- 206:src/can.c     **** void CAN_read(canMsg *rxData)
- 207:src/can.c     **** {
- 411               		.loc 1 207 0
- 412               		.cfi_startproc
- 413               	/* prologue: function */
- 414               	/* frame size = 0 */
- 415               	/* stack size = 0 */
- 416               	.L__stack_usage = 0
- 417               	.LVL30:
- 418               	.L30:
- 208:src/can.c     **** 	// sve dok ne stigne neki podatak ostajem u funkciji
- 209:src/can.c     **** 
- 210:src/can.c     **** 	// kako je task realizovan ovo je nepotrebno ali neka stoji
- 211:src/can.c     **** 	while(rxCounter == 0);
- 419               		.loc 1 211 0 discriminator 1
- 420 01fe 2091 0000 		lds r18,rxCounter
- 421 0202 2223      		tst r18
- 422 0204 01F0      		breq .L30
- 212:src/can.c     **** 	cli();
- 423               		.loc 1 212 0
- 424               	/* #APP */
- 425               	 ;  212 "src/can.c" 1
- 426 0206 F894      		cli
- 427               	 ;  0 "" 2
- 428               	.LVL31:
- 429               	/* #NOAPP */
- 430 0208 DC01      		movw r26,r24
- 431 020a 20E0      		ldi r18,0
- 432 020c 30E0      		ldi r19,0
- 433               	.LBB3:
- 213:src/can.c     **** 	//nema potrebe da iskljucujemo multitasking zato sto nema opasnosti da cu primiti pogresan podatak
- 214:src/can.c     **** 
- 215:src/can.c     **** 	// upisujem osam bajtova u prosledjeni bafer( argument funkcije, prenos po adresi)
- 216:src/can.c     **** 	for(unsigned char i = 0; i < 8; i++)
- 217:src/can.c     **** 		rxData->data[i] = rxBuffer[rxRdIndex].data[i];
- 434               		.loc 1 217 0
- 435 020e 5AE0      		ldi r21,lo8(10)
- 436               	.LVL32:
- 437               	.L31:
- 438               		.loc 1 217 0 is_stmt 0 discriminator 3
- 439 0210 4091 0000 		lds r20,rxRdIndex
- 440 0214 F901      		movw r30,r18
- 441 0216 549F      		mul r21,r20
- 442 0218 E00D      		add r30,r0
- 443 021a F11D      		adc r31,r1
- 444 021c 1124      		clr __zero_reg__
- 445 021e E050      		subi r30,lo8(-(rxBuffer))
- 446 0220 F040      		sbci r31,hi8(-(rxBuffer))
- 447 0222 4081      		ld r20,Z
- 448 0224 4D93      		st X+,r20
- 449               	.LVL33:
- 450 0226 2F5F      		subi r18,-1
- 451 0228 3F4F      		sbci r19,-1
- 452               	.LVL34:
- 216:src/can.c     **** 		rxData->data[i] = rxBuffer[rxRdIndex].data[i];
- 453               		.loc 1 216 0 is_stmt 1 discriminator 3
- 454 022a 2830      		cpi r18,8
- 455 022c 3105      		cpc r19,__zero_reg__
- 456 022e 01F4      		brne .L31
- 457               	.LBE3:
- 218:src/can.c     **** 
- 219:src/can.c     **** 	rxData->msgIde = rxBuffer[rxRdIndex].msgIde;
- 458               		.loc 1 219 0
- 459 0230 E091 0000 		lds r30,rxRdIndex
- 460 0234 2AE0      		ldi r18,lo8(10)
- 461               	.LVL35:
- 462 0236 E29F      		mul r30,r18
- 463 0238 F001      		movw r30,r0
- 464 023a 1124      		clr __zero_reg__
- 465 023c E050      		subi r30,lo8(-(rxBuffer))
- 466 023e F040      		sbci r31,hi8(-(rxBuffer))
- 467 0240 2085      		ldd r18,Z+8
- 468 0242 3185      		ldd r19,Z+9
- 469 0244 FC01      		movw r30,r24
- 470 0246 3187      		std Z+9,r19
- 471 0248 2087      		std Z+8,r18
- 220:src/can.c     **** 
- 221:src/can.c     **** 	if(++rxRdIndex == RX_BUFFER_SIZE)
- 472               		.loc 1 221 0
- 473 024a 8091 0000 		lds r24,rxRdIndex
- 474               	.LVL36:
- 475 024e 8F5F      		subi r24,lo8(-(1))
- 476 0250 8093 0000 		sts rxRdIndex,r24
- 477 0254 8233      		cpi r24,lo8(50)
- 478 0256 01F4      		brne .L32
- 222:src/can.c     **** 		rxRdIndex = 0;
- 479               		.loc 1 222 0
- 480 0258 1092 0000 		sts rxRdIndex,__zero_reg__
- 481               	.L32:
- 223:src/can.c     **** 
- 224:src/can.c     **** 
- 225:src/can.c     **** 	rxCounter--;
- 482               		.loc 1 225 0
- 483 025c 8091 0000 		lds r24,rxCounter
- 484 0260 8150      		subi r24,lo8(-(-1))
- 485 0262 8093 0000 		sts rxCounter,r24
- 226:src/can.c     **** 	sei();
- 486               		.loc 1 226 0
- 487               	/* #APP */
- 488               	 ;  226 "src/can.c" 1
- 489 0266 7894      		sei
- 490               	 ;  0 "" 2
- 491               	/* #NOAPP */
- 492 0268 0895      		ret
+ 181:src/can.c     **** 		// podesavam MOb kao receiver
+ 182:src/can.c     **** 		CANCDMOB |= (1 << CONMOB1);
+ 183:src/can.c     **** 		sei();
+ 184:src/can.c     **** 		CANPAGE = tempPage;
+ 185:src/can.c     **** 
+ 186:src/can.c     **** 		return 1;
+ 187:src/can.c     **** 	}
+ 188:src/can.c     **** 
+ 189:src/can.c     **** 	CANPAGE = tempPage;
+ 406               		.loc 1 189 2 is_stmt 1 view .LVU140
+ 407               		.loc 1 189 10 is_stmt 0 view .LVU141
+ 408 01b4 5093 ED00 		sts 237,r21
+ 190:src/can.c     **** 
+ 191:src/can.c     **** 	return 0;
+ 409               		.loc 1 191 2 is_stmt 1 view .LVU142
+ 410               		.loc 1 191 9 is_stmt 0 view .LVU143
+ 411 01b8 00C0      		rjmp .L13
+ 412               	.L16:
+ 171:src/can.c     **** 
+ 413               		.loc 1 171 3 is_stmt 1 view .LVU144
+ 171:src/can.c     **** 
+ 414               		.loc 1 171 12 is_stmt 0 view .LVU145
+ 415 01ba 2FE0      		ldi r18,lo8(15)
+ 416 01bc 2093 EF00 		sts 239,r18
+ 174:src/can.c     **** 		CANIDT2 = (ide & 0x00FF) << 5;
+ 417               		.loc 1 174 3 is_stmt 1 view .LVU146
+ 174:src/can.c     **** 		CANIDT2 = (ide & 0x00FF) << 5;
+ 418               		.loc 1 174 28 is_stmt 0 view .LVU147
+ 419 01c0 9C01      		movw r18,r24
+ 420 01c2 93E0      		ldi r25,3
+ 421               		1:
+ 422 01c4 3695      		lsr r19
+ 423 01c6 2795      		ror r18
+ 424 01c8 9A95      		dec r25
+ 425 01ca 01F4      		brne 1b
+ 426 01cc 2F71      		andi r18,lo8(31)
+ 174:src/can.c     **** 		CANIDT2 = (ide & 0x00FF) << 5;
+ 427               		.loc 1 174 11 view .LVU148
+ 428 01ce 2093 F300 		sts 243,r18
+ 175:src/can.c     **** 
+ 429               		.loc 1 175 3 is_stmt 1 view .LVU149
+ 175:src/can.c     **** 
+ 430               		.loc 1 175 28 is_stmt 0 view .LVU150
+ 431 01d2 8295      		swap r24
+ 432               	.LVL23:
+ 175:src/can.c     **** 
+ 433               		.loc 1 175 28 view .LVU151
+ 434 01d4 880F      		lsl r24
+ 435 01d6 807E      		andi r24,lo8(-32)
+ 175:src/can.c     **** 
+ 436               		.loc 1 175 11 view .LVU152
+ 437 01d8 8093 F200 		sts 242,r24
+ 178:src/can.c     **** 		CANIDM1 = 0xFF;
+ 438               		.loc 1 178 3 is_stmt 1 view .LVU153
+ 178:src/can.c     **** 		CANIDM1 = 0xFF;
+ 439               		.loc 1 178 11 is_stmt 0 view .LVU154
+ 440 01dc 80EE      		ldi r24,lo8(-32)
+ 441 01de 8093 F600 		sts 246,r24
+ 179:src/can.c     **** 
+ 442               		.loc 1 179 3 is_stmt 1 view .LVU155
+ 179:src/can.c     **** 
+ 443               		.loc 1 179 11 is_stmt 0 view .LVU156
+ 444 01e2 8FEF      		ldi r24,lo8(-1)
+ 445 01e4 8093 F700 		sts 247,r24
+ 182:src/can.c     **** 		sei();
+ 446               		.loc 1 182 3 is_stmt 1 view .LVU157
+ 182:src/can.c     **** 		sei();
+ 447               		.loc 1 182 12 is_stmt 0 view .LVU158
+ 448 01e8 8091 EF00 		lds r24,239
+ 449 01ec 8068      		ori r24,lo8(-128)
+ 450 01ee 8093 EF00 		sts 239,r24
+ 183:src/can.c     **** 		CANPAGE = tempPage;
+ 451               		.loc 1 183 3 is_stmt 1 view .LVU159
+ 452               	/* #APP */
+ 453               	 ;  183 "src/can.c" 1
+ 454 01f2 7894      		sei
+ 455               	 ;  0 "" 2
+ 184:src/can.c     **** 
+ 456               		.loc 1 184 3 view .LVU160
+ 184:src/can.c     **** 
+ 457               		.loc 1 184 11 is_stmt 0 view .LVU161
+ 458               	/* #NOAPP */
+ 459 01f4 5093 ED00 		sts 237,r21
+ 186:src/can.c     **** 	}
+ 460               		.loc 1 186 3 is_stmt 1 view .LVU162
+ 186:src/can.c     **** 	}
+ 461               		.loc 1 186 10 is_stmt 0 view .LVU163
+ 462 01f8 41E0      		ldi r20,lo8(1)
+ 463               	.L13:
+ 192:src/can.c     **** }
+ 464               		.loc 1 192 1 view .LVU164
+ 465 01fa 842F      		mov r24,r20
+ 466               	/* epilogue start */
+ 467 01fc 0895      		ret
+ 468               		.cfi_endproc
+ 469               	.LFE2:
+ 471               	.global	CAN_checkRX
+ 473               	CAN_checkRX:
+ 474               	.LFB3:
+ 193:src/can.c     **** 
+ 194:src/can.c     **** 
+ 195:src/can.c     **** /*********************************************************************************
+ 196:src/can.c     **** * Function Name		: CAN_checkRx
+ 197:src/can.c     **** * Description       : Funkcija proverava da li ima primljenih podataka.
+ 198:src/can.c     **** 					  Ako ima vraca 1, u suprotnom vraca 0
+ 199:src/can.c     **** * Parameters        : None
+ 200:src/can.c     **** * Return Value      : char info da li ima primljenih podataka
+ 201:src/can.c     **** *********************************************************************************/
+ 202:src/can.c     **** char CAN_checkRX(void)
+ 203:src/can.c     **** {
+ 475               		.loc 1 203 1 is_stmt 1 view -0
+ 476               		.cfi_startproc
+ 477               	/* prologue: function */
+ 478               	/* frame size = 0 */
+ 479               	/* stack size = 0 */
+ 480               	.L__stack_usage = 0
+ 204:src/can.c     **** 	if(rxCounter)
+ 481               		.loc 1 204 2 view .LVU166
+ 482               		.loc 1 204 5 is_stmt 0 view .LVU167
+ 483 01fe 9091 0000 		lds r25,rxCounter
+ 484               		.loc 1 204 4 view .LVU168
+ 485 0202 81E0      		ldi r24,lo8(1)
+ 486 0204 9111      		cpse r25,__zero_reg__
+ 487 0206 00C0      		rjmp .L25
+ 488 0208 80E0      		ldi r24,0
+ 489               	.L25:
+ 490               	/* epilogue start */
+ 205:src/can.c     **** 		return 1;
+ 206:src/can.c     **** 
+ 207:src/can.c     **** 	return 0;
+ 208:src/can.c     **** }
+ 491               		.loc 1 208 1 view .LVU169
+ 492 020a 0895      		ret
  493               		.cfi_endproc
- 494               	.LFE4:
- 496               	.global	CAN_write
- 498               	CAN_write:
- 499               	.LFB5:
- 227:src/can.c     **** }
- 228:src/can.c     **** 
- 229:src/can.c     **** 
- 230:src/can.c     **** /*********************************************************************************
- 231:src/can.c     **** * Function Name		: CAN_write
- 232:src/can.c     **** * Description       : Funkcija upisuje 8 bajtova podataka u predajni bafer CAN
- 233:src/can.c     **** 					  magistrale. Pored tih podataka, salje se i njen
- 234:src/can.c     **** 					  identifikator messIdentificator.
- 235:src/can.c     **** * Parameters        : canMgs txData
- 236:src/can.c     **** * Return Value      : void
- 237:src/can.c     **** *********************************************************************************/
- 238:src/can.c     **** char CAN_write(canMsg txData)
- 239:src/can.c     **** {
- 500               		.loc 1 239 0
+ 494               	.LFE3:
+ 496               	.global	CAN_read
+ 498               	CAN_read:
+ 499               	.LFB4:
+ 209:src/can.c     **** 
+ 210:src/can.c     **** 
+ 211:src/can.c     **** /*********************************************************************************
+ 212:src/can.c     **** * Function Name		: CAN_read
+ 213:src/can.c     **** * Description       : Funkcija cita 8- bajtni niz karaktera iz prijemnog bafera CAN
+ 214:src/can.c     **** 					  magistrale.
+ 215:src/can.c     **** 				      U slucaju da nema primljenih podataka funkcija ceka na
+ 216:src/can.c     **** 					  na podatak.
+ 217:src/can.c     **** * Parameters        : canMsg *rxData
+ 218:src/can.c     **** * Return Value      : void
+ 219:src/can.c     **** *********************************************************************************/
+ 220:src/can.c     **** void CAN_read(canMsg *rxData)
+ 221:src/can.c     **** {
+ 500               		.loc 1 221 1 is_stmt 1 view -0
  501               		.cfi_startproc
- 502 026a 0F93      		push r16
- 503               	.LCFI10:
- 504               		.cfi_def_cfa_offset 3
- 505               		.cfi_offset 16, -2
- 506 026c 1F93      		push r17
- 507               	.LCFI11:
- 508               		.cfi_def_cfa_offset 4
- 509               		.cfi_offset 17, -3
- 510 026e CF93      		push r28
- 511               	.LCFI12:
- 512               		.cfi_def_cfa_offset 5
- 513               		.cfi_offset 28, -4
- 514 0270 DF93      		push r29
- 515               	.LCFI13:
- 516               		.cfi_def_cfa_offset 6
- 517               		.cfi_offset 29, -5
- 518 0272 CDB7      		in r28,__SP_L__
- 519 0274 DEB7      		in r29,__SP_H__
- 520               	.LCFI14:
- 521               		.cfi_def_cfa_register 28
- 522 0276 2A97      		sbiw r28,10
- 523               	.LCFI15:
- 524               		.cfi_def_cfa_offset 16
- 525 0278 0FB6      		in __tmp_reg__,__SREG__
- 526 027a F894      		cli
- 527 027c DEBF      		out __SP_H__,r29
- 528 027e 0FBE      		out __SREG__,__tmp_reg__
- 529 0280 CDBF      		out __SP_L__,r28
- 530               	/* prologue: function */
- 531               	/* frame size = 10 */
- 532               	/* stack size = 14 */
- 533               	.L__stack_usage = 14
- 534 0282 0983      		std Y+1,r16
- 535 0284 1A83      		std Y+2,r17
- 536 0286 2B83      		std Y+3,r18
- 537 0288 3C83      		std Y+4,r19
- 538 028a 4D83      		std Y+5,r20
- 539 028c 5E83      		std Y+6,r21
- 540 028e 6F83      		std Y+7,r22
- 541 0290 7887      		std Y+8,r23
- 542 0292 8987      		std Y+9,r24
- 543 0294 9A87      		std Y+10,r25
- 544 0296 8985      		ldd r24,Y+9
- 545 0298 9A85      		ldd r25,Y+10
- 546               	.LVL37:
- 547               	.L37:
- 240:src/can.c     **** 	// Cekam sve dok je magistrala zauzeta-> da li je neophodno?
- 241:src/can.c     **** 	while(((CANGSTA >> TXBSY) & 0x01) || ((CANGSTA >> RXBSY) & 0x01));
- 548               		.loc 1 241 0 discriminator 3
- 549 029a 2091 D900 		lds r18,217
- 550 029e 24FD      		sbrc r18,4
- 551 02a0 00C0      		rjmp .L37
- 552               		.loc 1 241 0 is_stmt 0 discriminator 2
- 553 02a2 2091 D900 		lds r18,217
- 554 02a6 23FD      		sbrc r18,3
- 555 02a8 00C0      		rjmp .L37
- 242:src/can.c     **** 	//taskENTER_CRITICAL();
- 243:src/can.c     **** 	unsigned char ch;
- 244:src/can.c     **** 	unsigned char tempPage = CANPAGE;
- 556               		.loc 1 244 0 is_stmt 1
- 557 02aa 4091 ED00 		lds r20,237
- 558               	.LVL38:
- 245:src/can.c     **** 
- 246:src/can.c     **** 	// ovo je mozda nepotrebno, razmisliti
- 247:src/can.c     **** 	//taskENTER_CRITICAL();
- 248:src/can.c     **** 
- 249:src/can.c     **** 	// trazim slobodan MOb
- 250:src/can.c     **** 	for(ch = 0; ch < 15; ch++)
- 559               		.loc 1 250 0
- 560 02ae 20E0      		ldi r18,0
- 561               	.LVL39:
- 562               	.L40:
- 251:src/can.c     **** 	{
- 252:src/can.c     **** 		CANPAGE = ch << 4;
- 563               		.loc 1 252 0
- 564 02b0 322F      		mov r19,r18
- 565 02b2 3295      		swap r19
- 566 02b4 307F      		andi r19,lo8(-16)
- 567 02b6 3093 ED00 		sts 237,r19
- 253:src/can.c     **** 
- 254:src/can.c     **** 		if(!(CANCDMOB >> 6))
- 568               		.loc 1 254 0
- 569 02ba 3091 EF00 		lds r19,239
- 570 02be 3295      		swap r19
- 571 02c0 3695      		lsr r19
- 572 02c2 3695      		lsr r19
- 573 02c4 3370      		andi r19,lo8(3)
- 574 02c6 01F0      		breq .L39
- 250:src/can.c     **** 	{
- 575               		.loc 1 250 0 discriminator 2
- 576 02c8 2F5F      		subi r18,lo8(-(1))
- 577               	.LVL40:
- 578 02ca 2F30      		cpi r18,lo8(15)
- 579 02cc 01F4      		brne .L40
- 255:src/can.c     **** 			break;
- 256:src/can.c     **** 	}
- 257:src/can.c     **** 
- 258:src/can.c     **** 	// nema slobodnih MOb- ova
- 259:src/can.c     **** 	if(ch == 15)
- 260:src/can.c     **** 	{
- 261:src/can.c     **** 		//taskEXIT_CRITICAL();
+ 502               	.LVL24:
+ 503               		.loc 1 221 1 is_stmt 0 view .LVU171
+ 504 020c CF93      		push r28
+ 505               	.LCFI9:
+ 506               		.cfi_def_cfa_offset 3
+ 507               		.cfi_offset 28, -2
+ 508 020e DF93      		push r29
+ 509               	.LCFI10:
+ 510               		.cfi_def_cfa_offset 4
+ 511               		.cfi_offset 29, -3
+ 512               	/* prologue: function */
+ 513               	/* frame size = 0 */
+ 514               	/* stack size = 2 */
+ 515               	.L__stack_usage = 2
+ 516               	.L27:
+ 222:src/can.c     **** 	// sve dok ne stigne neki podatak ostajem u funkciji
+ 223:src/can.c     **** 
+ 224:src/can.c     **** 	// kako je task realizovan ovo je nepotrebno ali neka stoji
+ 225:src/can.c     **** 	while(rxCounter == 0);
+ 517               		.loc 1 225 23 is_stmt 1 discriminator 1 view .LVU172
+ 518               		.loc 1 225 18 is_stmt 0 discriminator 1 view .LVU173
+ 519 0210 2091 0000 		lds r18,rxCounter
+ 520               		.loc 1 225 7 discriminator 1 view .LVU174
+ 521 0214 2223      		tst r18
+ 522 0216 01F0      		breq .L27
+ 226:src/can.c     **** 	cli();
+ 523               		.loc 1 226 2 is_stmt 1 view .LVU175
+ 524               	/* #APP */
+ 525               	 ;  226 "src/can.c" 1
+ 526 0218 F894      		cli
+ 527               	 ;  0 "" 2
+ 227:src/can.c     **** 	//nema potrebe da iskljucujemo multitasking zato sto nema opasnosti da cu primiti pogresan podatak
+ 228:src/can.c     **** 
+ 229:src/can.c     **** 	// upisujem osam bajtova u prosledjeni bafer( argument funkcije, prenos po adresi)
+ 230:src/can.c     **** 	for(unsigned char i = 0; i < 8; i++)
+ 528               		.loc 1 230 2 view .LVU176
+ 529               	/* #NOAPP */
+ 530               	.LBB4:
+ 531               		.loc 1 230 6 view .LVU177
+ 532               	.LVL25:
+ 533               		.loc 1 230 6 is_stmt 0 view .LVU178
+ 534 021a EC01      		movw r28,r24
+ 535               	.LBE4:
+ 226:src/can.c     **** 	cli();
+ 536               		.loc 1 226 2 view .LVU179
+ 537 021c 30E0      		ldi r19,0
+ 538 021e 20E0      		ldi r18,0
+ 539               	.LBB5:
+ 231:src/can.c     **** 		rxData->data[i] = rxBuffer[rxRdIndex].data[i];
+ 540               		.loc 1 231 45 view .LVU180
+ 541 0220 EAE0      		ldi r30,lo8(10)
+ 542               	.LVL26:
+ 543               	.L28:
+ 544               		.loc 1 231 3 is_stmt 1 discriminator 3 view .LVU181
+ 545               		.loc 1 231 45 is_stmt 0 discriminator 3 view .LVU182
+ 546 0222 4091 0000 		lds r20,rxRdIndex
+ 547 0226 D901      		movw r26,r18
+ 548 0228 E49F      		mul r30,r20
+ 549 022a A00D      		add r26,r0
+ 550 022c B11D      		adc r27,r1
+ 551 022e 1124      		clr __zero_reg__
+ 552 0230 A050      		subi r26,lo8(-(rxBuffer))
+ 553 0232 B040      		sbci r27,hi8(-(rxBuffer))
+ 554 0234 4C91      		ld r20,X
+ 555               		.loc 1 231 19 discriminator 3 view .LVU183
+ 556 0236 4993      		st Y+,r20
+ 557               	.LVL27:
+ 558               		.loc 1 231 19 discriminator 3 view .LVU184
+ 559 0238 2F5F      		subi r18,-1
+ 560 023a 3F4F      		sbci r19,-1
+ 561               	.LVL28:
+ 230:src/can.c     **** 		rxData->data[i] = rxBuffer[rxRdIndex].data[i];
+ 562               		.loc 1 230 2 discriminator 3 view .LVU185
+ 563 023c 2830      		cpi r18,8
+ 564 023e 3105      		cpc r19,__zero_reg__
+ 565 0240 01F4      		brne .L28
+ 566               	.LBE5:
+ 232:src/can.c     **** 
+ 233:src/can.c     **** 	rxData->msgIde = rxBuffer[rxRdIndex].msgIde;
+ 567               		.loc 1 233 2 is_stmt 1 view .LVU186
+ 568               		.loc 1 233 38 is_stmt 0 view .LVU187
+ 569 0242 2091 0000 		lds r18,rxRdIndex
+ 570               	.LVL29:
+ 571               		.loc 1 233 38 view .LVU188
+ 572 0246 E29F      		mul r30,r18
+ 573 0248 F001      		movw r30,r0
+ 574 024a 1124      		clr __zero_reg__
+ 575 024c E050      		subi r30,lo8(-(rxBuffer))
+ 576 024e F040      		sbci r31,hi8(-(rxBuffer))
+ 577 0250 2085      		ldd r18,Z+8
+ 578 0252 3185      		ldd r19,Z+9
+ 579               		.loc 1 233 17 view .LVU189
+ 580 0254 FC01      		movw r30,r24
+ 581 0256 3187      		std Z+9,r19
+ 582 0258 2087      		std Z+8,r18
+ 234:src/can.c     **** 
+ 235:src/can.c     **** 	if(++rxRdIndex == RX_BUFFER_SIZE)
+ 583               		.loc 1 235 2 is_stmt 1 view .LVU190
+ 584               		.loc 1 235 5 is_stmt 0 view .LVU191
+ 585 025a 8091 0000 		lds r24,rxRdIndex
+ 586               	.LVL30:
+ 587               		.loc 1 235 5 view .LVU192
+ 588 025e 8F5F      		subi r24,lo8(-(1))
+ 589               		.loc 1 235 4 view .LVU193
+ 590 0260 8093 0000 		sts rxRdIndex,r24
+ 591 0264 8233      		cpi r24,lo8(50)
+ 592 0266 01F4      		brne .L29
+ 236:src/can.c     **** 		rxRdIndex = 0;
+ 593               		.loc 1 236 3 is_stmt 1 view .LVU194
+ 594               		.loc 1 236 13 is_stmt 0 view .LVU195
+ 595 0268 1092 0000 		sts rxRdIndex,__zero_reg__
+ 596               	.L29:
+ 237:src/can.c     **** 
+ 238:src/can.c     **** 
+ 239:src/can.c     **** 	rxCounter--;
+ 597               		.loc 1 239 2 is_stmt 1 view .LVU196
+ 598               		.loc 1 239 11 is_stmt 0 view .LVU197
+ 599 026c 8091 0000 		lds r24,rxCounter
+ 600 0270 8150      		subi r24,lo8(-(-1))
+ 601 0272 8093 0000 		sts rxCounter,r24
+ 240:src/can.c     **** 	sei();
+ 602               		.loc 1 240 2 is_stmt 1 view .LVU198
+ 603               	/* #APP */
+ 604               	 ;  240 "src/can.c" 1
+ 605 0276 7894      		sei
+ 606               	 ;  0 "" 2
+ 607               	/* #NOAPP */
+ 608               	/* epilogue start */
+ 241:src/can.c     **** }
+ 609               		.loc 1 241 1 is_stmt 0 view .LVU199
+ 610 0278 DF91      		pop r29
+ 611 027a CF91      		pop r28
+ 612 027c 0895      		ret
+ 613               		.cfi_endproc
+ 614               	.LFE4:
+ 616               	.global	CAN_write
+ 618               	CAN_write:
+ 619               	.LFB5:
+ 242:src/can.c     **** 
+ 243:src/can.c     **** 
+ 244:src/can.c     **** /*********************************************************************************
+ 245:src/can.c     **** * Function Name		: CAN_write
+ 246:src/can.c     **** * Description       : Funkcija upisuje 8 bajtova podataka u predajni bafer CAN
+ 247:src/can.c     **** 					  magistrale. Pored tih podataka, salje se i njen
+ 248:src/can.c     **** 					  identifikator messIdentificator.
+ 249:src/can.c     **** * Parameters        : canMgs txData
+ 250:src/can.c     **** * Return Value      : void
+ 251:src/can.c     **** *********************************************************************************/
+ 252:src/can.c     **** char CAN_write(canMsg txData)
+ 253:src/can.c     **** {
+ 620               		.loc 1 253 1 is_stmt 1 view -0
+ 621               		.cfi_startproc
+ 622 027e 0F93      		push r16
+ 623               	.LCFI11:
+ 624               		.cfi_def_cfa_offset 3
+ 625               		.cfi_offset 16, -2
+ 626 0280 1F93      		push r17
+ 627               	.LCFI12:
+ 628               		.cfi_def_cfa_offset 4
+ 629               		.cfi_offset 17, -3
+ 630 0282 CF93      		push r28
+ 631               	.LCFI13:
+ 632               		.cfi_def_cfa_offset 5
+ 633               		.cfi_offset 28, -4
+ 634 0284 DF93      		push r29
+ 635               	.LCFI14:
+ 636               		.cfi_def_cfa_offset 6
+ 637               		.cfi_offset 29, -5
+ 638 0286 CDB7      		in r28,__SP_L__
+ 639 0288 DEB7      		in r29,__SP_H__
+ 640               	.LCFI15:
+ 641               		.cfi_def_cfa_register 28
+ 642 028a 2A97      		sbiw r28,10
+ 643               	.LCFI16:
+ 644               		.cfi_def_cfa_offset 16
+ 645 028c 0FB6      		in __tmp_reg__,__SREG__
+ 646 028e F894      		cli
+ 647 0290 DEBF      		out __SP_H__,r29
+ 648 0292 0FBE      		out __SREG__,__tmp_reg__
+ 649 0294 CDBF      		out __SP_L__,r28
+ 650               	/* prologue: function */
+ 651               	/* frame size = 10 */
+ 652               	/* stack size = 14 */
+ 653               	.L__stack_usage = 14
+ 654 0296 0983      		std Y+1,r16
+ 655 0298 1A83      		std Y+2,r17
+ 656 029a 2B83      		std Y+3,r18
+ 657 029c 3C83      		std Y+4,r19
+ 658 029e 4D83      		std Y+5,r20
+ 659 02a0 5E83      		std Y+6,r21
+ 660 02a2 6F83      		std Y+7,r22
+ 661 02a4 7887      		std Y+8,r23
+ 662 02a6 8987      		std Y+9,r24
+ 663 02a8 9A87      		std Y+10,r25
+ 664 02aa 2985      		ldd r18,Y+9
+ 665 02ac 3A85      		ldd r19,Y+10
+ 666               	.LVL31:
+ 254:src/can.c     **** 	// Cekam sve dok je magistrala zauzeta-> da li je neophodno?
+ 255:src/can.c     **** 	while(((CANGSTA >> TXBSY) & 0x01) || ((CANGSTA >> RXBSY) & 0x01));
+ 667               		.loc 1 255 2 view .LVU201
+ 668               	.L34:
+ 669               		.loc 1 255 67 discriminator 3 view .LVU202
+ 670               		.loc 1 255 10 is_stmt 0 discriminator 3 view .LVU203
+ 671 02ae 8091 D900 		lds r24,217
+ 672               		.loc 1 255 7 discriminator 3 view .LVU204
+ 673 02b2 84FD      		sbrc r24,4
+ 674 02b4 00C0      		rjmp .L34
+ 675               		.loc 1 255 41 discriminator 2 view .LVU205
+ 676 02b6 9091 D900 		lds r25,217
+ 677               		.loc 1 255 36 discriminator 2 view .LVU206
+ 678 02ba 892F      		mov r24,r25
+ 679 02bc 8870      		andi r24,lo8(8)
+ 680 02be 93FD      		sbrc r25,3
+ 681 02c0 00C0      		rjmp .L34
+ 256:src/can.c     **** 	//taskENTER_CRITICAL();
+ 257:src/can.c     **** 	unsigned char ch;
+ 682               		.loc 1 257 2 is_stmt 1 view .LVU207
+ 258:src/can.c     **** 	unsigned char tempPage = CANPAGE;
+ 683               		.loc 1 258 2 view .LVU208
+ 684               		.loc 1 258 16 is_stmt 0 view .LVU209
+ 685 02c2 5091 ED00 		lds r21,237
+ 686               	.LVL32:
+ 259:src/can.c     **** 
+ 260:src/can.c     **** 	// ovo je mozda nepotrebno, razmisliti
+ 261:src/can.c     **** 	//taskENTER_CRITICAL();
  262:src/can.c     **** 
- 263:src/can.c     **** 		return 0;
- 580               		.loc 1 263 0
- 581 02ce 80E0      		ldi r24,0
- 582               	.LVL41:
- 583 02d0 00C0      		rjmp .L47
- 584               	.LVL42:
- 585               	.L39:
- 264:src/can.c     **** 	}
- 265:src/can.c     **** 
- 266:src/can.c     **** 	//ova dva registra sadrze identifikator poruke koja ce se slati! efektivno to je adresa cvora koji
- 267:src/can.c     **** 	CANIDT2 = (txData.msgIde & 0x0F) << 5;
- 586               		.loc 1 267 0
- 587 02d2 282F      		mov r18,r24
- 588               	.LVL43:
- 589 02d4 2295      		swap r18
- 590 02d6 220F      		lsl r18
- 591 02d8 207E      		andi r18,lo8(-32)
- 592 02da 2093 F200 		sts 242,r18
- 268:src/can.c     **** 	CANIDT1 = (txData.msgIde) >> 3;
- 593               		.loc 1 268 0
- 594 02de 23E0      		ldi r18,3
- 595               		1:
- 596 02e0 9695      		lsr r25
- 597 02e2 8795      		ror r24
- 598 02e4 2A95      		dec r18
- 599 02e6 01F4      		brne 1b
- 600               	.LVL44:
- 601 02e8 8093 F300 		sts 243,r24
- 269:src/can.c     **** 
- 270:src/can.c     **** 	// DLC = 8
- 271:src/can.c     **** 	CANCDMOB = 8;
- 602               		.loc 1 271 0
- 603 02ec 88E0      		ldi r24,lo8(8)
- 604 02ee 8093 EF00 		sts 239,r24
- 605               	.LVL45:
- 606 02f2 FE01      		movw r30,r28
- 607 02f4 3196      		adiw r30,1
- 608 02f6 CE01      		movw r24,r28
- 609 02f8 0996      		adiw r24,9
- 610               	.LVL46:
- 611               	.L42:
- 612               	.LBB4:
- 272:src/can.c     **** 
- 273:src/can.c     **** 	// upisujem 8 bajtova koje ce se slati u predajni bafer
- 274:src/can.c     **** 	for(unsigned char i = 0; i < 8; i++)
- 275:src/can.c     **** 		CANMSG = txData.data[i];
- 613               		.loc 1 275 0 discriminator 3
- 614 02fa 2191      		ld r18,Z+
- 615 02fc 2093 FA00 		sts 250,r18
- 274:src/can.c     **** 		CANMSG = txData.data[i];
- 616               		.loc 1 274 0 discriminator 3
- 617 0300 8E17      		cp r24,r30
- 618 0302 9F07      		cpc r25,r31
- 619 0304 01F4      		brne .L42
- 620               	.LBE4:
+ 263:src/can.c     **** 	// trazim slobodan MOb
+ 264:src/can.c     **** 	for(ch = 0; ch < 15; ch++)
+ 687               		.loc 1 264 2 is_stmt 1 view .LVU210
+ 258:src/can.c     **** 	unsigned char tempPage = CANPAGE;
+ 688               		.loc 1 258 16 is_stmt 0 view .LVU211
+ 689 02c6 90E0      		ldi r25,0
+ 690               	.LVL33:
+ 691               	.L37:
+ 265:src/can.c     **** 	{
+ 266:src/can.c     **** 		CANPAGE = ch << 4;
+ 692               		.loc 1 266 3 is_stmt 1 view .LVU212
+ 693               		.loc 1 266 11 is_stmt 0 view .LVU213
+ 694 02c8 9093 ED00 		sts 237,r25
+ 267:src/can.c     **** 
+ 268:src/can.c     **** 		if(!(CANCDMOB >> 6))
+ 695               		.loc 1 268 3 is_stmt 1 view .LVU214
+ 696               		.loc 1 268 8 is_stmt 0 view .LVU215
+ 697 02cc 4091 EF00 		lds r20,239
+ 698               		.loc 1 268 6 view .LVU216
+ 699 02d0 4295      		swap r20
+ 700 02d2 4695      		lsr r20
+ 701 02d4 4695      		lsr r20
+ 702 02d6 4370      		andi r20,lo8(3)
+ 703               		.loc 1 268 5 view .LVU217
+ 704 02d8 01F0      		breq .L36
+ 705               		.loc 1 268 5 view .LVU218
+ 706 02da 905F      		subi r25,lo8(-(16))
+ 264:src/can.c     **** 	{
+ 707               		.loc 1 264 2 discriminator 2 view .LVU219
+ 708 02dc 903F      		cpi r25,lo8(-16)
+ 709 02de 01F4      		brne .L37
+ 710               	.LVL34:
+ 711               	.L33:
+ 712               	/* epilogue start */
+ 269:src/can.c     **** 			break;
+ 270:src/can.c     **** 	}
+ 271:src/can.c     **** 
+ 272:src/can.c     **** 	// nema slobodnih MOb- ova
+ 273:src/can.c     **** 	if(ch == 15)
+ 274:src/can.c     **** 	{
+ 275:src/can.c     **** 		//taskEXIT_CRITICAL();
  276:src/can.c     **** 
- 277:src/can.c     **** 	// podesavam ga kao predajnik
- 278:src/can.c     **** 	CANCDMOB |= (1 << CONMOB0);
- 621               		.loc 1 278 0
- 622 0306 8091 EF00 		lds r24,239
- 623 030a 8064      		ori r24,lo8(64)
- 624 030c 8093 EF00 		sts 239,r24
+ 277:src/can.c     **** 		return 0;
+ 278:src/can.c     **** 	}
  279:src/can.c     **** 
- 280:src/can.c     **** 	CANPAGE = tempPage;
- 625               		.loc 1 280 0
- 626 0310 4093 ED00 		sts 237,r20
- 281:src/can.c     **** 
- 282:src/can.c     **** 	//taskEXIT_CRITICAL();
+ 280:src/can.c     **** 	//ova dva registra sadrze identifikator poruke koja ce se slati! efektivno to je adresa cvora koji
+ 281:src/can.c     **** 	CANIDT2 = (txData.msgIde & 0x0F) << 5;
+ 282:src/can.c     **** 	CANIDT1 = (txData.msgIde) >> 3;
  283:src/can.c     **** 
- 284:src/can.c     **** 	return 1;
- 627               		.loc 1 284 0
- 628 0314 81E0      		ldi r24,lo8(1)
- 629               	.L47:
- 630               	/* epilogue start */
- 285:src/can.c     **** }...
- 631               		.loc 1 285 0
- 632 0316 2A96      		adiw r28,10
- 633 0318 0FB6      		in __tmp_reg__,__SREG__
- 634 031a F894      		cli
- 635 031c DEBF      		out __SP_H__,r29
- 636 031e 0FBE      		out __SREG__,__tmp_reg__
- 637 0320 CDBF      		out __SP_L__,r28
- 638 0322 DF91      		pop r29
- 639 0324 CF91      		pop r28
- 640 0326 1F91      		pop r17
- 641 0328 0F91      		pop r16
- 642 032a 0895      		ret
- 643               		.cfi_endproc
- 644               	.LFE5:
- 646               		.local	rxCounter
- 647               		.comm	rxCounter,1,1
- 648               		.local	rxWrIndex
- 649               		.comm	rxWrIndex,1,1
- 650               		.local	rxRdIndex
- 651               		.comm	rxRdIndex,1,1
- 652               		.local	rxBuffer
- 653               		.comm	rxBuffer,500,1
- 654               	.Letext0:
- 655               		.file 2 "src/can.h"
- 656               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 284:src/can.c     **** 	// DLC = 8
+ 285:src/can.c     **** 	CANCDMOB = 8;
+ 286:src/can.c     **** 
+ 287:src/can.c     **** 	// upisujem 8 bajtova koje ce se slati u predajni bafer
+ 288:src/can.c     **** 	for(unsigned char i = 0; i < 8; i++)
+ 289:src/can.c     **** 		CANMSG = txData.data[i];
+ 290:src/can.c     **** 
+ 291:src/can.c     **** 	// podesavam ga kao predajnik
+ 292:src/can.c     **** 	CANCDMOB |= (1 << CONMOB0);
+ 293:src/can.c     **** 
+ 294:src/can.c     **** 	CANPAGE = tempPage;
+ 295:src/can.c     **** 
+ 296:src/can.c     **** 	//taskEXIT_CRITICAL();
+ 297:src/can.c     **** 
+ 298:src/can.c     **** 	return 1;
+ 299:src/can.c     **** }...
+ 713               		.loc 1 299 1 view .LVU220
+ 714 02e0 2A96      		adiw r28,10
+ 715 02e2 0FB6      		in __tmp_reg__,__SREG__
+ 716 02e4 F894      		cli
+ 717 02e6 DEBF      		out __SP_H__,r29
+ 718 02e8 0FBE      		out __SREG__,__tmp_reg__
+ 719 02ea CDBF      		out __SP_L__,r28
+ 720 02ec DF91      		pop r29
+ 721 02ee CF91      		pop r28
+ 722 02f0 1F91      		pop r17
+ 723 02f2 0F91      		pop r16
+ 724 02f4 0895      		ret
+ 725               	.LVL35:
+ 726               	.L36:
+ 273:src/can.c     **** 	if(ch == 15)
+ 727               		.loc 1 273 2 is_stmt 1 view .LVU221
+ 281:src/can.c     **** 	CANIDT2 = (txData.msgIde & 0x0F) << 5;
+ 728               		.loc 1 281 2 view .LVU222
+ 281:src/can.c     **** 	CANIDT2 = (txData.msgIde & 0x0F) << 5;
+ 729               		.loc 1 281 35 is_stmt 0 view .LVU223
+ 730 02f6 822F      		mov r24,r18
+ 731 02f8 8295      		swap r24
+ 732 02fa 880F      		lsl r24
+ 733 02fc 807E      		andi r24,lo8(-32)
+ 281:src/can.c     **** 	CANIDT2 = (txData.msgIde & 0x0F) << 5;
+ 734               		.loc 1 281 10 view .LVU224
+ 735 02fe 8093 F200 		sts 242,r24
+ 282:src/can.c     **** 	CANIDT1 = (txData.msgIde) >> 3;
+ 736               		.loc 1 282 2 is_stmt 1 view .LVU225
+ 282:src/can.c     **** 	CANIDT1 = (txData.msgIde) >> 3;
+ 737               		.loc 1 282 28 is_stmt 0 view .LVU226
+ 738 0302 83E0      		ldi r24,3
+ 739               		1:
+ 740 0304 3695      		lsr r19
+ 741 0306 2795      		ror r18
+ 742 0308 8A95      		dec r24
+ 743 030a 01F4      		brne 1b
+ 744               	.LVL36:
+ 282:src/can.c     **** 	CANIDT1 = (txData.msgIde) >> 3;
+ 745               		.loc 1 282 10 view .LVU227
+ 746 030c 2093 F300 		sts 243,r18
+ 285:src/can.c     **** 	CANCDMOB = 8;
+ 747               		.loc 1 285 2 is_stmt 1 view .LVU228
+ 285:src/can.c     **** 	CANCDMOB = 8;
+ 748               		.loc 1 285 11 is_stmt 0 view .LVU229
+ 749 0310 88E0      		ldi r24,lo8(8)
+ 750 0312 8093 EF00 		sts 239,r24
+ 288:src/can.c     **** 	for(unsigned char i = 0; i < 8; i++)
+ 751               		.loc 1 288 2 is_stmt 1 view .LVU230
+ 752               	.LBB6:
+ 288:src/can.c     **** 	for(unsigned char i = 0; i < 8; i++)
+ 753               		.loc 1 288 6 view .LVU231
+ 754               	.LVL37:
+ 288:src/can.c     **** 	for(unsigned char i = 0; i < 8; i++)
+ 755               		.loc 1 288 6 is_stmt 0 view .LVU232
+ 756 0316 FE01      		movw r30,r28
+ 757 0318 3196      		adiw r30,1
+ 758 031a CE01      		movw r24,r28
+ 759 031c 0996      		adiw r24,9
+ 760               	.LVL38:
+ 761               	.L39:
+ 289:src/can.c     **** 		CANMSG = txData.data[i];
+ 762               		.loc 1 289 3 is_stmt 1 discriminator 3 view .LVU233
+ 289:src/can.c     **** 		CANMSG = txData.data[i];
+ 763               		.loc 1 289 23 is_stmt 0 discriminator 3 view .LVU234
+ 764 031e 2191      		ld r18,Z+
+ 289:src/can.c     **** 		CANMSG = txData.data[i];
+ 765               		.loc 1 289 10 discriminator 3 view .LVU235
+ 766 0320 2093 FA00 		sts 250,r18
+ 288:src/can.c     **** 	for(unsigned char i = 0; i < 8; i++)
+ 767               		.loc 1 288 2 discriminator 3 view .LVU236
+ 768 0324 E817      		cp r30,r24
+ 769 0326 F907      		cpc r31,r25
+ 770 0328 01F4      		brne .L39
+ 771               	.LBE6:
+ 292:src/can.c     **** 	CANCDMOB |= (1 << CONMOB0);
+ 772               		.loc 1 292 2 is_stmt 1 view .LVU237
+ 292:src/can.c     **** 	CANCDMOB |= (1 << CONMOB0);
+ 773               		.loc 1 292 11 is_stmt 0 view .LVU238
+ 774 032a 8091 EF00 		lds r24,239
+ 775 032e 8064      		ori r24,lo8(64)
+ 776 0330 8093 EF00 		sts 239,r24
+ 294:src/can.c     **** 	CANPAGE = tempPage;
+ 777               		.loc 1 294 2 is_stmt 1 view .LVU239
+ 294:src/can.c     **** 	CANPAGE = tempPage;
+ 778               		.loc 1 294 10 is_stmt 0 view .LVU240
+ 779 0334 5093 ED00 		sts 237,r21
+ 298:src/can.c     **** 	return 1;
+ 780               		.loc 1 298 2 is_stmt 1 view .LVU241
+ 298:src/can.c     **** 	return 1;
+ 781               		.loc 1 298 9 is_stmt 0 view .LVU242
+ 782 0338 81E0      		ldi r24,lo8(1)
+ 783 033a 00C0      		rjmp .L33
+ 784               		.cfi_endproc
+ 785               	.LFE5:
+ 787               		.local	rxCounter
+ 788               		.comm	rxCounter,1,1
+ 789               		.local	rxWrIndex
+ 790               		.comm	rxWrIndex,1,1
+ 791               		.local	rxRdIndex
+ 792               		.comm	rxRdIndex,1,1
+ 793               		.local	rxBuffer
+ 794               		.comm	rxBuffer,500,1
+ 795               	.Letext0:
+ 796               		.file 2 "src/can.h"
+ 797               		.file 3 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdint.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 can.c
-     /tmp/ccbosQPA.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccbosQPA.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccbosQPA.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccbosQPA.s:5      *ABS*:000000000000003b __RAMPZ__
-     /tmp/ccbosQPA.s:6      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccbosQPA.s:7      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccbosQPA.s:13     .text:0000000000000000 __vector_18
-     /tmp/ccbosQPA.s:647    .bss:0000000000000001 rxWrIndex
-     /tmp/ccbosQPA.s:651    .bss:0000000000000003 rxBuffer
+/var/tmp//cctKswzg.s:2      *ABS*:000000000000003e __SP_H__
+/var/tmp//cctKswzg.s:3      *ABS*:000000000000003d __SP_L__
+/var/tmp//cctKswzg.s:4      *ABS*:000000000000003f __SREG__
+/var/tmp//cctKswzg.s:5      *ABS*:000000000000003b __RAMPZ__
+/var/tmp//cctKswzg.s:6      *ABS*:0000000000000000 __tmp_reg__
+/var/tmp//cctKswzg.s:7      *ABS*:0000000000000001 __zero_reg__
+/var/tmp//cctKswzg.s:13     .text:0000000000000000 __vector_18
+                            *ABS*:0000000000000004 __gcc_isr.n_pushed.001
+/var/tmp//cctKswzg.s:788    .bss:0000000000000001 rxWrIndex
+/var/tmp//cctKswzg.s:792    .bss:0000000000000003 rxBuffer
                              .bss:0000000000000000 rxCounter
-     /tmp/ccbosQPA.s:204    .text:00000000000000f8 CAN_Init
-     /tmp/ccbosQPA.s:291    .text:0000000000000172 CAN_InitRxMob
-     /tmp/ccbosQPA.s:387    .text:00000000000001f0 CAN_checkRX
-     /tmp/ccbosQPA.s:409    .text:00000000000001fe CAN_read
-     /tmp/ccbosQPA.s:649    .bss:0000000000000002 rxRdIndex
-     /tmp/ccbosQPA.s:498    .text:000000000000026a CAN_write
+/var/tmp//cctKswzg.s:224    .text:00000000000000f8 CAN_Init
+/var/tmp//cctKswzg.s:355    .text:0000000000000182 CAN_InitRxMob
+/var/tmp//cctKswzg.s:473    .text:00000000000001fe CAN_checkRX
+/var/tmp//cctKswzg.s:498    .text:000000000000020c CAN_read
+/var/tmp//cctKswzg.s:790    .bss:0000000000000002 rxRdIndex
+/var/tmp//cctKswzg.s:618    .text:000000000000027e CAN_write
 
 UNDEFINED SYMBOLS
 __do_clear_bss

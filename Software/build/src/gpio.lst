@@ -10,8 +10,9 @@
   10               		.cfi_sections	.debug_frame
   11               	.global	gpio_register_pin
   13               	gpio_register_pin:
-  14               	.LFB11:
-  15               		.file 1 "src/gpio.c"
+  14               	.LVL0:
+  15               	.LFB11:
+  16               		.file 1 "src/gpio.c"
    1:src/gpio.c    **** #include "gpio.h"
    2:src/gpio.c    **** 
    3:src/gpio.c    **** struct gpio_input {
@@ -30,185 +31,242 @@
   16:src/gpio.c    ****  * 	Description: register the pin
   17:src/gpio.c    ****  */
   18:src/gpio.c    **** uint8_t gpio_register_pin(uint8_t pin, uint8_t direction, bool pulled_up) {
-  16               		.loc 1 18 0
-  17               		.cfi_startproc
-  18               	.LVL0:
-  19 0000 0F93      		push r16
-  20               	.LCFI0:
-  21               		.cfi_def_cfa_offset 3
-  22               		.cfi_offset 16, -2
-  23 0002 1F93      		push r17
-  24               	.LCFI1:
-  25               		.cfi_def_cfa_offset 4
-  26               		.cfi_offset 17, -3
-  27 0004 CF93      		push r28
-  28               	.LCFI2:
-  29               		.cfi_def_cfa_offset 5
-  30               		.cfi_offset 28, -4
-  31 0006 DF93      		push r29
-  32               	.LCFI3:
-  33               		.cfi_def_cfa_offset 6
-  34               		.cfi_offset 29, -5
-  35               	/* prologue: function */
-  36               	/* frame size = 0 */
-  37               	/* stack size = 4 */
-  38               	.L__stack_usage = 4
-  39               	.LVL1:
-  40               	.LBB10:
+  17               		.loc 1 18 75 view -0
+  18               		.cfi_startproc
+  19               		.loc 1 18 75 is_stmt 0 view .LVU1
+  20 0000 0F93      		push r16
+  21               	.LCFI0:
+  22               		.cfi_def_cfa_offset 3
+  23               		.cfi_offset 16, -2
+  24 0002 1F93      		push r17
+  25               	.LCFI1:
+  26               		.cfi_def_cfa_offset 4
+  27               		.cfi_offset 17, -3
+  28 0004 CF93      		push r28
+  29               	.LCFI2:
+  30               		.cfi_def_cfa_offset 5
+  31               		.cfi_offset 28, -4
+  32 0006 DF93      		push r29
+  33               	.LCFI3:
+  34               		.cfi_def_cfa_offset 6
+  35               		.cfi_offset 29, -5
+  36               	/* prologue: function */
+  37               	/* frame size = 0 */
+  38               	/* stack size = 4 */
+  39               	.L__stack_usage = 4
+  40 0008 182F      		mov r17,r24
+  41 000a 042F      		mov r16,r20
   19:src/gpio.c    ****     struct gpio_input* input;
+  42               		.loc 1 19 5 is_stmt 1 view .LVU2
   20:src/gpio.c    ****     list_for_each_entry(input, &gpio_inputs, list)
-  41               		.loc 1 20 0
-  42 0008 E091 0000 		lds r30,gpio_inputs+2
-  43 000c F091 0000 		lds r31,gpio_inputs+2+1
-  44               	.L11:
-  45               	.LVL2:
-  46               	.LBE10:
-  47               	.LBB11:
-  48               		.loc 1 20 0 is_stmt 0 discriminator 2
-  49 0010 3D97      		sbiw r30,13
-  50               	.LVL3:
-  51               	.LBE11:
-  52 0012 EF01      		movw r28,r30
-  53 0014 2D96      		adiw r28,13
-  54 0016 90E0      		ldi r25,hi8(gpio_inputs)
-  55 0018 C030      		cpi r28,lo8(gpio_inputs)
-  56 001a D907      		cpc r29,r25
-  57 001c 01F0      		breq .L14
+  43               		.loc 1 20 5 view .LVU3
+  44               	.LBB10:
+  45               		.loc 1 20 5 view .LVU4
+  46               	.LVL1:
+  47               		.loc 1 20 5 view .LVU5
+  48 000c E091 0000 		lds r30,gpio_inputs+2
+  49 0010 F091 0000 		lds r31,gpio_inputs+2+1
+  50               	.LVL2:
+  51               	.L11:
+  52               		.loc 1 20 5 is_stmt 0 view .LVU6
+  53               	.LBE10:
+  54               	.LBB11:
+  55               		.loc 1 20 5 discriminator 2 view .LVU7
+  56 0014 3D97      		sbiw r30,13
+  57               	.LVL3:
+  58               		.loc 1 20 5 discriminator 2 view .LVU8
+  59               	.LBE11:
+  60 0016 EF01      		movw r28,r30
+  61 0018 2D96      		adiw r28,13
+  62 001a 80E0      		ldi r24,hi8(gpio_inputs)
+  63 001c C030      		cpi r28,lo8(gpio_inputs)
+  64 001e D807      		cpc r29,r24
+  65 0020 01F4      		brne .L5
   21:src/gpio.c    ****     {
   22:src/gpio.c    ****         if(input->pin == pin)
-  58               		.loc 1 22 0 is_stmt 1
-  59 001e 9081      		ld r25,Z
-  60 0020 9813      		cpse r25,r24
-  61 0022 00C0      		rjmp .L3
-  62               	.LVL4:
-  63               	.L7:
   23:src/gpio.c    ****             return 1;
-  64               		.loc 1 23 0
-  65 0024 81E0      		ldi r24,lo8(1)
-  66 0026 00C0      		rjmp .L4
-  67               	.LVL5:
-  68               	.L3:
-  69               	.LBB12:
-  20:src/gpio.c    ****     {
-  70               		.loc 1 20 0 discriminator 2
-  71 0028 0784      		ldd __tmp_reg__,Z+15
-  72 002a F089      		ldd r31,Z+16
-  73 002c E02D      		mov r30,__tmp_reg__
-  74               	.LVL6:
-  75 002e 00C0      		rjmp .L11
-  76               	.LVL7:
-  77               	.L14:
-  78               	.LBE12:
   24:src/gpio.c    ****     }
   25:src/gpio.c    **** 
   26:src/gpio.c    **** 	uint8_t port	= 1 + pin / 8;
-  79               		.loc 1 26 0
-  80 0030 E82F      		mov r30,r24
-  81               	.LVL8:
-  82 0032 E695      		lsr r30
-  83 0034 E695      		lsr r30
-  84 0036 E695      		lsr r30
-  85 0038 EF5F      		subi r30,lo8(-(1))
-  86               	.LVL9:
+  66               		.loc 1 26 2 is_stmt 1 view .LVU9
+  67               	.LVL4:
   27:src/gpio.c    **** 	uint8_t pin_reg = pin % 8;
-  87               		.loc 1 27 0
-  88 003a 582F      		mov r21,r24
-  89 003c 5770      		andi r21,lo8(7)
-  90               	.LVL10:
-  91 003e F0E0      		ldi r31,0
+  68               		.loc 1 27 2 view .LVU10
   28:src/gpio.c    **** 	if(direction == GPIO_DIRECTION_OUTPUT)
-  92               		.loc 1 28 0
-  93 0040 6130      		cpi r22,lo8(1)
-  94 0042 01F4      		brne .L6
+  69               		.loc 1 28 2 view .LVU11
+  26:src/gpio.c    **** 	uint8_t pin_reg = pin % 8;
+  70               		.loc 1 26 19 is_stmt 0 view .LVU12
+  71 0022 E12F      		mov r30,r17
+  72               	.LVL5:
+  26:src/gpio.c    **** 	uint8_t pin_reg = pin % 8;
+  73               		.loc 1 26 19 view .LVU13
+  74 0024 E695      		lsr r30
+  75 0026 E695      		lsr r30
+  76 0028 E695      		lsr r30
+  26:src/gpio.c    **** 	uint8_t pin_reg = pin % 8;
+  77               		.loc 1 26 10 view .LVU14
+  78 002a EF5F      		subi r30,lo8(-(1))
+  79               	.LVL6:
+  26:src/gpio.c    **** 	uint8_t pin_reg = pin % 8;
+  80               		.loc 1 26 10 view .LVU15
+  81 002c E150      		subi r30,1
+  82 002e FF0B      		sbc r31,r31
+  83               	.LVL7:
+  26:src/gpio.c    **** 	uint8_t pin_reg = pin % 8;
+  84               		.loc 1 26 10 view .LVU16
+  85 0030 CF01      		movw r24,r30
+  86 0032 880F      		lsl r24
+  87 0034 991F      		rol r25
+  88 0036 E80F      		add r30,r24
+  89 0038 F91F      		adc r31,r25
+  27:src/gpio.c    **** 	uint8_t pin_reg = pin % 8;
+  90               		.loc 1 27 10 view .LVU17
+  91 003a 212F      		mov r18,r17
+  92 003c 2770      		andi r18,lo8(7)
+  93               	.LVL8:
+  27:src/gpio.c    **** 	uint8_t pin_reg = pin % 8;
+  94               		.loc 1 27 10 view .LVU18
+  95 003e 81E0      		ldi r24,lo8(1)
+  96 0040 90E0      		ldi r25,0
+  97 0042 00C0      		rjmp 2f
+  98               		1:
+  99 0044 880F      		lsl r24
+ 100               		2:
+ 101 0046 2A95      		dec r18
+ 102 0048 02F4      		brpl 1b
+ 103 004a 282F      		mov r18,r24
+ 104               	.LVL9:
+  27:src/gpio.c    **** 	uint8_t pin_reg = pin % 8;
+ 105               		.loc 1 27 10 view .LVU19
+ 106 004c 2095      		com r18
+ 107               		.loc 1 28 4 view .LVU20
+ 108 004e 6130      		cpi r22,lo8(1)
+ 109 0050 01F4      		brne .L6
   29:src/gpio.c    **** 	{
   30:src/gpio.c    **** 		*(volatile uint8_t*)(0x21 + 3 *  (port - 1)) |= (1 << pin_reg);
-  95               		.loc 1 30 0
-  96 0044 3197      		sbiw r30,1
-  97               	.LVL11:
-  98 0046 CF01      		movw r24,r30
-  99               	.LVL12:
- 100 0048 880F      		lsl r24
- 101 004a 991F      		rol r25
- 102 004c E80F      		add r30,r24
- 103 004e F91F      		adc r31,r25
- 104 0050 21A1      		ldd r18,Z+33
- 105 0052 81E0      		ldi r24,lo8(1)
- 106 0054 90E0      		ldi r25,0
- 107 0056 00C0      		rjmp 2f
- 108               		1:
- 109 0058 880F      		lsl r24
- 110               		2:
- 111 005a 5A95      		dec r21
- 112 005c 02F4      		brpl 1b
- 113 005e 922F      		mov r25,r18
- 114 0060 982B      		or r25,r24
- 115 0062 91A3      		std Z+33,r25
- 116               	.LVL13:
+ 110               		.loc 1 30 3 is_stmt 1 view .LVU21
+ 111               		.loc 1 30 48 is_stmt 0 view .LVU22
+ 112 0052 91A1      		ldd r25,Z+33
+ 113 0054 892B      		or r24,r25
+ 114 0056 81A3      		std Z+33,r24
+ 115               	.LVL10:
   31:src/gpio.c    **** 		*(volatile uint8_t*)(0x22 + 3 *  (port - 1)) &= ~(1 << pin_reg);
- 117               		.loc 1 31 0
- 118 0064 92A1      		ldd r25,Z+34
- 119 0066 8095      		com r24
- 120 0068 8923      		and r24,r25
- 121 006a 82A3      		std Z+34,r24
- 122 006c 00C0      		rjmp .L12
- 123               	.LVL14:
- 124               	.L6:
- 125 006e 042F      		mov r16,r20
- 126 0070 182F      		mov r17,r24
+ 116               		.loc 1 31 3 is_stmt 1 view .LVU23
+ 117               		.loc 1 31 48 is_stmt 0 view .LVU24
+ 118 0058 82A1      		ldd r24,Z+34
+ 119 005a 8223      		and r24,r18
+ 120 005c 82A3      		std Z+34,r24
   32:src/gpio.c    ****         return 0;
+ 121               		.loc 1 32 9 is_stmt 1 view .LVU25
+ 122               	.LVL11:
+ 123               	.L12:
   33:src/gpio.c    **** 	}
   34:src/gpio.c    **** 	else
   35:src/gpio.c    **** 		*(volatile uint8_t*)(0x21 + 3 *  (port - 1)) &= ~(1 << pin_reg);
- 127               		.loc 1 35 0
- 128 0072 3197      		sbiw r30,1
- 129               	.LVL15:
- 130 0074 CF01      		movw r24,r30
- 131               	.LVL16:
- 132 0076 880F      		lsl r24
- 133 0078 991F      		rol r25
- 134 007a E80F      		add r30,r24
- 135 007c F91F      		adc r31,r25
- 136 007e 81A1      		ldd r24,Z+33
- 137 0080 21E0      		ldi r18,lo8(1)
- 138 0082 30E0      		ldi r19,0
- 139 0084 00C0      		rjmp 2f
- 140               		1:
- 141 0086 220F      		lsl r18
- 142               		2:
- 143 0088 5A95      		dec r21
- 144 008a 02F4      		brpl 1b
- 145 008c 2095      		com r18
- 146 008e 2823      		and r18,r24
- 147 0090 21A3      		std Z+33,r18
- 148               	.LVL17:
   36:src/gpio.c    **** 
   37:src/gpio.c    ****     input = (struct gpio_input*)malloc(sizeof(struct gpio_input));
- 149               		.loc 1 37 0
- 150 0092 81E1      		ldi r24,lo8(17)
- 151 0094 90E0      		ldi r25,0
- 152 0096 0E94 0000 		call malloc
- 153               	.LVL18:
- 154 009a FC01      		movw r30,r24
- 155               	.LVL19:
   38:src/gpio.c    ****     if(input == NULL)
- 156               		.loc 1 38 0
- 157 009c 0097      		sbiw r24,0
- 158 009e 01F0      		breq .L7
   39:src/gpio.c    ****         return 1;
   40:src/gpio.c    **** 
   41:src/gpio.c    ****     input->pin       = pin;
- 159               		.loc 1 41 0
- 160 00a0 1083      		st Z,r17
   42:src/gpio.c    ****     input->pulled_up = pulled_up;
- 161               		.loc 1 42 0
- 162 00a2 0183      		std Z+1,r16
   43:src/gpio.c    ****     list_add(&input->list, &gpio_inputs);
- 163               		.loc 1 43 0
- 164 00a4 0D96      		adiw r24,13
- 165               	.LVL20:
- 166               	.LBB13:
- 167               	.LBB14:
- 168               		.file 2 "src/gpio.h"
+  44:src/gpio.c    **** 
+  45:src/gpio.c    ****     return 0;
+ 124               		.loc 1 45 5 view .LVU26
+ 125               		.loc 1 45 12 is_stmt 0 view .LVU27
+ 126 005e 80E0      		ldi r24,0
+ 127 0060 00C0      		rjmp .L1
+ 128               	.LVL12:
+ 129               	.L5:
+  22:src/gpio.c    ****             return 1;
+ 130               		.loc 1 22 9 is_stmt 1 view .LVU28
+  22:src/gpio.c    ****             return 1;
+ 131               		.loc 1 22 11 is_stmt 0 view .LVU29
+ 132 0062 8081      		ld r24,Z
+ 133 0064 8113      		cpse r24,r17
+ 134 0066 00C0      		rjmp .L3
+ 135               	.LVL13:
+ 136               	.L7:
+  23:src/gpio.c    ****     }
+ 137               		.loc 1 23 20 view .LVU30
+ 138 0068 81E0      		ldi r24,lo8(1)
+ 139               	.LVL14:
+ 140               	.L1:
+ 141               	/* epilogue start */
+  46:src/gpio.c    **** }
+ 142               		.loc 1 46 1 view .LVU31
+ 143 006a DF91      		pop r29
+ 144 006c CF91      		pop r28
+ 145 006e 1F91      		pop r17
+ 146               	.LVL15:
+ 147               		.loc 1 46 1 view .LVU32
+ 148 0070 0F91      		pop r16
+ 149               	.LVL16:
+ 150               		.loc 1 46 1 view .LVU33
+ 151 0072 0895      		ret
+ 152               	.LVL17:
+ 153               	.L3:
+ 154               	.LBB12:
+  20:src/gpio.c    ****     {
+ 155               		.loc 1 20 5 is_stmt 1 discriminator 2 view .LVU34
+  20:src/gpio.c    ****     {
+ 156               		.loc 1 20 5 discriminator 2 view .LVU35
+ 157 0074 0784      		ldd __tmp_reg__,Z+15
+ 158 0076 F089      		ldd r31,Z+16
+ 159 0078 E02D      		mov r30,__tmp_reg__
+ 160               	.LVL18:
+  20:src/gpio.c    ****     {
+ 161               		.loc 1 20 5 is_stmt 0 discriminator 2 view .LVU36
+ 162 007a 00C0      		rjmp .L11
+ 163               	.LVL19:
+ 164               	.L6:
+  20:src/gpio.c    ****     {
+ 165               		.loc 1 20 5 discriminator 2 view .LVU37
+ 166               	.LBE12:
+  35:src/gpio.c    **** 
+ 167               		.loc 1 35 3 is_stmt 1 view .LVU38
+  35:src/gpio.c    **** 
+ 168               		.loc 1 35 48 is_stmt 0 view .LVU39
+ 169 007c 81A1      		ldd r24,Z+33
+ 170 007e 8223      		and r24,r18
+ 171 0080 81A3      		std Z+33,r24
+ 172               	.LVL20:
+  37:src/gpio.c    ****     if(input == NULL)
+ 173               		.loc 1 37 5 is_stmt 1 view .LVU40
+  37:src/gpio.c    ****     if(input == NULL)
+ 174               		.loc 1 37 33 is_stmt 0 view .LVU41
+ 175 0082 81E1      		ldi r24,lo8(17)
+ 176 0084 90E0      		ldi r25,0
+ 177 0086 0E94 0000 		call malloc
+ 178               	.LVL21:
+  37:src/gpio.c    ****     if(input == NULL)
+ 179               		.loc 1 37 33 view .LVU42
+ 180 008a FC01      		movw r30,r24
+ 181               	.LVL22:
+  38:src/gpio.c    ****         return 1;
+ 182               		.loc 1 38 5 is_stmt 1 view .LVU43
+  38:src/gpio.c    ****         return 1;
+ 183               		.loc 1 38 7 is_stmt 0 view .LVU44
+ 184 008c 0097      		sbiw r24,0
+ 185 008e 01F0      		breq .L7
+  41:src/gpio.c    ****     input->pulled_up = pulled_up;
+ 186               		.loc 1 41 5 is_stmt 1 view .LVU45
+  41:src/gpio.c    ****     input->pulled_up = pulled_up;
+ 187               		.loc 1 41 22 is_stmt 0 view .LVU46
+ 188 0090 1083      		st Z,r17
+  42:src/gpio.c    ****     list_add(&input->list, &gpio_inputs);
+ 189               		.loc 1 42 5 is_stmt 1 view .LVU47
+  42:src/gpio.c    ****     list_add(&input->list, &gpio_inputs);
+ 190               		.loc 1 42 22 is_stmt 0 view .LVU48
+ 191 0092 0183      		std Z+1,r16
+  43:src/gpio.c    **** 
+ 192               		.loc 1 43 5 is_stmt 1 view .LVU49
+ 193 0094 0D96      		adiw r24,13
+ 194               	.LVL23:
+ 195               	.LBB13:
+ 196               	.LBI13:
+ 197               		.file 2 "src/gpio.h"
    1:src/gpio.h    **** 
    2:src/gpio.h    **** #ifndef GPIO_H_
    3:src/gpio.h    **** #define GPIO_H_
@@ -331,150 +389,175 @@
  120:src/gpio.h    **** }
  121:src/gpio.h    **** 
  122:src/gpio.h    **** static inline void list_add(struct list_head* new, struct list_head* head)
+ 198               		.loc 2 122 20 view .LVU50
+ 199               	.LBB14:
  123:src/gpio.h    **** {
  124:src/gpio.h    ****     __list_add(new, head, head->next);
- 169               		.loc 2 124 0
- 170 00a6 A091 0000 		lds r26,gpio_inputs+2
- 171 00aa B091 0000 		lds r27,gpio_inputs+2+1
- 172               	.LVL21:
- 173               	.LBB15:
- 174               	.LBB16:
+ 200               		.loc 2 124 5 view .LVU51
+ 201 0096 A091 0000 		lds r26,gpio_inputs+2
+ 202 009a B091 0000 		lds r27,gpio_inputs+2+1
+ 203               	.LVL24:
+ 204               	.LBB15:
+ 205               	.LBI15:
+ 112:src/gpio.h    ****                               struct list_head* prev,
+ 206               		.loc 2 112 20 view .LVU52
+ 207               	.LBB16:
  116:src/gpio.h    ****     new->next = next;
- 175               		.loc 2 116 0
- 176 00ae 1196      		adiw r26,1
- 177 00b0 9C93      		st X,r25
- 178 00b2 8E93      		st -X,r24
+ 208               		.loc 2 116 5 view .LVU53
+ 116:src/gpio.h    ****     new->next = next;
+ 209               		.loc 2 116 16 is_stmt 0 view .LVU54
+ 210 009e 1196      		adiw r26,1
+ 211 00a0 9C93      		st X,r25
+ 212 00a2 8E93      		st -X,r24
  117:src/gpio.h    ****     new->prev = prev;
- 179               		.loc 2 117 0
- 180 00b4 B08B      		std Z+16,r27
- 181 00b6 A787      		std Z+15,r26
+ 213               		.loc 2 117 5 is_stmt 1 view .LVU55
+ 117:src/gpio.h    ****     new->prev = prev;
+ 214               		.loc 2 117 15 is_stmt 0 view .LVU56
+ 215 00a4 B08B      		std Z+16,r27
+ 216 00a6 A787      		std Z+15,r26
  118:src/gpio.h    ****     prev->next = new;
- 182               		.loc 2 118 0
- 183 00b8 D687      		std Z+14,r29
- 184 00ba C587      		std Z+13,r28
+ 217               		.loc 2 118 5 is_stmt 1 view .LVU57
+ 118:src/gpio.h    ****     prev->next = new;
+ 218               		.loc 2 118 15 is_stmt 0 view .LVU58
+ 219 00a8 D687      		std Z+14,r29
+ 220 00aa C587      		std Z+13,r28
  119:src/gpio.h    **** }
- 185               		.loc 2 119 0
- 186 00bc 9093 0000 		sts gpio_inputs+2+1,r25
- 187 00c0 8093 0000 		sts gpio_inputs+2,r24
- 188               	.LVL22:
- 189               	.L12:
- 190               	.LBE16:
- 191               	.LBE15:
- 192               	.LBE14:
- 193               	.LBE13:
-  44:src/gpio.c    **** 
-  45:src/gpio.c    ****     return 0;
- 194               		.loc 1 45 0
- 195 00c4 80E0      		ldi r24,0
- 196               	.LVL23:
- 197               	.L4:
- 198               	/* epilogue start */
-  46:src/gpio.c    **** }
- 199               		.loc 1 46 0
- 200 00c6 DF91      		pop r29
- 201 00c8 CF91      		pop r28
- 202               	.LVL24:
- 203 00ca 1F91      		pop r17
- 204 00cc 0F91      		pop r16
- 205 00ce 0895      		ret
- 206               		.cfi_endproc
- 207               	.LFE11:
- 209               	.global	gpio_write_pin
- 211               	gpio_write_pin:
- 212               	.LFB12:
+ 221               		.loc 2 119 5 is_stmt 1 view .LVU59
+ 119:src/gpio.h    **** }
+ 222               		.loc 2 119 16 is_stmt 0 view .LVU60
+ 223 00ac 9093 0000 		sts gpio_inputs+2+1,r25
+ 224 00b0 8093 0000 		sts gpio_inputs+2,r24
+ 225 00b4 00C0      		rjmp .L12
+ 226               	.LBE16:
+ 227               	.LBE15:
+ 228               	.LBE14:
+ 229               	.LBE13:
+ 230               		.cfi_endproc
+ 231               	.LFE11:
+ 233               	.global	gpio_write_pin
+ 235               	gpio_write_pin:
+ 236               	.LVL25:
+ 237               	.LFB12:
   47:src/gpio.c    **** 
   48:src/gpio.c    **** /*
   49:src/gpio.c    ****  * 	Function:    uint8_t gpio_write_pin(uint8_t pin, bool value)
   50:src/gpio.c    ****  * 	Description: Write to a specific pin and the value of it
   51:src/gpio.c    ****  */
   52:src/gpio.c    **** uint8_t gpio_write_pin(uint8_t pin, bool value) {
- 213               		.loc 1 52 0
- 214               		.cfi_startproc
- 215               	.LVL25:
- 216               	/* prologue: function */
- 217               	/* frame size = 0 */
- 218               	/* stack size = 0 */
- 219               	.L__stack_usage = 0
+ 238               		.loc 1 52 49 is_stmt 1 view -0
+ 239               		.cfi_startproc
+ 240               	/* prologue: function */
+ 241               	/* frame size = 0 */
+ 242               	/* stack size = 0 */
+ 243               	.L__stack_usage = 0
+ 244               		.loc 1 52 49 is_stmt 0 view .LVU62
+ 245 00b6 962F      		mov r25,r22
   53:src/gpio.c    **** 	uint8_t port = 1 + pin / 8;
+ 246               		.loc 1 53 2 is_stmt 1 view .LVU63
+ 247               	.LVL26:
   54:src/gpio.c    **** 	pin = pin % 8;
- 220               		.loc 1 54 0
- 221 00d0 482F      		mov r20,r24
- 222 00d2 4770      		andi r20,lo8(7)
- 223               	.LVL26:
+ 248               		.loc 1 54 2 view .LVU64
   55:src/gpio.c    **** 
   56:src/gpio.c    **** 	uint8_t temp = *(volatile uint32_t*)(0x22 + 3 * (port - 1));
- 224               		.loc 1 56 0
- 225 00d4 8695      		lsr r24
- 226 00d6 8695      		lsr r24
- 227 00d8 8695      		lsr r24
- 228               	.LVL27:
- 229 00da 8F5F      		subi r24,lo8(-(1))
- 230               	.LVL28:
- 231 00dc E82F      		mov r30,r24
- 232 00de F0E0      		ldi r31,0
- 233 00e0 3197      		sbiw r30,1
- 234 00e2 CF01      		movw r24,r30
- 235               	.LVL29:
- 236 00e4 880F      		lsl r24
- 237 00e6 991F      		rol r25
- 238 00e8 E80F      		add r30,r24
- 239 00ea F91F      		adc r31,r25
- 240 00ec 82A1      		ldd r24,Z+34
- 241 00ee 93A1      		ldd r25,Z+35
- 242 00f0 A4A1      		ldd r26,Z+36
- 243 00f2 B5A1      		ldd r27,Z+37
- 244               	.LVL30:
- 245 00f4 90E0      		ldi r25,0
+ 249               		.loc 1 56 2 view .LVU65
+  53:src/gpio.c    **** 	pin = pin % 8;
+ 250               		.loc 1 53 19 is_stmt 0 view .LVU66
+ 251 00b8 E82F      		mov r30,r24
+ 252 00ba E695      		lsr r30
+ 253 00bc E695      		lsr r30
+ 254 00be E695      		lsr r30
+  53:src/gpio.c    **** 	pin = pin % 8;
+ 255               		.loc 1 53 10 view .LVU67
+ 256 00c0 EF5F      		subi r30,lo8(-(1))
+ 257               	.LVL27:
+ 258               		.loc 1 56 56 view .LVU68
+ 259 00c2 E150      		subi r30,1
+ 260 00c4 FF0B      		sbc r31,r31
+ 261               	.LVL28:
+ 262               		.loc 1 56 48 view .LVU69
+ 263 00c6 9F01      		movw r18,r30
+ 264 00c8 220F      		lsl r18
+ 265 00ca 331F      		rol r19
+ 266 00cc E20F      		add r30,r18
+ 267 00ce F31F      		adc r31,r19
+ 268               		.loc 1 56 17 view .LVU70
+ 269 00d0 42A1      		ldd r20,Z+34
+ 270 00d2 53A1      		ldd r21,Z+35
+ 271 00d4 64A1      		ldd r22,Z+36
+ 272 00d6 75A1      		ldd r23,Z+37
+ 273               	.LVL29:
   57:src/gpio.c    **** 	if(value != 0)
+ 274               		.loc 1 57 2 is_stmt 1 view .LVU71
+ 275 00d8 50E0      		ldi r21,0
+  54:src/gpio.c    **** 
+ 276               		.loc 1 54 6 is_stmt 0 view .LVU72
+ 277 00da 8770      		andi r24,lo8(7)
+ 278               	.LVL30:
+  54:src/gpio.c    **** 
+ 279               		.loc 1 54 6 view .LVU73
+ 280 00dc 21E0      		ldi r18,lo8(1)
+ 281 00de 30E0      		ldi r19,0
+ 282 00e0 00C0      		rjmp 2f
+ 283               		1:
+ 284 00e2 220F      		lsl r18
+ 285 00e4 331F      		rol r19
+ 286               		2:
+ 287 00e6 8A95      		dec r24
+ 288 00e8 02F4      		brpl 1b
+ 289               		.loc 1 57 4 view .LVU74
+ 290 00ea 9923      		tst r25
+ 291 00ec 01F0      		breq .L14
   58:src/gpio.c    **** 		*(volatile uint32_t*)(0x22 + 3 * (port - 1)) = temp | (1 << pin);
- 246               		.loc 1 58 0
- 247 00f6 21E0      		ldi r18,lo8(1)
- 248 00f8 30E0      		ldi r19,0
- 249 00fa 00C0      		rjmp 2f
- 250               		1:
- 251 00fc 220F      		lsl r18
- 252 00fe 331F      		rol r19
- 253               		2:
- 254 0100 4A95      		dec r20
- 255 0102 02F4      		brpl 1b
-  57:src/gpio.c    **** 	if(value != 0)
- 256               		.loc 1 57 0
- 257 0104 6623      		tst r22
- 258 0106 01F0      		breq .L16
- 259               		.loc 1 58 0
- 260 0108 822B      		or r24,r18
- 261 010a 932B      		or r25,r19
- 262               	.LVL31:
- 263 010c 00C0      		rjmp .L18
- 264               	.LVL32:
- 265               	.L16:
+ 292               		.loc 1 58 3 is_stmt 1 view .LVU75
+ 293               		.loc 1 58 55 is_stmt 0 view .LVU76
+ 294 00ee CA01      		movw r24,r20
+ 295               	.LVL31:
+ 296               		.loc 1 58 55 view .LVU77
+ 297 00f0 822B      		or r24,r18
+ 298 00f2 932B      		or r25,r19
+ 299               	.L16:
   59:src/gpio.c    **** 	else
   60:src/gpio.c    **** 		*(volatile uint32_t*)(0x22 + 3 * (port - 1)) = temp & ~(1 << pin);
- 266               		.loc 1 60 0
- 267 010e 2095      		com r18
- 268 0110 3095      		com r19
- 269 0112 8223      		and r24,r18
- 270 0114 9323      		and r25,r19
- 271               	.LVL33:
- 272               	.L18:
- 273 0116 092E      		mov __tmp_reg__,r25
- 274 0118 000C      		lsl r0
- 275 011a AA0B      		sbc r26,r26
- 276 011c BB0B      		sbc r27,r27
- 277 011e 82A3      		std Z+34,r24
- 278 0120 93A3      		std Z+35,r25
- 279 0122 A4A3      		std Z+36,r26
- 280 0124 B5A3      		std Z+37,r27
+ 300               		.loc 1 60 55 view .LVU78
+ 301 00f4 092E      		mov __tmp_reg__,r25
+ 302 00f6 000C      		lsl r0
+ 303 00f8 AA0B      		sbc r26,r26
+ 304 00fa BB0B      		sbc r27,r27
+ 305               		.loc 1 60 48 view .LVU79
+ 306 00fc 82A3      		std Z+34,r24
+ 307 00fe 93A3      		std Z+35,r25
+ 308 0100 A4A3      		std Z+36,r26
+ 309 0102 B5A3      		std Z+37,r27
   61:src/gpio.c    **** 	return 0;
+ 310               		.loc 1 61 2 is_stmt 1 view .LVU80
   62:src/gpio.c    **** }
- 281               		.loc 1 62 0
- 282 0126 80E0      		ldi r24,0
- 283 0128 0895      		ret
- 284               		.cfi_endproc
- 285               	.LFE12:
- 287               	.global	gpio_read_pin
- 289               	gpio_read_pin:
- 290               	.LFB14:
+ 311               		.loc 1 62 1 is_stmt 0 view .LVU81
+ 312 0104 80E0      		ldi r24,0
+ 313               	/* epilogue start */
+ 314 0106 0895      		ret
+ 315               	.LVL32:
+ 316               	.L14:
+  60:src/gpio.c    **** 	return 0;
+ 317               		.loc 1 60 3 is_stmt 1 view .LVU82
+  60:src/gpio.c    **** 	return 0;
+ 318               		.loc 1 60 57 is_stmt 0 view .LVU83
+ 319 0108 C901      		movw r24,r18
+ 320               	.LVL33:
+  60:src/gpio.c    **** 	return 0;
+ 321               		.loc 1 60 57 view .LVU84
+ 322 010a 8095      		com r24
+ 323 010c 9095      		com r25
+  60:src/gpio.c    **** 	return 0;
+ 324               		.loc 1 60 55 view .LVU85
+ 325 010e 8423      		and r24,r20
+ 326 0110 9523      		and r25,r21
+ 327 0112 00C0      		rjmp .L16
+ 328               		.cfi_endproc
+ 329               	.LFE12:
+ 331               	.global	gpio_read_pin
+ 333               	gpio_read_pin:
+ 334               	.LVL34:
+ 335               	.LFB14:
   63:src/gpio.c    **** 
   64:src/gpio.c    **** /*
   65:src/gpio.c    ****  * 	Function: static uint8_t __gpio_read_pin(uint8_t pin)
@@ -493,252 +576,356 @@
   78:src/gpio.c    ****  * 	Description: reading the state of a pin
   79:src/gpio.c    ****  */
   80:src/gpio.c    **** uint8_t gpio_read_pin(uint8_t pin) {
- 291               		.loc 1 80 0
- 292               		.cfi_startproc
- 293               	.LVL34:
- 294               	/* prologue: function */
- 295               	/* frame size = 0 */
- 296               	/* stack size = 0 */
- 297               	.L__stack_usage = 0
- 298               	.LBB17:
+ 336               		.loc 1 80 36 is_stmt 1 view -0
+ 337               		.cfi_startproc
+ 338               	/* prologue: function */
+ 339               	/* frame size = 0 */
+ 340               	/* stack size = 0 */
+ 341               	.L__stack_usage = 0
   81:src/gpio.c    ****     struct gpio_input* input;
+ 342               		.loc 1 81 5 view .LVU87
   82:src/gpio.c    ****     list_for_each_entry(input, &gpio_inputs, list)
- 299               		.loc 1 82 0
- 300 012a E091 0000 		lds r30,gpio_inputs+2
- 301 012e F091 0000 		lds r31,gpio_inputs+2+1
- 302               	.L33:
- 303               	.LVL35:
- 304               	.LBE17:
- 305               	.LBB18:
- 306               		.loc 1 82 0 is_stmt 0 discriminator 2
- 307 0132 3D97      		sbiw r30,13
- 308               	.LVL36:
- 309               	.LBE18:
- 310 0134 90E0      		ldi r25,hi8(gpio_inputs-13)
- 311 0136 E030      		cpi r30,lo8(gpio_inputs-13)
- 312 0138 F907      		cpc r31,r25
- 313 013a 01F0      		breq .L34
+ 343               		.loc 1 82 5 view .LVU88
+ 344               	.LBB17:
+ 345               		.loc 1 82 5 view .LVU89
+ 346               		.loc 1 82 5 view .LVU90
+ 347 0114 E091 0000 		lds r30,gpio_inputs+2
+ 348 0118 F091 0000 		lds r31,gpio_inputs+2+1
+ 349               	.L33:
+ 350               		.loc 1 82 5 is_stmt 0 view .LVU91
+ 351               	.LBE17:
+ 352               	.LBB18:
+ 353               		.loc 1 82 5 discriminator 2 view .LVU92
+ 354 011c 3D97      		sbiw r30,13
+ 355               	.LVL35:
+ 356               		.loc 1 82 5 discriminator 2 view .LVU93
+ 357               	.LBE18:
+ 358 011e 90E0      		ldi r25,hi8(gpio_inputs-13)
+ 359 0120 E030      		cpi r30,lo8(gpio_inputs-13)
+ 360 0122 F907      		cpc r31,r25
+ 361 0124 01F4      		brne .L25
   83:src/gpio.c    ****     {
   84:src/gpio.c    ****         if(pin == input->pin)
- 314               		.loc 1 84 0 is_stmt 1
- 315 013c 9081      		ld r25,Z
- 316 013e 9813      		cpse r25,r24
- 317 0140 00C0      		rjmp .L21
- 318 0142 DF01      		movw r26,r30
- 319 0144 1296      		adiw r26,2
- 320 0146 CF01      		movw r24,r30
- 321               	.LVL37:
- 322 0148 0B96      		adiw r24,11
- 323               	.L24:
- 324               	.LVL38:
- 325               	.LBB19:
   85:src/gpio.c    ****         {
   86:src/gpio.c    ****             uint8_t i = 0;
   87:src/gpio.c    ****             while(i < GPIO_DEBOUNCE_COUNT - 1)
   88:src/gpio.c    ****             {
   89:src/gpio.c    ****                 if(input->values[i] != input->values[i + 1])
- 326               		.loc 1 89 0
- 327 014a 3D91      		ld r19,X+
- 328               	.LVL39:
- 329 014c 2C91      		ld r18,X
- 330 014e 3217      		cp r19,r18
- 331 0150 01F0      		breq .L22
   90:src/gpio.c    ****                     return input->previous_state;
- 332               		.loc 1 90 0
- 333 0152 8485      		ldd r24,Z+12
- 334 0154 0895      		ret
- 335               	.L22:
- 336               	.LVL40:
-  87:src/gpio.c    ****             {
- 337               		.loc 1 87 0
- 338 0156 A817      		cp r26,r24
- 339 0158 B907      		cpc r27,r25
- 340 015a 01F4      		brne .L24
   91:src/gpio.c    ****                 i++;
   92:src/gpio.c    ****             }
   93:src/gpio.c    **** 
   94:src/gpio.c    ****             uint8_t state = input->pulled_up == false ? (input->values[0]) : !(input->values[0]);
- 341               		.loc 1 94 0
- 342 015c 8181      		ldd r24,Z+1
- 343 015e 9281      		ldd r25,Z+2
- 344 0160 8111      		cpse r24,__zero_reg__
- 345 0162 00C0      		rjmp .L25
- 346               		.loc 1 94 0 is_stmt 0 discriminator 1
- 347 0164 892F      		mov r24,r25
- 348 0166 00C0      		rjmp .L26
- 349               	.L25:
- 350               		.loc 1 94 0 discriminator 2
- 351 0168 81E0      		ldi r24,lo8(1)
- 352 016a 9111      		cpse r25,__zero_reg__
- 353 016c 80E0      		ldi r24,0
- 354               	.L26:
- 355               	.LVL41:
   95:src/gpio.c    ****             input->previous_state = state;
- 356               		.loc 1 95 0 is_stmt 1 discriminator 4
- 357 016e 8487      		std Z+12,r24
   96:src/gpio.c    **** 
   97:src/gpio.c    ****             return state;
- 358               		.loc 1 97 0 discriminator 4
- 359 0170 0895      		ret
- 360               	.LVL42:
- 361               	.L21:
- 362               	.LBE19:
- 363               	.LBB20:
-  82:src/gpio.c    ****     {
- 364               		.loc 1 82 0 discriminator 2
- 365 0172 0784      		ldd __tmp_reg__,Z+15
- 366 0174 F089      		ldd r31,Z+16
- 367 0176 E02D      		mov r30,__tmp_reg__
- 368               	.LVL43:
- 369 0178 00C0      		rjmp .L33
- 370               	.LVL44:
- 371               	.L34:
- 372               	.LBE20:
   98:src/gpio.c    ****         }
   99:src/gpio.c    ****     }
  100:src/gpio.c    **** 
  101:src/gpio.c    ****     return 1;
- 373               		.loc 1 101 0
- 374 017a 81E0      		ldi r24,lo8(1)
- 375               	.LVL45:
+ 362               		.loc 1 101 12 view .LVU94
+ 363 0126 81E0      		ldi r24,lo8(1)
+ 364               	.LVL36:
+ 365               	/* epilogue start */
  102:src/gpio.c    **** }
- 376               		.loc 1 102 0
- 377 017c 0895      		ret
- 378               		.cfi_endproc
- 379               	.LFE14:
- 381               	.global	gpio_debouncer
- 383               	gpio_debouncer:
- 384               	.LFB15:
+ 366               		.loc 1 102 1 view .LVU95
+ 367 0128 0895      		ret
+ 368               	.LVL37:
+ 369               	.L25:
+  84:src/gpio.c    ****         {
+ 370               		.loc 1 84 9 is_stmt 1 view .LVU96
+  84:src/gpio.c    ****         {
+ 371               		.loc 1 84 11 is_stmt 0 view .LVU97
+ 372 012a 9081      		ld r25,Z
+ 373 012c 9813      		cpse r25,r24
+ 374 012e 00C0      		rjmp .L19
+ 375 0130 DF01      		movw r26,r30
+ 376 0132 1296      		adiw r26,2
+ 377 0134 CF01      		movw r24,r30
+ 378               	.LVL38:
+  84:src/gpio.c    ****         {
+ 379               		.loc 1 84 11 view .LVU98
+ 380 0136 0B96      		adiw r24,11
+ 381               	.L22:
+ 382               	.LVL39:
+ 383               	.LBB19:
+  89:src/gpio.c    ****                     return input->previous_state;
+ 384               		.loc 1 89 17 is_stmt 1 view .LVU99
+  89:src/gpio.c    ****                     return input->previous_state;
+ 385               		.loc 1 89 33 is_stmt 0 view .LVU100
+ 386 0138 3D91      		ld r19,X+
+ 387               	.LVL40:
+  89:src/gpio.c    ****                     return input->previous_state;
+ 388               		.loc 1 89 19 view .LVU101
+ 389 013a 2C91      		ld r18,X
+ 390 013c 3217      		cp r19,r18
+ 391 013e 01F0      		breq .L20
+  90:src/gpio.c    ****                 i++;
+ 392               		.loc 1 90 21 is_stmt 1 view .LVU102
+  90:src/gpio.c    ****                 i++;
+ 393               		.loc 1 90 33 is_stmt 0 view .LVU103
+ 394 0140 8485      		ldd r24,Z+12
+ 395 0142 0895      		ret
+ 396               	.L20:
+  91:src/gpio.c    ****             }
+ 397               		.loc 1 91 17 is_stmt 1 view .LVU104
+ 398               	.LVL41:
+  87:src/gpio.c    ****             {
+ 399               		.loc 1 87 18 is_stmt 0 view .LVU105
+ 400 0144 A817      		cp r26,r24
+ 401 0146 B907      		cpc r27,r25
+ 402 0148 01F4      		brne .L22
+  94:src/gpio.c    ****             input->previous_state = state;
+ 403               		.loc 1 94 13 is_stmt 1 view .LVU106
+ 404 014a 8281      		ldd r24,Z+2
+  94:src/gpio.c    ****             input->previous_state = state;
+ 405               		.loc 1 94 21 is_stmt 0 view .LVU107
+ 406 014c 9181      		ldd r25,Z+1
+ 407 014e 9923      		tst r25
+ 408 0150 01F0      		breq .L23
+  94:src/gpio.c    ****             input->previous_state = state;
+ 409               		.loc 1 94 78 discriminator 2 view .LVU108
+ 410 0152 91E0      		ldi r25,lo8(1)
+ 411 0154 8111      		cpse r24,__zero_reg__
+ 412 0156 90E0      		ldi r25,0
+ 413               	.L24:
+  94:src/gpio.c    ****             input->previous_state = state;
+ 414               		.loc 1 94 21 discriminator 2 view .LVU109
+ 415 0158 892F      		mov r24,r25
+ 416               	.L23:
+ 417               	.LVL42:
+  95:src/gpio.c    **** 
+ 418               		.loc 1 95 13 is_stmt 1 discriminator 4 view .LVU110
+  95:src/gpio.c    **** 
+ 419               		.loc 1 95 35 is_stmt 0 discriminator 4 view .LVU111
+ 420 015a 8487      		std Z+12,r24
+  97:src/gpio.c    ****         }
+ 421               		.loc 1 97 13 is_stmt 1 discriminator 4 view .LVU112
+  97:src/gpio.c    ****         }
+ 422               		.loc 1 97 20 is_stmt 0 discriminator 4 view .LVU113
+ 423 015c 0895      		ret
+ 424               	.LVL43:
+ 425               	.L19:
+  97:src/gpio.c    ****         }
+ 426               		.loc 1 97 20 discriminator 4 view .LVU114
+ 427               	.LBE19:
+ 428               	.LBB20:
+  82:src/gpio.c    ****     {
+ 429               		.loc 1 82 5 is_stmt 1 discriminator 2 view .LVU115
+  82:src/gpio.c    ****     {
+ 430               		.loc 1 82 5 discriminator 2 view .LVU116
+ 431 015e 0784      		ldd __tmp_reg__,Z+15
+ 432 0160 F089      		ldd r31,Z+16
+ 433 0162 E02D      		mov r30,__tmp_reg__
+ 434               	.LVL44:
+  82:src/gpio.c    ****     {
+ 435               		.loc 1 82 5 is_stmt 0 discriminator 2 view .LVU117
+ 436 0164 00C0      		rjmp .L33
+ 437               	.LBE20:
+ 438               		.cfi_endproc
+ 439               	.LFE14:
+ 441               	.global	gpio_debouncer
+ 443               	gpio_debouncer:
+ 444               	.LFB15:
  103:src/gpio.c    **** 
  104:src/gpio.c    **** /*
  105:src/gpio.c    ****  * 	Function:    void gpio_debouncer(void)
  106:src/gpio.c    ****  * 	Description: debouncer function, used for triggering inputs smoothly
  107:src/gpio.c    ****  */
  108:src/gpio.c    **** void gpio_debouncer(void) {
- 385               		.loc 1 108 0
- 386               		.cfi_startproc
- 387               	/* prologue: function */
- 388               	/* frame size = 0 */
- 389               	/* stack size = 0 */
- 390               	.L__stack_usage = 0
- 391               	.LVL46:
- 392               	.LBB25:
+ 445               		.loc 1 108 27 is_stmt 1 view -0
+ 446               		.cfi_startproc
+ 447 0166 CF93      		push r28
+ 448               	.LCFI4:
+ 449               		.cfi_def_cfa_offset 3
+ 450               		.cfi_offset 28, -2
+ 451 0168 DF93      		push r29
+ 452               	.LCFI5:
+ 453               		.cfi_def_cfa_offset 4
+ 454               		.cfi_offset 29, -3
+ 455               	/* prologue: function */
+ 456               	/* frame size = 0 */
+ 457               	/* stack size = 2 */
+ 458               	.L__stack_usage = 2
  109:src/gpio.c    ****     static volatile uint8_t count = 0;
+ 459               		.loc 1 109 5 view .LVU119
  110:src/gpio.c    ****     struct gpio_input* input;
+ 460               		.loc 1 110 5 view .LVU120
  111:src/gpio.c    ****     list_for_each_entry(input, &gpio_inputs, list)
- 393               		.loc 1 111 0
- 394 017e E091 0000 		lds r30,gpio_inputs+2
- 395 0182 F091 0000 		lds r31,gpio_inputs+2+1
- 396               	.LVL47:
- 397               	.L39:
- 398               	.LBE25:
- 399               	.LBB26:
- 400               		.loc 1 111 0 is_stmt 0 discriminator 3
- 401 0186 3D97      		sbiw r30,13
- 402               	.LVL48:
- 403               	.LBE26:
- 404 0188 80E0      		ldi r24,hi8(gpio_inputs-13)
- 405 018a E030      		cpi r30,lo8(gpio_inputs-13)
- 406 018c F807      		cpc r31,r24
- 407 018e 01F0      		breq .L40
+ 461               		.loc 1 111 5 view .LVU121
+ 462               	.LBB25:
+ 463               		.loc 1 111 5 view .LVU122
+ 464               	.LVL45:
+ 465               		.loc 1 111 5 view .LVU123
+ 466 016a E091 0000 		lds r30,gpio_inputs+2
+ 467 016e F091 0000 		lds r31,gpio_inputs+2+1
+ 468               	.LVL46:
+ 469               	.L38:
+ 470               		.loc 1 111 5 is_stmt 0 view .LVU124
+ 471               	.LBE25:
+ 472               	.LBB26:
+ 473               		.loc 1 111 5 discriminator 3 view .LVU125
+ 474 0172 3D97      		sbiw r30,13
+ 475               	.LVL47:
+ 476               		.loc 1 111 5 discriminator 3 view .LVU126
+ 477               	.LBE26:
+ 478 0174 D0E0      		ldi r29,hi8(gpio_inputs-13)
+ 479 0176 E030      		cpi r30,lo8(gpio_inputs-13)
+ 480 0178 FD07      		cpc r31,r29
+ 481 017a 01F4      		brne .L36
  112:src/gpio.c    ****     {
  113:src/gpio.c    ****         input->values[count] = __gpio_read_pin(input->pin);
- 408               		.loc 1 113 0 is_stmt 1 discriminator 3
- 409 0190 3091 0000 		lds r19,count.2052
- 410 0194 2081      		ld r18,Z
- 411               	.LVL49:
- 412               	.LBB27:
- 413               	.LBB28:
-  71:src/gpio.c    **** 
- 414               		.loc 1 71 0 discriminator 3
- 415 0196 822F      		mov r24,r18
- 416 0198 8695      		lsr r24
- 417 019a 8695      		lsr r24
- 418 019c 8695      		lsr r24
- 419 019e 8F5F      		subi r24,lo8(-(1))
- 420               	.LVL50:
- 421 01a0 90E0      		ldi r25,0
- 422 01a2 0197      		sbiw r24,1
- 423               	.LVL51:
- 424 01a4 AC01      		movw r20,r24
- 425 01a6 440F      		lsl r20
- 426 01a8 551F      		rol r21
- 427 01aa DA01      		movw r26,r20
- 428 01ac A80F      		add r26,r24
- 429 01ae B91F      		adc r27,r25
- 430 01b0 9096      		adiw r26,32
- 431 01b2 8C91      		ld r24,X
- 432               	.LVL52:
- 433               	.LBE28:
- 434               	.LBE27:
- 435               		.loc 1 113 0 discriminator 3
- 436 01b4 DF01      		movw r26,r30
- 437 01b6 A30F      		add r26,r19
- 438 01b8 B11D      		adc r27,__zero_reg__
- 439 01ba 90E0      		ldi r25,0
- 440 01bc 2770      		andi r18,lo8(7)
- 441 01be 00C0      		rjmp 2f
- 442               		1:
- 443 01c0 9595      		asr r25
- 444 01c2 8795      		ror r24
- 445               		2:
- 446 01c4 2A95      		dec r18
- 447 01c6 02F4      		brpl 1b
- 448 01c8 8170      		andi r24,lo8(1)
- 449 01ca 1296      		adiw r26,2
- 450 01cc 8C93      		st X,r24
- 451               	.LBB29:
- 111:src/gpio.c    ****     {
- 452               		.loc 1 111 0 discriminator 3
- 453 01ce 0784      		ldd __tmp_reg__,Z+15
- 454 01d0 F089      		ldd r31,Z+16
- 455 01d2 E02D      		mov r30,__tmp_reg__
- 456               	.LVL53:
- 457 01d4 00C0      		rjmp .L39
- 458               	.LVL54:
- 459               	.L40:
- 460               	.LBE29:
  114:src/gpio.c    ****     }
  115:src/gpio.c    **** 
  116:src/gpio.c    ****     if(++count == GPIO_DEBOUNCE_COUNT)
- 461               		.loc 1 116 0
- 462 01d6 8091 0000 		lds r24,count.2052
- 463 01da 8F5F      		subi r24,lo8(-(1))
- 464 01dc 8093 0000 		sts count.2052,r24
- 465 01e0 8A30      		cpi r24,lo8(10)
- 466 01e2 01F4      		brne .L35
+ 482               		.loc 1 116 5 is_stmt 1 view .LVU127
+ 483               		.loc 1 116 8 is_stmt 0 view .LVU128
+ 484 017c 8091 0000 		lds r24,count.1994
+ 485 0180 8F5F      		subi r24,lo8(-(1))
+ 486               		.loc 1 116 7 view .LVU129
+ 487 0182 8093 0000 		sts count.1994,r24
+ 488 0186 8A30      		cpi r24,lo8(10)
+ 489 0188 01F4      		brne .L34
  117:src/gpio.c    ****         count = 0;
- 467               		.loc 1 117 0
- 468 01e4 1092 0000 		sts count.2052,__zero_reg__
- 469               	.L35:
- 470 01e8 0895      		ret
- 471               		.cfi_endproc
- 472               	.LFE15:
- 474               		.local	count.2052
- 475               		.comm	count.2052,1,1
- 476               	.global	gpio_inputs
- 477               		.data
- 480               	gpio_inputs:
- 481 0000 0000      		.word	gpio_inputs
- 482 0002 0000      		.word	gpio_inputs
- 483               		.text
- 484               	.Letext0:
- 485               		.file 3 "/usr/lib/avr/include/stdint.h"
- 486               		.file 4 "/usr/lib/avr/include/stdlib.h"
+ 490               		.loc 1 117 9 is_stmt 1 view .LVU130
+ 491               		.loc 1 117 15 is_stmt 0 view .LVU131
+ 492 018a 1092 0000 		sts count.1994,__zero_reg__
+ 493               	.L34:
+ 494               	/* epilogue start */
+ 118:src/gpio.c    **** 
+ 119:src/gpio.c    **** }...
+ 495               		.loc 1 119 1 view .LVU132
+ 496 018e DF91      		pop r29
+ 497 0190 CF91      		pop r28
+ 498 0192 0895      		ret
+ 499               	.L36:
+ 113:src/gpio.c    ****         input->values[count] = __gpio_read_pin(input->pin);
+ 500               		.loc 1 113 9 is_stmt 1 discriminator 3 view .LVU133
+ 113:src/gpio.c    ****         input->values[count] = __gpio_read_pin(input->pin);
+ 501               		.loc 1 113 32 is_stmt 0 discriminator 3 view .LVU134
+ 502 0194 2081      		ld r18,Z
+ 113:src/gpio.c    ****         input->values[count] = __gpio_read_pin(input->pin);
+ 503               		.loc 1 113 22 discriminator 3 view .LVU135
+ 504 0196 A091 0000 		lds r26,count.1994
+ 505               	.LVL48:
+ 506               	.LBB27:
+ 507               	.LBI27:
+  67:src/gpio.c    **** static uint8_t __gpio_read_pin(uint8_t pin) {
+ 508               		.loc 1 67 16 is_stmt 1 discriminator 3 view .LVU136
+ 509               	.LBB28:
+  68:src/gpio.c    ****     uint8_t port = 1 + pin / 8;
+ 510               		.loc 1 68 5 discriminator 3 view .LVU137
+  69:src/gpio.c    ****     pin = pin % 8;
+ 511               		.loc 1 69 5 discriminator 3 view .LVU138
+  71:src/gpio.c    **** 	uint8_t temp = (*((volatile uint8_t*)(0x20 + 3 * (port - 1))));
+ 512               		.loc 1 71 2 discriminator 3 view .LVU139
+  68:src/gpio.c    ****     uint8_t port = 1 + pin / 8;
+ 513               		.loc 1 68 22 is_stmt 0 discriminator 3 view .LVU140
+ 514 019a 822F      		mov r24,r18
+ 515 019c 8695      		lsr r24
+ 516 019e 8695      		lsr r24
+ 517 01a0 8695      		lsr r24
+  68:src/gpio.c    ****     uint8_t port = 1 + pin / 8;
+ 518               		.loc 1 68 13 discriminator 3 view .LVU141
+ 519 01a2 8F5F      		subi r24,lo8(-(1))
+ 520               	.LVL49:
+  71:src/gpio.c    **** 	uint8_t temp = (*((volatile uint8_t*)(0x20 + 3 * (port - 1))));
+ 521               		.loc 1 71 57 discriminator 3 view .LVU142
+ 522 01a4 8150      		subi r24,1
+ 523 01a6 990B      		sbc r25,r25
+ 524               	.LVL50:
+  71:src/gpio.c    **** 	uint8_t temp = (*((volatile uint8_t*)(0x20 + 3 * (port - 1))));
+ 525               		.loc 1 71 49 discriminator 3 view .LVU143
+ 526 01a8 AC01      		movw r20,r24
+ 527 01aa 440F      		lsl r20
+ 528 01ac 551F      		rol r21
+ 529 01ae 840F      		add r24,r20
+ 530 01b0 951F      		adc r25,r21
+  71:src/gpio.c    **** 	uint8_t temp = (*((volatile uint8_t*)(0x20 + 3 * (port - 1))));
+ 531               		.loc 1 71 10 discriminator 3 view .LVU144
+ 532 01b2 EC01      		movw r28,r24
+ 533 01b4 88A1      		ldd r24,Y+32
+ 534               	.LVL51:
+  73:src/gpio.c    ****     return ((temp >> pin) & 0x01);
+ 535               		.loc 1 73 5 is_stmt 1 discriminator 3 view .LVU145
+  73:src/gpio.c    ****     return ((temp >> pin) & 0x01);
+ 536               		.loc 1 73 5 is_stmt 0 discriminator 3 view .LVU146
+ 537               	.LBE28:
+ 538               	.LBE27:
+ 113:src/gpio.c    ****         input->values[count] = __gpio_read_pin(input->pin);
+ 539               		.loc 1 113 30 discriminator 3 view .LVU147
+ 540 01b6 AE0F      		add r26,r30
+ 541 01b8 BF2F      		mov r27,r31
+ 542 01ba B11D      		adc r27,__zero_reg__
+ 543               	.LBB30:
+ 544               	.LBB29:
+  73:src/gpio.c    ****     return ((temp >> pin) & 0x01);
+ 545               		.loc 1 73 19 discriminator 3 view .LVU148
+ 546 01bc 90E0      		ldi r25,0
+  69:src/gpio.c    ****     pin = pin % 8;
+ 547               		.loc 1 69 9 discriminator 3 view .LVU149
+ 548 01be 2770      		andi r18,lo8(7)
+  73:src/gpio.c    ****     return ((temp >> pin) & 0x01);
+ 549               		.loc 1 73 19 discriminator 3 view .LVU150
+ 550 01c0 00C0      		rjmp 2f
+ 551               		1:
+ 552 01c2 9595      		asr r25
+ 553 01c4 8795      		ror r24
+ 554               		2:
+ 555 01c6 2A95      		dec r18
+ 556 01c8 02F4      		brpl 1b
+  73:src/gpio.c    ****     return ((temp >> pin) & 0x01);
+ 557               		.loc 1 73 27 discriminator 3 view .LVU151
+ 558 01ca 8170      		andi r24,lo8(1)
+ 559               	.LBE29:
+ 560               	.LBE30:
+ 113:src/gpio.c    ****         input->values[count] = __gpio_read_pin(input->pin);
+ 561               		.loc 1 113 30 discriminator 3 view .LVU152
+ 562 01cc 1296      		adiw r26,2
+ 563 01ce 8C93      		st X,r24
+ 564               	.LBB31:
+ 111:src/gpio.c    ****     list_for_each_entry(input, &gpio_inputs, list)
+ 565               		.loc 1 111 5 is_stmt 1 discriminator 3 view .LVU153
+ 566               	.LVL52:
+ 111:src/gpio.c    ****     list_for_each_entry(input, &gpio_inputs, list)
+ 567               		.loc 1 111 5 discriminator 3 view .LVU154
+ 568 01d0 0784      		ldd __tmp_reg__,Z+15
+ 569 01d2 F089      		ldd r31,Z+16
+ 570 01d4 E02D      		mov r30,__tmp_reg__
+ 571               	.LVL53:
+ 111:src/gpio.c    ****     list_for_each_entry(input, &gpio_inputs, list)
+ 572               		.loc 1 111 5 is_stmt 0 discriminator 3 view .LVU155
+ 573 01d6 00C0      		rjmp .L38
+ 574               	.LBE31:
+ 575               		.cfi_endproc
+ 576               	.LFE15:
+ 578               		.local	count.1994
+ 579               		.comm	count.1994,1,1
+ 580               	.global	gpio_inputs
+ 581               		.data
+ 584               	gpio_inputs:
+ 585 0000 0000      		.word	gpio_inputs
+ 586 0002 0000      		.word	gpio_inputs
+ 587               		.text
+ 588               	.Letext0:
+ 589               		.file 3 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdint.h"
+ 590               		.file 4 "/usr/local/Cellar/avr-gcc/8.3.0/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
+ 591               		.file 5 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdio.h"
+ 592               		.file 6 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdlib.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 gpio.c
-     /tmp/ccah6gX3.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccah6gX3.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccah6gX3.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccah6gX3.s:5      *ABS*:000000000000003b __RAMPZ__
-     /tmp/ccah6gX3.s:6      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccah6gX3.s:7      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccah6gX3.s:13     .text:0000000000000000 gpio_register_pin
-     /tmp/ccah6gX3.s:480    .data:0000000000000000 gpio_inputs
-     /tmp/ccah6gX3.s:211    .text:00000000000000d0 gpio_write_pin
-     /tmp/ccah6gX3.s:289    .text:000000000000012a gpio_read_pin
-     /tmp/ccah6gX3.s:383    .text:000000000000017e gpio_debouncer
-                             .bss:0000000000000000 count.2052
+/var/tmp//ccGBukle.s:2      *ABS*:000000000000003e __SP_H__
+/var/tmp//ccGBukle.s:3      *ABS*:000000000000003d __SP_L__
+/var/tmp//ccGBukle.s:4      *ABS*:000000000000003f __SREG__
+/var/tmp//ccGBukle.s:5      *ABS*:000000000000003b __RAMPZ__
+/var/tmp//ccGBukle.s:6      *ABS*:0000000000000000 __tmp_reg__
+/var/tmp//ccGBukle.s:7      *ABS*:0000000000000001 __zero_reg__
+/var/tmp//ccGBukle.s:13     .text:0000000000000000 gpio_register_pin
+/var/tmp//ccGBukle.s:584    .data:0000000000000000 gpio_inputs
+/var/tmp//ccGBukle.s:235    .text:00000000000000b6 gpio_write_pin
+/var/tmp//ccGBukle.s:333    .text:0000000000000114 gpio_read_pin
+/var/tmp//ccGBukle.s:443    .text:0000000000000166 gpio_debouncer
+                             .bss:0000000000000000 count.1994
 
 UNDEFINED SYMBOLS
 malloc
