@@ -22,15 +22,15 @@ unsigned char init_stepper(void) {
     
     gpio_register_pin(PIN_STEPPER1_DIR, GPIO_DIRECTION_OUTPUT, false);
     gpio_register_pin(PIN_STEPPER1_STEP, GPIO_DIRECTION_OUTPUT, false);
-    gpio_register_pin(PIN_STEPPER1_EN, GPIO_DIRECTION_OUTPUT, false);
+ //   gpio_register_pin(PIN_STEPPER1_EN, GPIO_DIRECTION_OUTPUT, false);
 
     gpio_register_pin(PIN_STEPPER2_DIR, GPIO_DIRECTION_OUTPUT, false);
     gpio_register_pin(PIN_STEPPER2_STEP, GPIO_DIRECTION_OUTPUT, false);
-    gpio_register_pin(PIN_STEPPER2_EN, GPIO_DIRECTION_OUTPUT, false);
+   // gpio_register_pin(PIN_STEPPER2_EN, GPIO_DIRECTION_OUTPUT, false);
 
-    // disable drivers
-    /*enable_stepper(HIGH, 1);
-    enable_stepper(HIGH, 2);*/
+    // enable drivers
+   // enable_stepper(LOW, 1);
+    //enable_stepper(LOW, 2);
 
     return 1;
 
@@ -67,15 +67,17 @@ void move_stepper(unsigned int steps, unsigned char dir, uint8_t num) {
     60000/(RPM*STEP) = x, where x is the time between each step
 
     */
-    int time_calculate = 60000 / (stepper_rpm[num-1] * steps);
+    //int time_calculate = 60000 / (stepper_rpm[num-1] * steps);
 
     gpio_write_pin(rtn_dir(num), dir);
 
     for(unsigned int i=0; i<steps; i++) {
         gpio_write_pin(rtn_step(num), ON);
-        delay(time_calculate/2);
+        _delay_ms(1);
+        //delay(time_calculate/2);
         gpio_write_pin(rtn_step(num), OFF);
-        delay(time_calculate/2);
+        _delay_ms(1);
+        //delay(time_calculate/2);
     }
 } // end of move_stepper()
 

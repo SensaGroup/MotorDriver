@@ -67,14 +67,6 @@ void system_init(void) {
     // timer set to 1000hz
     timer_init(1000);
 
-    // CAN Bus init
-    //CAN_Init();
-	//if( CAN_InitRxMob(MOTOR_CONTROL_CAN_ID) == NOTINITED ) {
-      //  debug_printf("ERROR! void system_init(void) - CAN Rx Mob not inited... halting system");
-        //while(1) {
-          //  delay(100);
-        //}
-    //}
 
     // Stepper Init
     init_stepper();

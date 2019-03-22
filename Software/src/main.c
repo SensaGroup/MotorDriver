@@ -1,3 +1,7 @@
+#ifndef F_CPU
+	#define F_CPU 16000000
+#endif
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -5,6 +9,7 @@
 #include <string.h>
 #include "system.h"
 #include "can.h"
+#include "stepper.h"
 
 canMsg message;
 canMsg snd_message;
@@ -53,7 +58,6 @@ int main(void) {
 				else if(second_byte == 1) {
 
 					gpio_write_pin(PIN_LED2, true);
-					delay(500);
 
 					memcpy(snd_message.data, dummy_data, 8);
 					snd_message.msgIde = MAIN_BOARD_CAN_ID;
@@ -153,8 +157,8 @@ int main(void) {
 
 					int _rpm; uint8_t num;
 
-					_rpm = (message.data[2] << 8) | message.data[3];
-					num = (uint8_t)(message.data[4]);
+					_rpm 	= (message.data[2] << 8) | message.data[3];
+					num 	= (uint8_t)(message.data[4]);
 
 					set_rpm_stepper(_rpm, num);
 
@@ -167,9 +171,9 @@ int main(void) {
 
 					int steps; unsigned char dir; uint8_t num;
 
-					steps = (message.data[2] << 8) | message.data[3];
-					dir = message.data[4];
-					num = (uint8_t)(message.data[5]);
+					steps 	= (message.data[2] << 8) | message.data[3];
+					dir 	= message.data[4];
+					num 	= (uint8_t)(message.data[5]);
 
 					move_stepper(steps, dir, num);
 

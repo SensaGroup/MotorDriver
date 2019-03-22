@@ -54,93 +54,81 @@
   31 000e 81E1      		ldi r24,lo8(17)
   32 0010 0E94 0000 		call gpio_register_pin
   33               	.LVL1:
-  25:src/stepper.c ****     gpio_register_pin(PIN_STEPPER1_EN, GPIO_DIRECTION_OUTPUT, false);
-  34               		.loc 1 25 5 view .LVU3
-  35 0014 40E0      		ldi r20,0
-  36 0016 61E0      		ldi r22,lo8(1)
-  37 0018 82E1      		ldi r24,lo8(18)
-  38 001a 0E94 0000 		call gpio_register_pin
-  39               	.LVL2:
+  25:src/stepper.c ****  //   gpio_register_pin(PIN_STEPPER1_EN, GPIO_DIRECTION_OUTPUT, false);
   26:src/stepper.c **** 
   27:src/stepper.c ****     gpio_register_pin(PIN_STEPPER2_DIR, GPIO_DIRECTION_OUTPUT, false);
-  40               		.loc 1 27 5 view .LVU4
+  34               		.loc 1 27 5 view .LVU3
+  35 0014 40E0      		ldi r20,0
+  36 0016 61E0      		ldi r22,lo8(1)
+  37 0018 83E1      		ldi r24,lo8(19)
+  38 001a 0E94 0000 		call gpio_register_pin
+  39               	.LVL2:
+  28:src/stepper.c ****     gpio_register_pin(PIN_STEPPER2_STEP, GPIO_DIRECTION_OUTPUT, false);
+  40               		.loc 1 28 5 view .LVU4
   41 001e 40E0      		ldi r20,0
   42 0020 61E0      		ldi r22,lo8(1)
-  43 0022 83E1      		ldi r24,lo8(19)
+  43 0022 84E1      		ldi r24,lo8(20)
   44 0024 0E94 0000 		call gpio_register_pin
   45               	.LVL3:
-  28:src/stepper.c ****     gpio_register_pin(PIN_STEPPER2_STEP, GPIO_DIRECTION_OUTPUT, false);
-  46               		.loc 1 28 5 view .LVU5
-  47 0028 40E0      		ldi r20,0
-  48 002a 61E0      		ldi r22,lo8(1)
-  49 002c 84E1      		ldi r24,lo8(20)
-  50 002e 0E94 0000 		call gpio_register_pin
-  51               	.LVL4:
-  29:src/stepper.c ****     gpio_register_pin(PIN_STEPPER2_EN, GPIO_DIRECTION_OUTPUT, false);
-  52               		.loc 1 29 5 view .LVU6
-  53 0032 40E0      		ldi r20,0
-  54 0034 61E0      		ldi r22,lo8(1)
-  55 0036 85E1      		ldi r24,lo8(21)
-  56 0038 0E94 0000 		call gpio_register_pin
-  57               	.LVL5:
+  29:src/stepper.c ****    // gpio_register_pin(PIN_STEPPER2_EN, GPIO_DIRECTION_OUTPUT, false);
   30:src/stepper.c **** 
-  31:src/stepper.c ****     // disable drivers
-  32:src/stepper.c ****     /*enable_stepper(HIGH, 1);
-  33:src/stepper.c ****     enable_stepper(HIGH, 2);*/
+  31:src/stepper.c ****     // enable drivers
+  32:src/stepper.c ****    // enable_stepper(LOW, 1);
+  33:src/stepper.c ****     //enable_stepper(LOW, 2);
   34:src/stepper.c **** 
   35:src/stepper.c ****     return 1;
-  58               		.loc 1 35 5 view .LVU7
+  46               		.loc 1 35 5 view .LVU5
   36:src/stepper.c **** 
   37:src/stepper.c **** } // end of init_stepper()
-  59               		.loc 1 37 1 is_stmt 0 view .LVU8
-  60 003c 81E0      		ldi r24,lo8(1)
-  61               	/* epilogue start */
-  62 003e 0895      		ret
-  63               		.cfi_endproc
-  64               	.LFE22:
-  66               	.global	enable_stepper
-  68               	enable_stepper:
-  69               	.LVL6:
-  70               	.LFB23:
+  47               		.loc 1 37 1 is_stmt 0 view .LVU6
+  48 0028 81E0      		ldi r24,lo8(1)
+  49               	/* epilogue start */
+  50 002a 0895      		ret
+  51               		.cfi_endproc
+  52               	.LFE22:
+  54               	.global	enable_stepper
+  56               	enable_stepper:
+  57               	.LVL4:
+  58               	.LFB23:
   38:src/stepper.c **** 
   39:src/stepper.c **** /*
   40:src/stepper.c ****  *  Function:       void enable_stepper(uint8_t state, uint8_t num)
   41:src/stepper.c ****  *  Description:    enable or disable the stepper driver
   42:src/stepper.c ****  */
   43:src/stepper.c **** void enable_stepper(uint8_t state, uint8_t num) {
-  71               		.loc 1 43 49 is_stmt 1 view -0
-  72               		.cfi_startproc
-  73               	/* prologue: function */
-  74               	/* frame size = 0 */
-  75               	/* stack size = 0 */
-  76               	.L__stack_usage = 0
+  59               		.loc 1 43 49 is_stmt 1 view -0
+  60               		.cfi_startproc
+  61               	/* prologue: function */
+  62               	/* frame size = 0 */
+  63               	/* stack size = 0 */
+  64               	.L__stack_usage = 0
   44:src/stepper.c **** 
   45:src/stepper.c ****     gpio_write_pin(rtn_en(num), state);
-  77               		.loc 1 45 5 view .LVU10
-  78 0040 91E0      		ldi r25,lo8(1)
-  79 0042 8111      		cpse r24,__zero_reg__
-  80 0044 00C0      		rjmp .L3
-  81 0046 90E0      		ldi r25,0
-  82               	.L3:
-  83 0048 85E1      		ldi r24,lo8(21)
-  84               	.LVL7:
-  85               		.loc 1 45 5 is_stmt 0 view .LVU11
-  86 004a 6130      		cpi r22,lo8(1)
-  87 004c 01F4      		brne .L4
-  88 004e 82E1      		ldi r24,lo8(18)
-  89               	.L4:
-  90               		.loc 1 45 5 discriminator 4 view .LVU12
-  91 0050 692F      		mov r22,r25
-  92               	.LVL8:
-  93               		.loc 1 45 5 discriminator 4 view .LVU13
-  94 0052 0C94 0000 		jmp gpio_write_pin
-  95               	.LVL9:
-  96               		.cfi_endproc
-  97               	.LFE23:
-  99               	.global	set_rpm_stepper
- 101               	set_rpm_stepper:
- 102               	.LVL10:
- 103               	.LFB24:
+  65               		.loc 1 45 5 view .LVU8
+  66 002c 91E0      		ldi r25,lo8(1)
+  67 002e 8111      		cpse r24,__zero_reg__
+  68 0030 00C0      		rjmp .L3
+  69 0032 90E0      		ldi r25,0
+  70               	.L3:
+  71 0034 85E1      		ldi r24,lo8(21)
+  72               	.LVL5:
+  73               		.loc 1 45 5 is_stmt 0 view .LVU9
+  74 0036 6130      		cpi r22,lo8(1)
+  75 0038 01F4      		brne .L4
+  76 003a 82E1      		ldi r24,lo8(18)
+  77               	.L4:
+  78               		.loc 1 45 5 discriminator 4 view .LVU10
+  79 003c 692F      		mov r22,r25
+  80               	.LVL6:
+  81               		.loc 1 45 5 discriminator 4 view .LVU11
+  82 003e 0C94 0000 		jmp gpio_write_pin
+  83               	.LVL7:
+  84               		.cfi_endproc
+  85               	.LFE23:
+  87               	.global	set_rpm_stepper
+  89               	set_rpm_stepper:
+  90               	.LVL8:
+  91               	.LFB24:
   46:src/stepper.c **** 
   47:src/stepper.c **** } // end of enable_stepper()
   48:src/stepper.c **** 
@@ -149,283 +137,412 @@
   51:src/stepper.c ****  * Description:     set the rpm of the stepper
   52:src/stepper.c ****  */
   53:src/stepper.c **** void set_rpm_stepper(int rpm, uint8_t num) {
- 104               		.loc 1 53 44 is_stmt 1 view -0
- 105               		.cfi_startproc
- 106               	/* prologue: function */
- 107               	/* frame size = 0 */
- 108               	/* stack size = 0 */
- 109               	.L__stack_usage = 0
+  92               		.loc 1 53 44 is_stmt 1 view -0
+  93               		.cfi_startproc
+  94               	/* prologue: function */
+  95               	/* frame size = 0 */
+  96               	/* stack size = 0 */
+  97               	.L__stack_usage = 0
   54:src/stepper.c **** 
   55:src/stepper.c ****     stepper_rpm[num-1] = rpm;
- 110               		.loc 1 55 5 view .LVU15
- 111               		.loc 1 55 24 is_stmt 0 view .LVU16
- 112 0056 262F      		mov r18,r22
- 113 0058 2150      		subi r18,1
- 114 005a 330B      		sbc r19,r19
- 115 005c F901      		movw r30,r18
- 116 005e EE0F      		lsl r30
- 117 0060 FF1F      		rol r31
- 118 0062 E050      		subi r30,lo8(-(stepper_rpm))
- 119 0064 F040      		sbci r31,hi8(-(stepper_rpm))
- 120 0066 9183      		std Z+1,r25
- 121 0068 8083      		st Z,r24
- 122               	/* epilogue start */
+  98               		.loc 1 55 5 view .LVU13
+  99               	/* epilogue start */
   56:src/stepper.c **** 
   57:src/stepper.c **** } // end of set_rpm_stepper()
- 123               		.loc 1 57 1 view .LVU17
- 124 006a 0895      		ret
- 125               		.cfi_endproc
- 126               	.LFE24:
- 128               	.global	move_stepper
- 130               	move_stepper:
- 131               	.LVL11:
- 132               	.LFB25:
+ 100               		.loc 1 57 1 is_stmt 0 view .LVU14
+ 101 0042 0895      		ret
+ 102               		.cfi_endproc
+ 103               	.LFE24:
+ 105               	.global	move_stepper
+ 107               	move_stepper:
+ 108               	.LVL9:
+ 109               	.LFB25:
   58:src/stepper.c **** 
   59:src/stepper.c **** /*
   60:src/stepper.c ****  * Function:        void move_stepper(unsigned int steps, unsigned char dir, uint8_t num)
   61:src/stepper.c ****  * Description:     move the stepper for steps at a certain direction 
   62:src/stepper.c ****  */
   63:src/stepper.c **** void move_stepper(unsigned int steps, unsigned char dir, uint8_t num) {
- 133               		.loc 1 63 71 is_stmt 1 view -0
- 134               		.cfi_startproc
- 135               		.loc 1 63 71 is_stmt 0 view .LVU19
- 136 006c 8F92      		push r8
- 137               	.LCFI0:
- 138               		.cfi_def_cfa_offset 3
- 139               		.cfi_offset 8, -2
- 140 006e 9F92      		push r9
- 141               	.LCFI1:
- 142               		.cfi_def_cfa_offset 4
- 143               		.cfi_offset 9, -3
- 144 0070 AF92      		push r10
- 145               	.LCFI2:
- 146               		.cfi_def_cfa_offset 5
- 147               		.cfi_offset 10, -4
- 148 0072 BF92      		push r11
- 149               	.LCFI3:
- 150               		.cfi_def_cfa_offset 6
- 151               		.cfi_offset 11, -5
- 152 0074 DF92      		push r13
- 153               	.LCFI4:
- 154               		.cfi_def_cfa_offset 7
- 155               		.cfi_offset 13, -6
- 156 0076 EF92      		push r14
- 157               	.LCFI5:
- 158               		.cfi_def_cfa_offset 8
- 159               		.cfi_offset 14, -7
- 160 0078 FF92      		push r15
- 161               	.LCFI6:
- 162               		.cfi_def_cfa_offset 9
- 163               		.cfi_offset 15, -8
- 164 007a 0F93      		push r16
- 165               	.LCFI7:
- 166               		.cfi_def_cfa_offset 10
- 167               		.cfi_offset 16, -9
- 168 007c 1F93      		push r17
- 169               	.LCFI8:
- 170               		.cfi_def_cfa_offset 11
- 171               		.cfi_offset 17, -10
- 172 007e CF93      		push r28
- 173               	.LCFI9:
- 174               		.cfi_def_cfa_offset 12
- 175               		.cfi_offset 28, -11
- 176 0080 DF93      		push r29
- 177               	.LCFI10:
- 178               		.cfi_def_cfa_offset 13
- 179               		.cfi_offset 29, -12
- 180               	/* prologue: function */
- 181               	/* frame size = 0 */
- 182               	/* stack size = 11 */
- 183               	.L__stack_usage = 11
- 184 0082 8C01      		movw r16,r24
- 185 0084 D62F      		mov r29,r22
- 186 0086 C42F      		mov r28,r20
+ 110               		.loc 1 63 71 is_stmt 1 view -0
+ 111               		.cfi_startproc
+ 112               		.loc 1 63 71 is_stmt 0 view .LVU16
+ 113 0044 EF92      		push r14
+ 114               	.LCFI0:
+ 115               		.cfi_def_cfa_offset 3
+ 116               		.cfi_offset 14, -2
+ 117 0046 FF92      		push r15
+ 118               	.LCFI1:
+ 119               		.cfi_def_cfa_offset 4
+ 120               		.cfi_offset 15, -3
+ 121 0048 1F93      		push r17
+ 122               	.LCFI2:
+ 123               		.cfi_def_cfa_offset 5
+ 124               		.cfi_offset 17, -4
+ 125 004a CF93      		push r28
+ 126               	.LCFI3:
+ 127               		.cfi_def_cfa_offset 6
+ 128               		.cfi_offset 28, -5
+ 129 004c DF93      		push r29
+ 130               	.LCFI4:
+ 131               		.cfi_def_cfa_offset 7
+ 132               		.cfi_offset 29, -6
+ 133               	/* prologue: function */
+ 134               	/* frame size = 0 */
+ 135               	/* stack size = 5 */
+ 136               	.L__stack_usage = 5
+ 137 004e 7C01      		movw r14,r24
+ 138 0050 C42F      		mov r28,r20
   64:src/stepper.c ****     /*
   65:src/stepper.c **** 
   66:src/stepper.c ****     Delay between each step for the rpm and step:
   67:src/stepper.c ****     60000/(RPM*STEP) = x, where x is the time between each step
   68:src/stepper.c **** 
   69:src/stepper.c ****     */
-  70:src/stepper.c ****     int time_calculate = 60000 / (stepper_rpm[num-1] * steps);
- 187               		.loc 1 70 5 is_stmt 1 view .LVU20
- 188               		.loc 1 70 46 is_stmt 0 view .LVU21
- 189 0088 842F      		mov r24,r20
- 190               	.LVL12:
- 191               		.loc 1 70 46 view .LVU22
- 192 008a 8150      		subi r24,1
- 193 008c 990B      		sbc r25,r25
- 194 008e FC01      		movw r30,r24
- 195 0090 EE0F      		lsl r30
- 196 0092 FF1F      		rol r31
- 197 0094 E050      		subi r30,lo8(-(stepper_rpm))
- 198 0096 F040      		sbci r31,hi8(-(stepper_rpm))
- 199               		.loc 1 70 54 view .LVU23
- 200 0098 8081      		ld r24,Z
- 201 009a 9181      		ldd r25,Z+1
- 202 009c 089F      		mul r16,r24
- 203 009e 9001      		movw r18,r0
- 204 00a0 099F      		mul r16,r25
- 205 00a2 300D      		add r19,r0
- 206 00a4 189F      		mul r17,r24
- 207 00a6 300D      		add r19,r0
- 208 00a8 1124      		clr r1
- 209 00aa 50E0      		ldi r21,0
- 210 00ac 40E0      		ldi r20,0
- 211               	.LVL13:
- 212               		.loc 1 70 32 view .LVU24
- 213 00ae 60E6      		ldi r22,lo8(96)
- 214 00b0 7AEE      		ldi r23,lo8(-22)
- 215 00b2 80E0      		ldi r24,0
- 216 00b4 90E0      		ldi r25,0
- 217               	.LVL14:
- 218               		.loc 1 70 32 view .LVU25
- 219 00b6 0E94 0000 		call __divmodsi4
- 220 00ba 4901      		movw r8,r18
- 221               	.LVL15:
+  70:src/stepper.c ****     //int time_calculate = 60000 / (stepper_rpm[num-1] * steps);
   71:src/stepper.c **** 
   72:src/stepper.c ****     gpio_write_pin(rtn_dir(num), dir);
- 222               		.loc 1 72 5 is_stmt 1 view .LVU26
- 223 00bc 61E0      		ldi r22,lo8(1)
- 224 00be D111      		cpse r29,__zero_reg__
- 225 00c0 00C0      		rjmp .L8
- 226 00c2 60E0      		ldi r22,0
- 227               	.L8:
- 228 00c4 83E1      		ldi r24,lo8(19)
- 229 00c6 C130      		cpi r28,lo8(1)
- 230 00c8 01F4      		brne .L9
- 231 00ca 80E1      		ldi r24,lo8(16)
- 232               	.L9:
- 233               		.loc 1 72 5 is_stmt 0 discriminator 4 view .LVU27
- 234 00cc 0E94 0000 		call gpio_write_pin
- 235               	.LVL16:
+ 139               		.loc 1 72 5 is_stmt 1 view .LVU17
+ 140 0052 91E0      		ldi r25,lo8(1)
+ 141 0054 6111      		cpse r22,__zero_reg__
+ 142 0056 00C0      		rjmp .L8
+ 143 0058 90E0      		ldi r25,0
+ 144               	.L8:
+ 145 005a 83E1      		ldi r24,lo8(19)
+ 146               	.LVL10:
+ 147               		.loc 1 72 5 is_stmt 0 view .LVU18
+ 148 005c C130      		cpi r28,lo8(1)
+ 149 005e 01F4      		brne .L9
+ 150 0060 80E1      		ldi r24,lo8(16)
+ 151               	.L9:
+ 152               		.loc 1 72 5 discriminator 4 view .LVU19
+ 153 0062 692F      		mov r22,r25
+ 154               	.LVL11:
+ 155               		.loc 1 72 5 discriminator 4 view .LVU20
+ 156 0064 0E94 0000 		call gpio_write_pin
+ 157               	.LVL12:
   73:src/stepper.c **** 
   74:src/stepper.c ****     for(unsigned int i=0; i<steps; i++) {
- 236               		.loc 1 74 5 is_stmt 1 discriminator 4 view .LVU28
- 237               	.LBB2:
- 238               		.loc 1 74 9 discriminator 4 view .LVU29
- 239               		.loc 1 74 9 is_stmt 0 discriminator 4 view .LVU30
- 240 00d0 21E1      		ldi r18,lo8(17)
- 241 00d2 D22E      		mov r13,r18
- 242 00d4 C130      		cpi r28,lo8(1)
- 243 00d6 01F0      		breq .L11
- 244 00d8 94E1      		ldi r25,lo8(20)
- 245 00da D92E      		mov r13,r25
- 246               	.L11:
+ 158               		.loc 1 74 5 is_stmt 1 discriminator 4 view .LVU21
+ 159               	.LBB7:
+ 160               		.loc 1 74 9 discriminator 4 view .LVU22
+ 161               		.loc 1 74 9 is_stmt 0 discriminator 4 view .LVU23
+ 162 0068 11E1      		ldi r17,lo8(17)
+ 163 006a C130      		cpi r28,lo8(1)
+ 164 006c 01F0      		breq .L11
+ 165 006e 14E1      		ldi r17,lo8(20)
+ 166               	.L11:
+ 167               		.loc 1 74 22 discriminator 4 view .LVU24
+ 168 0070 D0E0      		ldi r29,0
+ 169 0072 C0E0      		ldi r28,0
+ 170               	.LVL13:
+ 171               	.L12:
+ 172               		.loc 1 74 5 discriminator 2 view .LVU25
+ 173 0074 CE15      		cp r28,r14
+ 174 0076 DF05      		cpc r29,r15
+ 175 0078 01F4      		brne .L13
+ 176               	/* epilogue start */
+ 177               	.LBE7:
   75:src/stepper.c ****         gpio_write_pin(rtn_step(num), ON);
-  76:src/stepper.c ****         delay(time_calculate/2);
- 247               		.loc 1 76 9 discriminator 4 view .LVU31
- 248 00dc E401      		movw r28,r8
- 249               	.LVL17:
- 250               		.loc 1 76 9 discriminator 4 view .LVU32
- 251 00de 97FC      		sbrc r9,7
- 252 00e0 2196      		adiw r28,1
- 253               	.L12:
- 254 00e2 D595      		asr r29
- 255 00e4 C795      		ror r28
+  76:src/stepper.c ****         _delay_ms(1);
+  77:src/stepper.c ****         //delay(time_calculate/2);
+  78:src/stepper.c ****         gpio_write_pin(rtn_step(num), OFF);
+  79:src/stepper.c ****         _delay_ms(1);
+  80:src/stepper.c ****         //delay(time_calculate/2);
+  81:src/stepper.c ****     }
+  82:src/stepper.c **** } // end of move_stepper()
+ 178               		.loc 1 82 1 view .LVU26
+ 179 007a DF91      		pop r29
+ 180 007c CF91      		pop r28
+ 181               	.LVL14:
+ 182               		.loc 1 82 1 view .LVU27
+ 183 007e 1F91      		pop r17
+ 184 0080 FF90      		pop r15
+ 185 0082 EF90      		pop r14
+ 186               	.LVL15:
+ 187               		.loc 1 82 1 view .LVU28
+ 188 0084 0895      		ret
+ 189               	.LVL16:
+ 190               	.L13:
+ 191               	.LBB12:
+  75:src/stepper.c ****         gpio_write_pin(rtn_step(num), ON);
+ 192               		.loc 1 75 9 is_stmt 1 discriminator 4 view .LVU29
+ 193 0086 61E0      		ldi r22,lo8(1)
+ 194 0088 812F      		mov r24,r17
+ 195 008a 0E94 0000 		call gpio_write_pin
+ 196               	.LVL17:
+  76:src/stepper.c ****         //delay(time_calculate/2);
+ 197               		.loc 1 76 9 discriminator 4 view .LVU30
+ 198               	.LBB8:
+ 199               	.LBI8:
+ 200               		.file 2 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h"
+   1:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+   6:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+   9:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  12:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      distribution.
+  16:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  17:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  21:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  33:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /* $Id: delay.h.in 2506 2016-02-08 10:05:45Z joerg_wunsch $ */
+  34:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  35:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  38:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #ifndef __DOXYGEN__
+  39:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #  ifndef __HAS_DELAY_CYCLES
+  40:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #    define __HAS_DELAY_CYCLES 1
+  41:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #  endif
+  42:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #endif  /* __DOXYGEN__ */
+  43:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  44:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #include <inttypes.h>
+  45:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  46:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #include <math.h>
+  47:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  48:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /** \file */
+  49:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  50:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \code
+  51:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  52:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  53:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     #include <util/delay.h>
+  54:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \endcode
+  55:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  56:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  57:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  58:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  59:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     used.
+  60:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  61:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  62:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  63:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  64:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  65:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  66:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  67:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  68:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  69:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  70:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  71:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  72:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  73:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  74:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  75:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  76:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  77:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     routines linked into the application.
+  78:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  79:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  80:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  81:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  82:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  83:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** */
+  84:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  85:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  86:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
+  87:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
+  88:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #endif
+  89:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  90:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #ifndef F_CPU
+  91:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  92:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  93:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /** \ingroup util_delay
+  94:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \def F_CPU
+  95:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     \brief CPU frequency in Hz
+  96:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+  97:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     The macro F_CPU specifies the CPU frequency to be considered by
+  98:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     the delay macros.  This macro is normally supplied by the
+  99:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     environment (e.g. from within a project header, or the project's
+ 100:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     Makefile).  The value 1 MHz here is only provided as a "vanilla"
+ 101:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     fallback if no such user-provided definition could be found.
+ 102:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 103:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     In terms of the delay functions, the CPU frequency can be given as
+ 104:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
+ 105:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     However, the macros in <util/setbaud.h> require it to be an
+ 106:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****     integer value.
+ 107:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****  */
+ 108:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** # define F_CPU 1000000UL
+ 109:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #endif
+ 110:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 111:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+ 112:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+ 113:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #endif
+ 114:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 115:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 116:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 117:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 118:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #  include <math.h>
+ 119:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #endif
+ 120:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 121:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** /**
+ 122:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    \ingroup util_delay
+ 123:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 124:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 125:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 126:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 127:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 128:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 129:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 130:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 131:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 132:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 133:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 134:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 135:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 136:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 137:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 138:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 139:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 140:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 141:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 142:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Conversion of \c __ms into clock cycles may not always result in
+ 143:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 144:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    integer. This ensures that the user gets at least \c __ms
+ 145:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    microseconds of delay.
+ 146:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 147:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 148:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 149:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 150:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    respectively.
+ 151:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 152:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    \note
+ 153:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 154:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    The implementation of _delay_ms() based on
+ 155:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 156:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    implementations.  In order to get functionality backward compatible
+ 157:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
+ 158:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    must be defined before including this header file. Also, the
+ 159:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    backward compatible algorithm will be chosen if the code is
+ 160:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 161:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 162:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****    not available to the compiler then.
+ 163:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 164:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****  */
+ 165:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** void
+ 166:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 201               		.loc 2 166 1 discriminator 4 view .LVU31
+ 202               	.LBB9:
+ 167:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** {
+ 168:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	double __tmp ;
+ 203               		.loc 2 168 2 discriminator 4 view .LVU32
+ 169:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 170:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 171:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 172:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 204               		.loc 2 172 2 discriminator 4 view .LVU33
+ 173:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 205               		.loc 2 173 2 discriminator 4 view .LVU34
+ 174:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 206               		.loc 2 174 2 discriminator 4 view .LVU35
+ 175:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 176:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 177:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 178:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 179:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 180:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 181:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 182:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	#else
+ 183:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 		//round up by default
+ 184:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 207               		.loc 2 184 3 discriminator 4 view .LVU36
+ 185:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	#endif
+ 186:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 187:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 208               		.loc 2 187 2 discriminator 4 view .LVU37
+ 209 008e 8FE9      		ldi r24,lo8(3999)
+ 210 0090 9FE0      		ldi r25,hi8(3999)
+ 211 0092 0197      	1:	sbiw r24,1
+ 212 0094 01F4      		brne 1b
+ 213 0096 00C0      		rjmp .
+ 214 0098 0000      		nop
+ 215               	.LVL18:
+ 216               		.loc 2 187 2 is_stmt 0 discriminator 4 view .LVU38
+ 217               	.LBE9:
+ 218               	.LBE8:
+  78:src/stepper.c ****         _delay_ms(1);
+ 219               		.loc 1 78 9 is_stmt 1 discriminator 4 view .LVU39
+ 220 009a 60E0      		ldi r22,0
+ 221 009c 812F      		mov r24,r17
+ 222 009e 0E94 0000 		call gpio_write_pin
+ 223               	.LVL19:
+  79:src/stepper.c ****         //delay(time_calculate/2);
+ 224               		.loc 1 79 9 discriminator 4 view .LVU40
+ 225               	.LBB10:
+ 226               	.LBI10:
+ 166:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** {
+ 227               		.loc 2 166 1 discriminator 4 view .LVU41
+ 228               	.LBB11:
+ 168:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 229               		.loc 2 168 2 discriminator 4 view .LVU42
+ 172:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 230               		.loc 2 172 2 discriminator 4 view .LVU43
+ 173:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 231               		.loc 2 173 2 discriminator 4 view .LVU44
+ 174:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 
+ 232               		.loc 2 174 2 discriminator 4 view .LVU45
+ 184:/usr/local/Cellar/avr-gcc/8.3.0/avr/include/util/delay.h **** 	#endif
+ 233               		.loc 2 184 3 discriminator 4 view .LVU46
+ 234               		.loc 2 187 2 discriminator 4 view .LVU47
+ 235 00a2 8FE9      		ldi r24,lo8(3999)
+ 236 00a4 9FE0      		ldi r25,hi8(3999)
+ 237 00a6 0197      	1:	sbiw r24,1
+ 238 00a8 01F4      		brne 1b
+ 239 00aa 00C0      		rjmp .
+ 240 00ac 0000      		nop
+ 241               	.LVL20:
+ 242               		.loc 2 187 2 is_stmt 0 discriminator 4 view .LVU48
+ 243               	.LBE11:
+ 244               	.LBE10:
   74:src/stepper.c ****         gpio_write_pin(rtn_step(num), ON);
- 256               		.loc 1 74 22 discriminator 4 view .LVU33
- 257 00e6 F12C      		mov r15,__zero_reg__
- 258 00e8 E12C      		mov r14,__zero_reg__
- 259               	.LVL18:
- 260               	.L13:
+ 245               		.loc 1 74 37 discriminator 4 view .LVU49
+ 246 00ae 2196      		adiw r28,1
+ 247               	.LVL21:
   74:src/stepper.c ****         gpio_write_pin(rtn_step(num), ON);
- 261               		.loc 1 74 5 discriminator 2 view .LVU34
- 262 00ea E016      		cp r14,r16
- 263 00ec F106      		cpc r15,r17
- 264 00ee 01F4      		brne .L14
- 265               	/* epilogue start */
- 266               	.LBE2:
-  77:src/stepper.c ****         gpio_write_pin(rtn_step(num), OFF);
-  78:src/stepper.c ****         delay(time_calculate/2);
-  79:src/stepper.c ****     }
-  80:src/stepper.c **** } // end of move_stepper()
- 267               		.loc 1 80 1 view .LVU35
- 268 00f0 DF91      		pop r29
- 269               	.LVL19:
- 270               		.loc 1 80 1 view .LVU36
- 271 00f2 CF91      		pop r28
- 272 00f4 1F91      		pop r17
- 273 00f6 0F91      		pop r16
- 274               	.LVL20:
- 275               		.loc 1 80 1 view .LVU37
- 276 00f8 FF90      		pop r15
- 277 00fa EF90      		pop r14
- 278               	.LVL21:
- 279               		.loc 1 80 1 view .LVU38
- 280 00fc DF90      		pop r13
- 281 00fe BF90      		pop r11
- 282 0100 AF90      		pop r10
- 283 0102 9F90      		pop r9
- 284 0104 8F90      		pop r8
- 285               	.LVL22:
- 286               		.loc 1 80 1 view .LVU39
- 287 0106 0895      		ret
- 288               	.LVL23:
- 289               	.L14:
- 290               	.LBB3:
-  75:src/stepper.c ****         delay(time_calculate/2);
- 291               		.loc 1 75 9 is_stmt 1 discriminator 4 view .LVU40
- 292 0108 61E0      		ldi r22,lo8(1)
- 293 010a 8D2D      		mov r24,r13
- 294 010c 0E94 0000 		call gpio_write_pin
- 295               	.LVL24:
-  76:src/stepper.c ****         gpio_write_pin(rtn_step(num), OFF);
- 296               		.loc 1 76 9 discriminator 4 view .LVU41
- 297 0110 CE01      		movw r24,r28
- 298 0112 0E94 0000 		call delay
- 299               	.LVL25:
-  77:src/stepper.c ****         gpio_write_pin(rtn_step(num), OFF);
- 300               		.loc 1 77 9 discriminator 4 view .LVU42
- 301 0116 60E0      		ldi r22,0
- 302 0118 8D2D      		mov r24,r13
- 303 011a 0E94 0000 		call gpio_write_pin
- 304               	.LVL26:
-  78:src/stepper.c ****     }
- 305               		.loc 1 78 9 discriminator 4 view .LVU43
- 306 011e CE01      		movw r24,r28
- 307 0120 0E94 0000 		call delay
- 308               	.LVL27:
-  74:src/stepper.c ****         gpio_write_pin(rtn_step(num), ON);
- 309               		.loc 1 74 37 is_stmt 0 discriminator 4 view .LVU44
- 310 0124 9FEF      		ldi r25,-1
- 311 0126 E91A      		sub r14,r25
- 312 0128 F90A      		sbc r15,r25
- 313               	.LVL28:
-  74:src/stepper.c ****         gpio_write_pin(rtn_step(num), ON);
- 314               		.loc 1 74 37 discriminator 4 view .LVU45
- 315 012a 00C0      		rjmp .L13
- 316               	.LBE3:
- 317               		.cfi_endproc
- 318               	.LFE25:
- 320               		.data
- 323               	stepper_rpm:
- 324 0000 3C00      		.word	60
- 325 0002 3C00      		.word	60
- 326               		.text
- 327               	.Letext0:
- 328               		.file 2 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdint.h"
- 329               		.file 3 "/usr/local/Cellar/avr-gcc/8.3.0/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
- 330               		.file 4 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdio.h"
- 331               		.file 5 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdlib.h"
- 332               		.file 6 "src/gpio.h"
- 333               		.file 7 "src/system.h"
+ 248               		.loc 1 74 37 discriminator 4 view .LVU50
+ 249 00b0 00C0      		rjmp .L12
+ 250               	.LBE12:
+ 251               		.cfi_endproc
+ 252               	.LFE25:
+ 254               	.Letext0:
+ 255               		.file 3 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdint.h"
+ 256               		.file 4 "/usr/local/Cellar/avr-gcc/8.3.0/lib/avr-gcc/8/gcc/avr/8.3.0/include/stddef.h"
+ 257               		.file 5 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdio.h"
+ 258               		.file 6 "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/stdlib.h"
+ 259               		.file 7 "src/gpio.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stepper.c
-/var/tmp//ccf8JBZM.s:2      *ABS*:000000000000003e __SP_H__
-/var/tmp//ccf8JBZM.s:3      *ABS*:000000000000003d __SP_L__
-/var/tmp//ccf8JBZM.s:4      *ABS*:000000000000003f __SREG__
-/var/tmp//ccf8JBZM.s:5      *ABS*:000000000000003b __RAMPZ__
-/var/tmp//ccf8JBZM.s:6      *ABS*:0000000000000000 __tmp_reg__
-/var/tmp//ccf8JBZM.s:7      *ABS*:0000000000000001 __zero_reg__
-/var/tmp//ccf8JBZM.s:13     .text:0000000000000000 init_stepper
-/var/tmp//ccf8JBZM.s:68     .text:0000000000000040 enable_stepper
-/var/tmp//ccf8JBZM.s:101    .text:0000000000000056 set_rpm_stepper
-/var/tmp//ccf8JBZM.s:323    .data:0000000000000000 stepper_rpm
-/var/tmp//ccf8JBZM.s:130    .text:000000000000006c move_stepper
+/var/tmp//ccgACEu0.s:2      *ABS*:000000000000003e __SP_H__
+/var/tmp//ccgACEu0.s:3      *ABS*:000000000000003d __SP_L__
+/var/tmp//ccgACEu0.s:4      *ABS*:000000000000003f __SREG__
+/var/tmp//ccgACEu0.s:5      *ABS*:000000000000003b __RAMPZ__
+/var/tmp//ccgACEu0.s:6      *ABS*:0000000000000000 __tmp_reg__
+/var/tmp//ccgACEu0.s:7      *ABS*:0000000000000001 __zero_reg__
+/var/tmp//ccgACEu0.s:13     .text:0000000000000000 init_stepper
+/var/tmp//ccgACEu0.s:56     .text:000000000000002c enable_stepper
+/var/tmp//ccgACEu0.s:89     .text:0000000000000042 set_rpm_stepper
+/var/tmp//ccgACEu0.s:107    .text:0000000000000044 move_stepper
 
 UNDEFINED SYMBOLS
 gpio_register_pin
 gpio_write_pin
-__divmodsi4
-delay
-__do_copy_data

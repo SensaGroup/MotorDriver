@@ -270,85 +270,77 @@
   67:src/system.c  ****     // timer set to 1000hz
   68:src/system.c  ****     timer_init(1000);
   69:src/system.c  **** 
-  70:src/system.c  ****     // CAN Bus init
-  71:src/system.c  ****     //CAN_Init();
-  72:src/system.c  **** 	//if( CAN_InitRxMob(MOTOR_CONTROL_CAN_ID) == NOTINITED ) {
-  73:src/system.c  ****       //  debug_printf("ERROR! void system_init(void) - CAN Rx Mob not inited... halting system");
-  74:src/system.c  ****         //while(1) {
-  75:src/system.c  ****           //  delay(100);
-  76:src/system.c  ****         //}
-  77:src/system.c  ****     //}
+  70:src/system.c  **** 
+  71:src/system.c  ****     // Stepper Init
+  72:src/system.c  ****     init_stepper();
+  73:src/system.c  **** 
+  74:src/system.c  ****     // DC Motor Init
+  75:src/system.c  ****     init_hbridge();
+  76:src/system.c  **** 
+  77:src/system.c  ****     // Encoder Init
   78:src/system.c  **** 
-  79:src/system.c  ****     // Stepper Init
-  80:src/system.c  ****     init_stepper();
+  79:src/system.c  ****     // Switches Init
+  80:src/system.c  ****     init_switches();
   81:src/system.c  **** 
-  82:src/system.c  ****     // DC Motor Init
-  83:src/system.c  ****     init_hbridge();
+  82:src/system.c  ****     // end of init
+  83:src/system.c  ****     gpio_write_pin(PIN_LED1, LOW); 
   84:src/system.c  **** 
-  85:src/system.c  ****     // Encoder Init
-  86:src/system.c  **** 
-  87:src/system.c  ****     // Switches Init
-  88:src/system.c  ****     init_switches();
-  89:src/system.c  **** 
-  90:src/system.c  ****     // end of init
-  91:src/system.c  ****     gpio_write_pin(PIN_LED1, LOW); 
+  85:src/system.c  ****     debug_printf("finished... \n\n");
+  86:src/system.c  **** }
+  87:src/system.c  **** 
+  88:src/system.c  **** 
+  89:src/system.c  **** /************************************************************/
+  90:src/system.c  **** /*                   Helper functions                       */
+  91:src/system.c  **** /************************************************************/
   92:src/system.c  **** 
-  93:src/system.c  ****     debug_printf("finished... \n\n");
-  94:src/system.c  **** }
-  95:src/system.c  **** 
-  96:src/system.c  **** 
-  97:src/system.c  **** /************************************************************/
-  98:src/system.c  **** /*                   Helper functions                       */
-  99:src/system.c  **** /************************************************************/
- 100:src/system.c  **** 
- 101:src/system.c  **** /*
- 102:src/system.c  ****  * Function:   void delay(int ms)
- 103:src/system.c  ****  * Parameter:  int ms - the amount of miliseconds we need to delay
- 104:src/system.c  ****  */
- 105:src/system.c  **** void delay(int ms)
- 106:src/system.c  **** {
- 107:src/system.c  ****   while (0 < ms)
- 108:src/system.c  ****   {  
- 109:src/system.c  ****     _delay_ms(1);
- 110:src/system.c  ****     --ms;
- 111:src/system.c  ****   }
- 112:src/system.c  **** } // end of delay(int ms)
- 113:src/system.c  **** 
- 114:src/system.c  **** /************************************************************/
- 115:src/system.c  **** /*                  LED debug section                       */
- 116:src/system.c  **** /************************************************************/
- 117:src/system.c  **** 
- 118:src/system.c  **** /*
- 119:src/system.c  ****  * Function:   void init_led(void)
- 120:src/system.c  ****  * Parameter:  init the pins for the LEDs
- 121:src/system.c  ****  */
- 122:src/system.c  **** static void init_led(void) {
- 198               		.loc 1 122 13 view .LVU17
+  93:src/system.c  **** /*
+  94:src/system.c  ****  * Function:   void delay(int ms)
+  95:src/system.c  ****  * Parameter:  int ms - the amount of miliseconds we need to delay
+  96:src/system.c  ****  */
+  97:src/system.c  **** void delay(int ms)
+  98:src/system.c  **** {
+  99:src/system.c  ****   while (0 < ms)
+ 100:src/system.c  ****   {  
+ 101:src/system.c  ****     _delay_ms(1);
+ 102:src/system.c  ****     --ms;
+ 103:src/system.c  ****   }
+ 104:src/system.c  **** } // end of delay(int ms)
+ 105:src/system.c  **** 
+ 106:src/system.c  **** /************************************************************/
+ 107:src/system.c  **** /*                  LED debug section                       */
+ 108:src/system.c  **** /************************************************************/
+ 109:src/system.c  **** 
+ 110:src/system.c  **** /*
+ 111:src/system.c  ****  * Function:   void init_led(void)
+ 112:src/system.c  ****  * Parameter:  init the pins for the LEDs
+ 113:src/system.c  ****  */
+ 114:src/system.c  **** static void init_led(void) {
+ 198               		.loc 1 114 13 view .LVU17
  199               	.LBB16:
- 123:src/system.c  **** 
- 124:src/system.c  ****     gpio_register_pin(PIN_LED1, GPIO_DIRECTION_OUTPUT, true);      // set led1 as output
- 200               		.loc 1 124 5 view .LVU18
+ 115:src/system.c  **** 
+ 116:src/system.c  ****     gpio_register_pin(PIN_LED1, GPIO_DIRECTION_OUTPUT, true);      // set led1 as output
+ 200               		.loc 1 116 5 view .LVU18
  201 00aa 41E0      		ldi r20,lo8(1)
  202 00ac 61E0      		ldi r22,lo8(1)
  203 00ae 80E3      		ldi r24,lo8(48)
  204 00b0 0E94 0000 		call gpio_register_pin
  205               	.LVL5:
- 125:src/system.c  ****     gpio_register_pin(PIN_LED2, GPIO_DIRECTION_OUTPUT, true);      // set led2 as output
- 206               		.loc 1 125 5 view .LVU19
+ 117:src/system.c  ****     gpio_register_pin(PIN_LED2, GPIO_DIRECTION_OUTPUT, true);      // set led2 as output
+ 206               		.loc 1 117 5 view .LVU19
  207 00b4 41E0      		ldi r20,lo8(1)
  208 00b6 61E0      		ldi r22,lo8(1)
  209 00b8 81E3      		ldi r24,lo8(49)
  210 00ba 0E94 0000 		call gpio_register_pin
  211               	.LVL6:
- 126:src/system.c  **** 
- 127:src/system.c  ****     gpio_write_pin(PIN_LED1, LOW);                                  // set led1 low
- 212               		.loc 1 127 5 view .LVU20
+ 118:src/system.c  **** 
+ 119:src/system.c  ****     gpio_write_pin(PIN_LED1, LOW);                                  // set led1 low
+ 212               		.loc 1 119 5 view .LVU20
  213 00be 60E0      		ldi r22,0
  214 00c0 80E3      		ldi r24,lo8(48)
  215 00c2 0E94 0000 		call gpio_write_pin
  216               	.LVL7:
- 128:src/system.c  ****     gpio_write_pin(PIN_LED2, LOW);                                  // set led2 low
- 217               		.loc 1 128 5 view .LVU21
+ 120:src/system.c  ****     gpio_write_pin(PIN_LED2, LOW);                                  // set led2 low
+ 217               		.loc 1 120 5 view .LVU21
  218 00c6 60E0      		ldi r22,0
  219 00c8 81E3      		ldi r24,lo8(49)
  220 00ca 0E94 0000 		call gpio_write_pin
@@ -435,78 +427,78 @@
  280               		.loc 1 30 7 view .LVU42
  281               	.LBE20:
  282               	.LBE19:
-  80:src/system.c  **** 
- 283               		.loc 1 80 5 is_stmt 1 view .LVU43
+  72:src/system.c  **** 
+ 283               		.loc 1 72 5 is_stmt 1 view .LVU43
  284 0110 0E94 0000 		call init_stepper
  285               	.LVL14:
-  83:src/system.c  **** 
- 286               		.loc 1 83 5 view .LVU44
+  75:src/system.c  **** 
+ 286               		.loc 1 75 5 view .LVU44
  287 0114 0E94 0000 		call init_hbridge
  288               	.LVL15:
-  88:src/system.c  **** 
- 289               		.loc 1 88 5 view .LVU45
+  80:src/system.c  **** 
+ 289               		.loc 1 80 5 view .LVU45
  290               	.LBB21:
  291               	.LBI21:
- 129:src/system.c  ****     
- 130:src/system.c  **** } // end of init_led(void)
- 131:src/system.c  **** 
- 132:src/system.c  **** 
- 133:src/system.c  **** /************************************************************/
- 134:src/system.c  **** /*                   Switches section                       */
- 135:src/system.c  **** /************************************************************/
- 136:src/system.c  **** 
- 137:src/system.c  **** uint8_t switches_pin[8] = {40,41,42,43,44,45,46,47};
- 138:src/system.c  **** 
- 139:src/system.c  **** /*
- 140:src/system.c  ****  * Function:   static void init_switches()
- 141:src/system.c  ****  * Parameter:  init pins for switches (switches_pin)
- 142:src/system.c  ****  */
- 143:src/system.c  **** static void init_switches(void) {
- 292               		.loc 1 143 13 view .LVU46
- 293               		.loc 1 143 13 is_stmt 0 view .LVU47
+ 121:src/system.c  ****     
+ 122:src/system.c  **** } // end of init_led(void)
+ 123:src/system.c  **** 
+ 124:src/system.c  **** 
+ 125:src/system.c  **** /************************************************************/
+ 126:src/system.c  **** /*                   Switches section                       */
+ 127:src/system.c  **** /************************************************************/
+ 128:src/system.c  **** 
+ 129:src/system.c  **** uint8_t switches_pin[8] = {40,41,42,43,44,45,46,47};
+ 130:src/system.c  **** 
+ 131:src/system.c  **** /*
+ 132:src/system.c  ****  * Function:   static void init_switches()
+ 133:src/system.c  ****  * Parameter:  init pins for switches (switches_pin)
+ 134:src/system.c  ****  */
+ 135:src/system.c  **** static void init_switches(void) {
+ 292               		.loc 1 135 13 view .LVU46
+ 293               		.loc 1 135 13 is_stmt 0 view .LVU47
  294 0118 C0E0      		ldi r28,lo8(switches_pin)
  295 011a D0E0      		ldi r29,hi8(switches_pin)
  296               	.LVL16:
  297               	.L8:
  298               	.LBB22:
- 144:src/system.c  ****     for(int i=0; i < 8; i++) {
- 145:src/system.c  ****         gpio_register_pin(switches_pin[i], GPIO_DIRECTION_INPUT, false);
- 299               		.loc 1 145 9 is_stmt 1 view .LVU48
+ 136:src/system.c  ****     for(int i=0; i < 8; i++) {
+ 137:src/system.c  ****         gpio_register_pin(switches_pin[i], GPIO_DIRECTION_INPUT, false);
+ 299               		.loc 1 137 9 is_stmt 1 view .LVU48
  300 011c 40E0      		ldi r20,0
  301 011e 60E0      		ldi r22,0
  302 0120 8991      		ld r24,Y+
  303               	.LVL17:
- 304               		.loc 1 145 9 is_stmt 0 view .LVU49
+ 304               		.loc 1 137 9 is_stmt 0 view .LVU49
  305 0122 0E94 0000 		call gpio_register_pin
  306               	.LVL18:
- 144:src/system.c  ****     for(int i=0; i < 8; i++) {
- 307               		.loc 1 144 5 view .LVU50
+ 136:src/system.c  ****     for(int i=0; i < 8; i++) {
+ 307               		.loc 1 136 5 view .LVU50
  308 0126 80E0      		ldi r24,hi8(switches_pin+8)
  309 0128 C030      		cpi r28,lo8(switches_pin+8)
  310 012a D807      		cpc r29,r24
  311 012c 01F4      		brne .L8
  312               	.LVL19:
- 144:src/system.c  ****     for(int i=0; i < 8; i++) {
- 313               		.loc 1 144 5 view .LVU51
+ 136:src/system.c  ****     for(int i=0; i < 8; i++) {
+ 313               		.loc 1 136 5 view .LVU51
  314               	.LBE22:
  315               	.LBE21:
-  91:src/system.c  **** 
- 316               		.loc 1 91 5 is_stmt 1 view .LVU52
+  83:src/system.c  **** 
+ 316               		.loc 1 83 5 is_stmt 1 view .LVU52
  317 012e 60E0      		ldi r22,0
  318 0130 80E3      		ldi r24,lo8(48)
  319 0132 0E94 0000 		call gpio_write_pin
  320               	.LVL20:
-  93:src/system.c  **** }
- 321               		.loc 1 93 5 view .LVU53
+  85:src/system.c  **** }
+ 321               		.loc 1 85 5 view .LVU53
  322 0136 80E0      		ldi r24,lo8(.LC2)
  323 0138 90E0      		ldi r25,hi8(.LC2)
  324               	/* epilogue start */
-  94:src/system.c  **** 
- 325               		.loc 1 94 1 is_stmt 0 view .LVU54
+  86:src/system.c  **** 
+ 325               		.loc 1 86 1 is_stmt 0 view .LVU54
  326 013a DF91      		pop r29
  327 013c CF91      		pop r28
-  93:src/system.c  **** }
- 328               		.loc 1 93 5 view .LVU55
+  85:src/system.c  **** }
+ 328               		.loc 1 85 5 view .LVU55
  329 013e 0C94 0000 		jmp debug_printf
  330               	.LVL21:
  331               		.cfi_endproc
@@ -515,28 +507,28 @@
  336               	delay:
  337               	.LVL22:
  338               	.LFB26:
- 106:src/system.c  ****   while (0 < ms)
- 339               		.loc 1 106 1 is_stmt 1 view -0
+  98:src/system.c  ****   while (0 < ms)
+ 339               		.loc 1 98 1 is_stmt 1 view -0
  340               		.cfi_startproc
  341               	/* prologue: function */
  342               	/* frame size = 0 */
  343               	/* stack size = 0 */
  344               	.L__stack_usage = 0
- 107:src/system.c  ****   {  
- 345               		.loc 1 107 3 view .LVU57
+  99:src/system.c  ****   {  
+ 345               		.loc 1 99 3 view .LVU57
  346               	.L11:
- 107:src/system.c  ****   {  
- 347               		.loc 1 107 9 is_stmt 0 view .LVU58
+  99:src/system.c  ****   {  
+ 347               		.loc 1 99 9 is_stmt 0 view .LVU58
  348 0142 1816      		cp __zero_reg__,r24
  349 0144 1906      		cpc __zero_reg__,r25
  350 0146 04F0      		brlt .L12
  351               	/* epilogue start */
- 112:src/system.c  **** 
- 352               		.loc 1 112 1 view .LVU59
+ 104:src/system.c  **** 
+ 352               		.loc 1 104 1 view .LVU59
  353 0148 0895      		ret
  354               	.L12:
- 109:src/system.c  ****     --ms;
- 355               		.loc 1 109 5 is_stmt 1 view .LVU60
+ 101:src/system.c  ****     --ms;
+ 355               		.loc 1 101 5 is_stmt 1 view .LVU60
  356               	.LVL23:
  357               	.LBB23:
  358               	.LBI23:
@@ -746,12 +738,12 @@
  375               		.loc 2 187 2 is_stmt 0 view .LVU68
  376               	.LBE24:
  377               	.LBE23:
- 110:src/system.c  ****   }
- 378               		.loc 1 110 5 is_stmt 1 view .LVU69
+ 102:src/system.c  ****   }
+ 378               		.loc 1 102 5 is_stmt 1 view .LVU69
  379 0156 0197      		sbiw r24,1
  380               	.LVL25:
- 110:src/system.c  ****   }
- 381               		.loc 1 110 5 is_stmt 0 view .LVU70
+ 102:src/system.c  ****   }
+ 381               		.loc 1 102 5 is_stmt 0 view .LVU70
  382 0158 00C0      		rjmp .L11
  383               		.cfi_endproc
  384               	.LFE26:
@@ -759,32 +751,32 @@
  388               	read_switch:
  389               	.LVL26:
  390               	.LFB29:
- 146:src/system.c  ****     }
- 147:src/system.c  **** } // end of init_switches()
- 148:src/system.c  **** 
- 149:src/system.c  **** /*
- 150:src/system.c  ****  * Function:   uint8_t read_switch(uint8_t num)
- 151:src/system.c  ****  * Parameter:  read `num` switch
- 152:src/system.c  ****  */
- 153:src/system.c  **** uint8_t read_switch(uint8_t num) {
- 391               		.loc 1 153 34 is_stmt 1 view -0
+ 138:src/system.c  ****     }
+ 139:src/system.c  **** } // end of init_switches()
+ 140:src/system.c  **** 
+ 141:src/system.c  **** /*
+ 142:src/system.c  ****  * Function:   uint8_t read_switch(uint8_t num)
+ 143:src/system.c  ****  * Parameter:  read `num` switch
+ 144:src/system.c  ****  */
+ 145:src/system.c  **** uint8_t read_switch(uint8_t num) {
+ 391               		.loc 1 145 34 is_stmt 1 view -0
  392               		.cfi_startproc
  393               	/* prologue: function */
  394               	/* frame size = 0 */
  395               	/* stack size = 0 */
  396               	.L__stack_usage = 0
- 154:src/system.c  **** 
- 155:src/system.c  ****     return gpio_read_pin(switches_pin[num] - 1);
- 397               		.loc 1 155 5 view .LVU72
- 398               		.loc 1 155 38 is_stmt 0 view .LVU73
+ 146:src/system.c  **** 
+ 147:src/system.c  ****     return gpio_read_pin(switches_pin[num] - 1);
+ 397               		.loc 1 147 5 view .LVU72
+ 398               		.loc 1 147 38 is_stmt 0 view .LVU73
  399 015a E82F      		mov r30,r24
  400 015c F0E0      		ldi r31,0
  401 015e E050      		subi r30,lo8(-(switches_pin))
  402 0160 F040      		sbci r31,hi8(-(switches_pin))
- 403               		.loc 1 155 12 view .LVU74
+ 403               		.loc 1 147 12 view .LVU74
  404 0162 8081      		ld r24,Z
  405               	.LVL27:
- 406               		.loc 1 155 12 view .LVU75
+ 406               		.loc 1 147 12 view .LVU75
  407 0164 8150      		subi r24,lo8(-(-1))
  408 0166 0C94 0000 		jmp gpio_read_pin
  409               	.LVL28:
@@ -818,20 +810,20 @@
  440               		.file 11 "src/hbridge.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 system.c
-/var/tmp//ccpT7a0S.s:2      *ABS*:000000000000003e __SP_H__
-/var/tmp//ccpT7a0S.s:3      *ABS*:000000000000003d __SP_L__
-/var/tmp//ccpT7a0S.s:4      *ABS*:000000000000003f __SREG__
-/var/tmp//ccpT7a0S.s:5      *ABS*:000000000000003b __RAMPZ__
-/var/tmp//ccpT7a0S.s:6      *ABS*:0000000000000000 __tmp_reg__
-/var/tmp//ccpT7a0S.s:7      *ABS*:0000000000000001 __zero_reg__
-/var/tmp//ccpT7a0S.s:13     .text:0000000000000000 timer_register_callback
+/var/tmp//ccPdK4xZ.s:2      *ABS*:000000000000003e __SP_H__
+/var/tmp//ccPdK4xZ.s:3      *ABS*:000000000000003d __SP_L__
+/var/tmp//ccPdK4xZ.s:4      *ABS*:000000000000003f __SREG__
+/var/tmp//ccPdK4xZ.s:5      *ABS*:000000000000003b __RAMPZ__
+/var/tmp//ccPdK4xZ.s:6      *ABS*:0000000000000000 __tmp_reg__
+/var/tmp//ccPdK4xZ.s:7      *ABS*:0000000000000001 __zero_reg__
+/var/tmp//ccPdK4xZ.s:13     .text:0000000000000000 timer_register_callback
                              .bss:0000000000000000 timer_callback
-/var/tmp//ccpT7a0S.s:35     .text:000000000000000a __vector_12
-/var/tmp//ccpT7a0S.s:427    .bss:0000000000000002 sys_time
-/var/tmp//ccpT7a0S.s:162    .text:000000000000008a system_init
-/var/tmp//ccpT7a0S.s:417    .data:0000000000000000 switches_pin
-/var/tmp//ccpT7a0S.s:336    .text:0000000000000142 delay
-/var/tmp//ccpT7a0S.s:388    .text:000000000000015a read_switch
+/var/tmp//ccPdK4xZ.s:35     .text:000000000000000a __vector_12
+/var/tmp//ccPdK4xZ.s:427    .bss:0000000000000002 sys_time
+/var/tmp//ccPdK4xZ.s:162    .text:000000000000008a system_init
+/var/tmp//ccPdK4xZ.s:417    .data:0000000000000000 switches_pin
+/var/tmp//ccPdK4xZ.s:336    .text:0000000000000142 delay
+/var/tmp//ccPdK4xZ.s:388    .text:000000000000015a read_switch
 
 UNDEFINED SYMBOLS
 USART0_init
