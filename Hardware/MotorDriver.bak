@@ -2475,11 +2475,11 @@ Text Notes 9000 2900 0    79   ~ 0
 ENCODER
 Text Notes 6700 2900 0    79   ~ 0
 REGULATOR 5V
-Text Notes 5550 4300 0    79   ~ 0
+Text Notes 5500 4250 0    79   ~ 0
 INPUT PROTECTION
-Text Notes 7200 4300 0    79   ~ 0
+Text Notes 7100 4250 0    79   ~ 0
 PERIF. PINS
-Text Notes 9200 4250 0    79   ~ 0
+Text Notes 9000 4250 0    79   ~ 0
 DEBUG LED
 Text Notes 3400 7700 0    79   ~ 0
 MCP2551 CAN TRANSCEIVER

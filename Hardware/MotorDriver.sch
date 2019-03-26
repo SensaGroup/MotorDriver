@@ -1,6 +1,6 @@
 EESchema Schematic File Version 4
 LIBS:MotorDriver-cache
-EELAYER 26 0
+EELAYER 29 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -120,7 +120,7 @@ F 3 "" H 2450 2750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-Clocks:OSCILLATOR-16MHZSMD-7X5-4PAD Y1
+L MotorDriver-rescue:OSCILLATOR-16MHZSMD-7X5-4PAD-SparkFun-Clocks Y1
 U 1 1 5BA6A03A
 P 1350 1000
 F 0 "Y1" H 1050 1250 45  0000 L BNN
