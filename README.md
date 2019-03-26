@@ -9,6 +9,7 @@ SENSA MotorDriver is a board used for controlling main actuators on our robots o
 - 8x binary inputs
 - 2x encoder inputs
 - I2C/UART pinouts
+- CAN Bus
 
 ## Pictures
 ![TopView](https://raw.githubusercontent.com/SensaOrg/MotorDriver/master/Hardware/Docs/Output/MotorDriver.jpeg)
