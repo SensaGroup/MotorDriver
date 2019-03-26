@@ -11,4 +11,4 @@ SENSA MotorDriver is a board used for controlling main actuators on our robots o
 - I2C/UART pinouts
 
 ## Pictures
-
+![TopView](https://raw.githubusercontent.com/SensaOrg/MotorDriver/master/Hardware/Docs/Output/MotorDriver.jpeg)
